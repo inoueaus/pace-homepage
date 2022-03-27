@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import sql from "../../db";
 import { envVars } from "../../env-variables";
 
-export const loginUser = async (req: Request, res: Response) => {
+const loginUser = async (req: Request, res: Response) => {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -45,3 +45,5 @@ export const loginUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+export default loginUser;
