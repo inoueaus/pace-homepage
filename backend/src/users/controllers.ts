@@ -25,7 +25,7 @@ export const loginUser = async (req: Request, res: Response) => {
       .then(result => {
         if (result) {
           const token = jwt.sign(
-            { user_id: user.id, username },
+            { user_id: user.id, username }, // issue new token to user if password checks out
             envVars.tokenKey,
             { expiresIn: "2h" }
           );
@@ -39,7 +39,7 @@ export const loginUser = async (req: Request, res: Response) => {
         res.json({ authenticated: true, token: result[0].token, userId })
       );
   } catch (error) {
-    res.statusCode = 400;
+    res.statusCode = 401;
     res.json({
       message: error instanceof Error ? error.message : "Invalid request.",
     });
