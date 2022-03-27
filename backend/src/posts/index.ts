@@ -1,7 +1,8 @@
 import express from "express";
-import { deletePost, updatePost } from "./controllers";
+import { deletePost } from "./controllers";
 import getPosts from "./controllers/get-posts";
 import newPost from "./controllers/new-post";
+import updatePost from "./controllers/update-post";
 
 const postsRouter = express.Router();
 
