@@ -8,8 +8,6 @@ export const loginUser = async (req: Request, res: Response) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  console.log(req.body);
-
   try {
     if (typeof username !== "string")
       throw TypeError("Invalid username provided.");
@@ -48,7 +46,7 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-export const logoutUser = (req: Request, res: Response) => {
+export const logoutUser = async (req: Request, res: Response) => {
   const userId = Number(req.body.userId);
   const token = req.body.token;
 
@@ -57,19 +55,26 @@ export const logoutUser = (req: Request, res: Response) => {
     if (typeof token !== "string")
       throw TypeError("Must provide a valid Token");
 
-    jwt.verify(
+    const decoded = jwt.verify(
       token,
       envVars.tokenKey,
-      { ignoreExpiration: true }, // ignore expiration for logout
-      (err, decoded) => {
-        if (err) throw err;
-        sql`UPDATE users SET token = null WHERE user_id = ${userId} RETURNING token` // delete token from db
-          .then(result => res.json({ loggedOut: true, result }));
-      }
+      { ignoreExpiration: true } // ignore expiration for logout
     );
+    if (!(decoded instanceof Object && typeof decoded.username === "string"))
+      throw TypeError("invalid return from verify");
+
+    const [result] = await sql<
+      { token: string }[]
+    >`SELECT token FROM users WHERE user_id = ${userId}`;
+    if (!result) throw Error("Invalid user ID.");
+    if (result.token !== token)
+      throw Error("Token does not match token stored in Database.");
+
+    await sql`UPDATE users SET token = null WHERE user_id = ${userId}`; // delete token from db
+
+    res.json({ loggedOut: true });
   } catch (error) {
-    res.statusCode = 400;
-    res.json({
+    res.status(401).json({
       message: error instanceof Error ? error.message : "Invalid request.",
       loggedOut: false,
     });
