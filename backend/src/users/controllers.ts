@@ -60,12 +60,11 @@ export const logoutUser = (req: Request, res: Response) => {
     jwt.verify(
       token,
       envVars.tokenKey,
-      { ignoreExpiration: true },
+      { ignoreExpiration: true }, // ignore expiration for logout
       (err, decoded) => {
         if (err) throw err;
-        sql`UPDATE users SET token = null WHERE user_id = ${userId} RETURNING token`.then(
-          result => res.json({ loggedOut: true, result })
-        );
+        sql`UPDATE users SET token = null WHERE user_id = ${userId} RETURNING token` // delete token from db
+          .then(result => res.json({ loggedOut: true, result }));
       }
     );
   } catch (error) {
