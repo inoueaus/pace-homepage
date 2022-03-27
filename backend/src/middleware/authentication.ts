@@ -22,8 +22,7 @@ const checkIfTokenIsValid = async (
       next();
     }
   } catch (error) {
-    res.statusCode = 401;
-    res.json({ auth: false });
+    res.status(401).json({ auth: false });
   }
 };
 
