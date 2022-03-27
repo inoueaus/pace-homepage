@@ -15,4 +15,11 @@ CREATE TABLE posts (
 	created_at timestamp,
 	updated_at timestamp
 );
+CREATE TABLE users (
+	user_id serial PRIMARY KEY,
+	username varchar(55),
+	pass_hash varchar(255),
+  token varchar,
+	created_at timestamp DEFAULT NOW()
+);
 ```

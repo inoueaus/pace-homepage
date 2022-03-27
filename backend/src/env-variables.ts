@@ -14,6 +14,7 @@ if (isNaN(dbPort)) throw Error("DB Port is undefined or not a number!");
 if (!process.env.DB_PASS) throw Error("DB password is undefined!");
 if (!process.env.DB_USER) throw Error("DB username is undefined!");
 if (!process.env.DB_NAME) throw Error("DB name is undefined!");
+if (!process.env.TOKEN_KEY) throw Error("DB name is undefined!");
 
 export const envVars = {
   mode,
@@ -23,4 +24,5 @@ export const envVars = {
   dbUsername: process.env.DB_USER,
   dbName: process.env.DB_NAME,
   dbPort,
+  tokenKey: process.env.TOKEN_KEY
 };
