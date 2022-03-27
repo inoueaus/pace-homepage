@@ -9,12 +9,12 @@ export const getPostsByPage = async (req: Request, res: Response) => {
     if (isNaN(pageNo)) throw Error("Page No must be a number");
     if (isNaN(limit)) throw Error("Limit must be a number");
 
-    sql`SELECT id, title, body, created_at, updated_at
+    const posts = await sql`SELECT id, title, body, created_at, updated_at
         FROM posts
         ORDER BY created_at DESC
-        LIMIT ${limit} OFFSET ${pageNo * limit};`.then(result =>
-      res.json(result)
-    );
+        LIMIT ${limit} OFFSET ${pageNo * limit};`;
+
+    res.json(posts);
   } catch (error) {
     res.statusCode = 400;
     if (error instanceof Error) {
