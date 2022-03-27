@@ -11,8 +11,8 @@ interface PostEntry {
 }
 
 const getPosts = async (req: Request, res: Response) => {
-  const pageNo = req.query.page_no ? Number(req.query.page_no) : 0;
-  const limit = req.query.limit ? Number(req.query.limit) : 10;
+  const pageNo = req.query.page ? Number(req.query.page) : 0; // default page 1
+  const limit = req.query.limit ? Number(req.query.limit) : 10; // default 10 per page
 
   try {
     if (isNaN(pageNo)) throw Error("Page No must be a number");
