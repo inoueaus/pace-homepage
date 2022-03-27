@@ -36,7 +36,7 @@ export const newPost = async (req: Request, res: Response) => {
     VALUES (${title}, ${body}, NOW(), NOW())
     RETURNING id;`;
 
-    res.json({ id: result.id });
+    res.json({ id: result.id, created: true });
   } catch (error) {
     res.statusCode = 400;
     if (error instanceof Error) res.json({ message: error.message });
@@ -49,8 +49,17 @@ export const updatePost = async (req: Request, res: Response) => {
 };
 
 export const deletePost = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = Number(req.params.id);
 
   try {
-  } catch (error) {}
+    if (isNaN(id)) throw TypeError("ID must be a number");
+
+    const [result] = await sql`DELETE FROM posts
+    WHERE id = ${id}
+    RETURNING id`;
+
+    res.json({ id: result.id, deleted: true });
+  } catch (error) {
+    res.statusCode = 400;
+  }
 };
