@@ -34,10 +34,9 @@ const getPosts = async (req: Request, res: Response) => {
       })
     );
   } catch (error) {
-    res.statusCode = 400;
-    if (error instanceof Error) {
-      res.json({ message: error.message });
-    }
+    res.status(400).json({
+      message: error instanceof Error ? error.message : "Invalid request.",
+    });
   }
 };
 
