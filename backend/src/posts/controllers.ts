@@ -9,7 +9,7 @@ export const getPostsByPage = async (req: Request, res: Response) => {
     if (isNaN(pageNo)) throw Error("Page No must be a number");
     if (isNaN(limit)) throw Error("Limit must be a number");
 
-    const posts = await sql`SELECT id, title, body, created_at, updated_at
+    const posts = await sql`SELECT id, title, body, picture, created_at, updated_at
         FROM posts
         ORDER BY created_at DESC
         LIMIT ${limit} OFFSET ${pageNo * limit};`;
@@ -26,14 +26,16 @@ export const getPostsByPage = async (req: Request, res: Response) => {
 export const newPost = async (req: Request, res: Response) => {
   const title = req.body.title;
   const body = req.body.body;
+  const pictureParam = req.body.picture;
+  const picture = typeof pictureParam === "string" ? pictureParam : null;
 
   try {
     if (typeof title !== "string") throw Error("No title provided.");
     if (typeof body !== "string") throw Error("No body provided");
 
     const [result] =
-      await sql`INSERT INTO posts (title, body, created_at, updated_at)
-    VALUES (${title}, ${body}, NOW(), NOW())
+      await sql`INSERT INTO posts (title, body, picture, created_at, updated_at)
+    VALUES (${title}, ${body}, ${picture}, NOW(), NOW())
     RETURNING id;`;
 
     res.json({ id: result.id, created: true });
@@ -44,7 +46,10 @@ export const newPost = async (req: Request, res: Response) => {
 };
 
 export const updatePost = async (req: Request, res: Response) => {
-  console.log(req.params);
+  const title = req.body.title;
+  const body = req.body.body;
+
+
   res.json("test");
 };
 
