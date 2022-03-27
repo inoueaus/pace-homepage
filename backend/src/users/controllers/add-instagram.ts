@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { envVars } from "../../env-variables";
 
 const addInstagram = async (req: Request, res: Response) => {
-  const userId = Number(req.body.userId);
+  const userId = Number(req.params.id);
   const instaUsername = req.body.instaUsername;
   const instaPassword = req.body.instaPassword;
 
@@ -16,7 +16,7 @@ const addInstagram = async (req: Request, res: Response) => {
     const hashedPass = await bcrypt.hash(instaPassword, envVars.salt);
 
     const [result] =
-      await sql`UPDATE users SET (instagram_user, instagram_pass) VALUES (${instaUsername}, ${hashedPass}) WHERE user_id = ${userId} RETURNING instagram_user`;
+      await sql`UPDATE users SET (instagram_user, instagram_pass) = (${instaUsername}, ${hashedPass}) WHERE user_id = ${userId} RETURNING instagram_user`;
 
     if (!result) throw Error("User ID was invalid!");
 
@@ -29,3 +29,5 @@ const addInstagram = async (req: Request, res: Response) => {
     });
   }
 };
+
+export default addInstagram;

@@ -1,5 +1,5 @@
 import express from "express";
-import checkIfTokenIsValid from "../middleware/authentication";
+import requireToken from "../middleware/authentication";
 import deletePost from "./controllers/delete-post";
 import getPosts from "./controllers/get-posts";
 import newPost from "./controllers/new-post";
@@ -9,10 +9,10 @@ const postsRouter = express.Router();
 
 postsRouter.get("/", getPosts);
 
-postsRouter.post("/new", checkIfTokenIsValid, newPost);
+postsRouter.post("/new", requireToken, newPost);
 
-postsRouter.patch("/:id", checkIfTokenIsValid, updatePost);
+postsRouter.patch("/:id", requireToken, updatePost);
 
-postsRouter.delete("/:id", checkIfTokenIsValid, deletePost);
+postsRouter.delete("/:id", requireToken, deletePost);
 
 export default postsRouter;

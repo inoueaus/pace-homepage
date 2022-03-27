@@ -17,7 +17,9 @@ CREATE TABLE posts (
 );
 CREATE TABLE users (
 	user_id serial PRIMARY KEY,
+	is_admin boolean
 	username varchar(55) UNIQUE,
+	email varchar UNIQUE,
 	pass_hash varchar(255),
   token varchar,
 	instagram_pass varchar,
