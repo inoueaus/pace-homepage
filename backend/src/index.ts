@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use("/posts", postsRouter);
 app.use("/users", usersRouter);
-app.use("/inquiries", inquiriesRouter)
+app.use("/inquiries", inquiriesRouter);
 
 app.get("/", (req, res) => {
   res.send("PACE API");
