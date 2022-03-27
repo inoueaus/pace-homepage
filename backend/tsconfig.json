@@ -1,5 +1,14 @@
 {
-  "compilerOptions": {},
-  "include": ["src"],
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  },
+  "include": ["./src/**/*"],
   "exclude": ["node_modules"]
 }

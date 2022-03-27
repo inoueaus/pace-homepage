@@ -1,6 +1,7 @@
-const express = require("express");
-const dotenv = require("dotenv");
+import express, { Express } from "express";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-console.log(process.env.TEST)
+const app = express();
+
