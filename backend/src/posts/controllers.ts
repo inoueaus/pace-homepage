@@ -9,7 +9,8 @@ export const getPostsByPage = async (req: Request, res: Response) => {
     if (isNaN(pageNo)) throw Error("Page No must be a number");
     if (isNaN(limit)) throw Error("Limit must be a number");
 
-    const posts = await sql`SELECT id, title, body, picture, created_at, updated_at
+    const posts =
+      await sql`SELECT id, title, body, picture, created_at, updated_at
         FROM posts
         ORDER BY created_at DESC
         LIMIT ${limit} OFFSET ${pageNo * limit};`;
@@ -27,9 +28,13 @@ export const newPost = async (req: Request, res: Response) => {
   const title = req.body.title;
   const body = req.body.body;
   const pictureParam = req.body.picture;
-  const picture = typeof pictureParam === "string" ? pictureParam : null;
+
 
   try {
+    const picture =
+    typeof pictureParam === "string"
+      ? Buffer.from(pictureParam, "base64").toString("hex") // must do some security work here
+      : null; // convert base64 image to hex binary
     if (typeof title !== "string") throw Error("No title provided.");
     if (typeof body !== "string") throw Error("No body provided");
 
@@ -48,7 +53,6 @@ export const newPost = async (req: Request, res: Response) => {
 export const updatePost = async (req: Request, res: Response) => {
   const title = req.body.title;
   const body = req.body.body;
-
 
   res.json("test");
 };
