@@ -55,20 +55,12 @@ export const logoutUser = async (req: Request, res: Response) => {
     if (typeof token !== "string")
       throw TypeError("Must provide a valid Token");
 
-    const decoded = jwt.verify(
-      token,
-      envVars.tokenKey,
-      { ignoreExpiration: true } // ignore expiration for logout
-    );
-    if (!(decoded instanceof Object && typeof decoded.username === "string"))
-      throw TypeError("invalid return from verify");
-
     const [result] = await sql<
       { token: string }[]
-    >`SELECT token FROM users WHERE user_id = ${userId}`;
+    >`SELECT token FROM users WHERE user_id = ${userId}`; // get current token from db
     if (!result) throw Error("Invalid user ID.");
     if (result.token !== token)
-      throw Error("Token does not match token stored in Database.");
+      throw Error("Token does not match token stored in Database."); // throw error if not user's token
 
     await sql`UPDATE users SET token = null WHERE user_id = ${userId}`; // delete token from db
 

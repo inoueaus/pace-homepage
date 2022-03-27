@@ -1,6 +1,8 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-import { loginUser, logoutUser } from "./controllers";
+import { loginUser } from "./controllers";
+import logoutUser from "./controllers/logout-user";
+import { envVars } from "../env-variables";
 
 const usersRouter = express.Router();
 
@@ -11,7 +13,7 @@ usersRouter.post("/login", loginUser);
 usersRouter.post("/logout", logoutUser);
 
 usersRouter.get("/gen-hash/:pass", (req, res) => {
-  bcrypt.hash(req.params.pass, 10, (err, hash) => res.json({ hash }));
+  bcrypt.hash(req.params.pass, 10).then(hash => res.send(hash));
 });
 
 export default usersRouter;

@@ -17,9 +17,11 @@ CREATE TABLE posts (
 );
 CREATE TABLE users (
 	user_id serial PRIMARY KEY,
-	username varchar(55),
+	username varchar(55) UNIQUE,
 	pass_hash varchar(255),
   token varchar,
+	instagram_pass varchar,
+	instagram_user varchar,
 	created_at timestamp DEFAULT NOW()
 );
 ```
