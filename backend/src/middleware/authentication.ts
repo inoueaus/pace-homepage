@@ -17,13 +17,10 @@ const checkIfTokenIsValid = async (
     if (typeof token !== "string")
       throw TypeError("Must provide a valid Token");
 
-    jwt.verify(token, envVars.tokenKey, {}, (err, _) => {
-      if (err) {
-        throw err;
-      } else {
-        next();
-      }
-    });
+    const decoded = jwt.verify(token, envVars.tokenKey);
+    if (decoded) {
+      next();
+    }
   } catch (error) {
     res.statusCode = 401;
     res.json({ auth: false });
