@@ -28,7 +28,7 @@ export const getPostsByPage = async (req: Request, res: Response) => {
     res.json(
       posts.map(post => {
         if (post.picture) {
-          post.picture = Buffer.from(post.picture, "hex").toString("base64");
+          post.picture = Buffer.from(post.picture, "hex").toString("base64"); // convert to base64 if picture stored
         }
         return post;
       })
@@ -44,12 +44,12 @@ export const getPostsByPage = async (req: Request, res: Response) => {
 export const newPost = async (req: Request, res: Response) => {
   const title = req.body.title;
   const body = req.body.body;
-  const pictureParam = req.body.picture;
+  const pictureProvided = req.body.picture;
 
   try {
     const picture =
-      typeof pictureParam === "string"
-        ? convertB64StringToHex(pictureParam) // must do some security work here
+      typeof pictureProvided === "string"
+        ? convertB64StringToHex(pictureProvided) // must do some security work here
         : null; // convert base64 image to hex binary
     if (typeof title !== "string") throw Error("No title provided.");
     if (typeof body !== "string") throw Error("No body provided");
@@ -69,16 +69,33 @@ export const newPost = async (req: Request, res: Response) => {
 export const updatePost = async (req: Request, res: Response) => {
   const title = req.body.title;
   const body = req.body.body;
-  const pictureParam = req.body.picture;
+  const pictureProvided = req.body.picture;
+  const id = Number(req.params.id);
 
   try {
     if (typeof title !== "string") throw Error("No title provided.");
     if (typeof body !== "string") throw Error("No body provided");
-    if (pictureParam) {
-    } else {
-    }
+    if (isNaN(id)) throw TypeError("Id must be a string");
+
+    const pictureHex =
+      typeof pictureProvided === "string"
+        ? convertB64StringToHex(pictureProvided)
+        : null;
+
+    const [result] = await sql`UPDATE posts SET ${sql({
+      title,
+      body,
+      picture: pictureHex,
+    })}
+    WHERE id = ${id} RETURNING id`;
+
+    res.json({ id: result.id, updated: true });
   } catch (error) {
     res.statusCode = 400;
+    res.json({
+      message: error instanceof Error ? error.message : "Invalid request.",
+      updated: false,
+    });
   }
 };
 
@@ -95,6 +112,10 @@ export const deletePost = async (req: Request, res: Response) => {
     res.json({ id: result.id, deleted: true });
   } catch (error) {
     res.statusCode = 400;
+    res.json({
+      message: error instanceof Error ? error.message : "Invalid request.",
+      deleted: false,
+    });
   }
 };
 
