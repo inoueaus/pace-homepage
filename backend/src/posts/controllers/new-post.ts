@@ -20,7 +20,7 @@ const newPost = async (req: Request, res: Response) => {
     VALUES (${title}, ${body}, ${picture}, NOW(), NOW())
     RETURNING id;`;
 
-    res.json({ id: result.id, created: true });
+    res.status(201).json({ id: result.id, created: true });
   } catch (error) {
     res.statusCode = 400;
     if (error instanceof Error) res.json({ message: error.message });
