@@ -41,7 +41,7 @@ fetch("/users/login", {
 
 ```
 MODE=development
-PORT=8080
+PORT=8081
 DB_HOST=localhost
 DB_PORT=5433
 DB_PASS=root
@@ -49,6 +49,10 @@ DB_USER=postgres
 DB_NAME=postgres
 TOKEN_KEY=secretkey
 SALT=10
+RECEIVER_EMAIL=mayeraus@icloud.com
+MAILGUN_KEY=6ab17df5ee912ac97919b83814d8ae96-8ed21946-90b754d2
+MAILGUN_DOMAIN=sandbox855f632013ac4f6a97f988fc94fdbb24.mailgun.org
+
 
 ```
 

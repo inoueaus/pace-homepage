@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import sql from "../../db";
+import nodemailerMailgun from "../mailer/transporter";
 
 const validateEmail = (email: string) =>
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
@@ -35,6 +36,17 @@ const newInquiry = async (req: Request, res: Response) => {
     RETURNING inquiry_id;`;
 
     if (!result) throw Error("Inquiry was not Created.");
+
+    nodemailerMailgun
+      .sendMail({
+        from: "pace@mail.com",
+        to: "mayeraus@icloud.com",
+        subject: "新しいお問合せが届きました",
+        text: `お問合せ番号：${result.inquiry_id}`,
+      })
+      .then(result => console.log(result))
+      .catch(error => console.log(error));
+    //.then(result => console.log(result));
 
     res.status(201).json({ created: true, id: result.inquiry_id });
   } catch (error) {
