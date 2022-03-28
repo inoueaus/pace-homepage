@@ -4,6 +4,8 @@ import sql from "../db";
 
 describe("Posts Router Tests", () => {
   let token: string;
+  let newPostId: number;
+
   beforeAll(() => {
     return request(app)
       .post("/users/login")
@@ -57,11 +59,22 @@ describe("Posts Router Tests", () => {
           .slice(4, 8)}-note, Wheres the coffee??`,
       })
       .then(response => {
+        newPostId = response.body.id;
         expect(response.statusCode).toBe(201);
         expect(response.body.id);
         expect(response.body.created).toBe(true);
       });
   });
+
+  test("Delete last Post", () =>
+    request(app)
+      .delete(`/posts/${newPostId}`)
+      .send({ token, userId: 1 })
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body.deleted).toBe(true);
+        expect(response.body.id).toBe(newPostId);
+      }));
 
   afterAll(() => sql.end());
 });
