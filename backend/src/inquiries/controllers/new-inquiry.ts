@@ -41,6 +41,7 @@ const newInquiry = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({
       message: error instanceof Error ? error.message : "Invalid request.",
+      created: false,
     });
   }
 };
