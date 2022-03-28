@@ -11,10 +11,11 @@ const deletePost = async (req: Request, res: Response) => {
     WHERE id = ${id}
     RETURNING id`;
 
+    if(!result) throw Error("Specified ID not in DB.");
+
     res.json({ id: result.id, deleted: true });
   } catch (error) {
-    res.statusCode = 400;
-    res.json({
+    res.status(400).json({
       message: error instanceof Error ? error.message : "Invalid request.",
       deleted: false,
     });
