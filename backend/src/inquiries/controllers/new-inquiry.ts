@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import sql from "../../db";
+import { envVars } from "../../env-variables";
 import nodemailerMailgun from "../mailer/transporter";
 
 const validateEmail = (email: string) =>
@@ -39,8 +40,8 @@ const newInquiry = async (req: Request, res: Response) => {
 
     nodemailerMailgun
       .sendMail({
-        from: "pace@mail.com",
-        to: "mayeraus@icloud.com",
+        from: envVars.receiverEmail,
+        to: envVars.receiverEmail,
         subject: "新しいお問合せが届きました",
         text: `お問合せ番号：${result.inquiry_id}`,
       })
