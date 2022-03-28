@@ -1,15 +1,6 @@
 import { Request, Response } from "express";
 import sql from "../../db";
 
-interface PostEntry {
-  id: number;
-  title: string;
-  body: string;
-  picture: string;
-  created_at: string;
-  updated_at: string;
-}
-
 interface PostModel {
   id: number;
   title: string;
@@ -17,6 +8,15 @@ interface PostModel {
   picture: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+interface PostEntry {
+  id: number;
+  title: string;
+  body: string;
+  picture: string;
+  created_at: string;
+  updated_at: string;
 }
 
 const getPosts = async (req: Request, res: Response) => {
