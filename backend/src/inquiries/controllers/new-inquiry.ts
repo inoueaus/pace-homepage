@@ -23,7 +23,7 @@ const newInquiry = async (req: Request, res: Response) => {
       throw TypeError("Last Name Error.");
     if (
       typeof email !== "string" ||
-      //!validateEmail(email) ||
+      !validateEmail(email) ||
       email.length > 255
     )
       throw TypeError("Invalid Email.");
