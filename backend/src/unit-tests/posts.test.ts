@@ -66,6 +66,14 @@ describe("Posts Router Tests", () => {
       });
   });
 
+  test("Get single Post", () =>
+    request(app)
+      .get(`/posts/${newPostId}`)
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body.id).toBe(newPostId);
+      }));
+
   test("Delete last Post", () =>
     request(app)
       .delete(`/posts/${newPostId}`)
