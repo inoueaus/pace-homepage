@@ -15,8 +15,8 @@ const AppLayout: React.FC = props => {
     <>
       <nav>
         <ul>
-          {links.map(link => (
-            <li>
+          {links.map((link, index) => (
+            <li key={`l${index}`}>
               <Link href={link.link}>
                 <a>{link.title}</a>
               </Link>
