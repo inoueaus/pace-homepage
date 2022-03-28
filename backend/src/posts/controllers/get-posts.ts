@@ -1,23 +1,6 @@
 import { Request, Response } from "express";
 import sql from "../../db";
-
-interface PostModel {
-  id: number;
-  title: string;
-  body: string;
-  picture: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface PostEntry {
-  id: number;
-  title: string;
-  body: string;
-  picture: string;
-  created_at: string;
-  updated_at: string;
-}
+import { PostEntry, PostModel } from "../../types";
 
 const getPosts = async (req: Request, res: Response) => {
   const pageNo = req.query.page ? Number(req.query.page) : 0; // default page 1

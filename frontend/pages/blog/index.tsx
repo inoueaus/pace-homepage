@@ -6,7 +6,7 @@ const Blog: NextPage<{ posts: PostModel[] }> = ({ posts }) => {
     <div>
       <ul>
         {posts.map(post => (
-          <Link href={`/posts/${post.id}`} key={post.id}>
+          <Link href={`/blog/${post.id}`} key={post.id}>
             <li>
               <h3>{post.title}</h3>
               <small>{post.body}</small>
