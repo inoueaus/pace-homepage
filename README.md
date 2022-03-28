@@ -19,8 +19,7 @@ SALT=10
 Startup Docker Postgres
 
 ```
-docker run --name pace-pg -e POSTGRES_PASSWORD=root -d -p 5433:5432 po
-stgres
+docker run --name pace-pg -e POSTGRES_PASSWORD=root -d -p 5433:5432 postgres
 ```
 
 ### posts table
