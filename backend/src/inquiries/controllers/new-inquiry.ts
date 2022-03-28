@@ -34,6 +34,8 @@ const newInquiry = async (req: Request, res: Response) => {
     VALUES (${firstName}, ${lastName}, ${email}, ${phone}, ${body})
     RETURNING inquiry_id;`;
 
+    if (!result) throw Error("Inquiry was not Created.");
+
     res.status(201).json({ created: true, id: result.inquiry_id });
   } catch (error) {
     res.status(400).json({

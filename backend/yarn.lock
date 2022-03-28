@@ -102,12 +102,7 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.23.tgz#3b41a6e643589ac6442bdbd7a4a3ded62f33f7da"
   integrity sha512-UxDxWn7dl97rKVeVS61vErvw086aCYhDLyvRQZ5Rk65rZKepaFdm53GeqXaKBuOhED4e9uWq34IC3TdSdJJ2Gw==
 
-"@types/nodemailer-mailgun-transport@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@types/nodemailer-mailgun-transport/-/nodemailer-mailgun-transport-1.4.3.tgz#5812fa865327aea3ee021506aa79cd802c262dd4"
-  integrity sha512-1/bgvb5L5BCBDujKGoDUUSb/IlLpnqqbxq4nW5zXHZEcMGEtq3GsgL3vglshvSwshYJaseOUhZn4ThpVDDVQ2Q==
-  dependencies:
-    "@types/nodemailer" "*"
+
 
 "@types/nodemailer@*", "@types/nodemailer@^6.4.4":
   version "6.4.4"
@@ -1058,15 +1053,6 @@ node-fetch@3.0.0-beta.9:
   dependencies:
     data-uri-to-buffer "^3.0.1"
     fetch-blob "^2.1.1"
-
-nodemailer-mailgun-transport@^2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/nodemailer-mailgun-transport/-/nodemailer-mailgun-transport-2.1.3.tgz#e647ff31c1c28ad1ff2badb207da42637f52cc3c"
-  integrity sha512-mh/oWKUX0E6tBPcvELLIkxjNZXyqoa9J9SwgtG0Q5I7jct17aHQLk4okm48FMNtBAvpwC8fSzIxXRFVEgV2xXw==
-  dependencies:
-    consolidate "^0.15.1"
-    form-data "^4.0.0"
-    mailgun.js "^3.3.0"
 
 nodemailer@^6.7.3:
   version "6.7.3"
