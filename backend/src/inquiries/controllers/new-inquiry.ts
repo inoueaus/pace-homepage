@@ -1,13 +1,10 @@
 import { Request, Response } from "express";
 import sql from "../../db";
 
-const validateEmail = (email: string) => {
-  return email
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-};
+const validateEmail = (email: string) =>
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    email.toLocaleLowerCase()
+  );
 
 const newInquiry = async (req: Request, res: Response) => {
   const firstName = req.body.firstName;
@@ -28,9 +25,9 @@ const newInquiry = async (req: Request, res: Response) => {
     )
       throw TypeError("Invalid Email.");
     if (typeof phone !== "string" || phone.length > 255)
-      throw TypeError("Last Name Error.");
+      throw TypeError("Phone Number Error.");
     if (typeof body !== "string" || body.length > 1000)
-      throw TypeError("Last Name Error.");
+      throw TypeError("Body Error.");
 
     const [result] =
       await sql`INSERT INTO inquiries (first_name, last_name, email, phone, body)
