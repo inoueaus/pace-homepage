@@ -11,5 +11,18 @@ describe("Users Router Tests", () => {
       });
   });
 
+  test("Login as Admin", () => {
+    return request(app)
+      .post("/users/login")
+      .send({
+        username: "admin",
+        password: "pass",
+      })
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body.token);
+      });
+  });
+
   afterAll(() => sql.end());
 });
