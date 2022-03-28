@@ -15,9 +15,9 @@ SALT=10
 ```
 
 ## Postgres Docker
+It is suggested to use pgAdmin when working with the database.
 
-Startup Docker Postgres
-
+### Startup Docker Postgres
 ```
 docker run --name pace-pg -e POSTGRES_PASSWORD=root -d -p 5433:5432 postgres
 ```
@@ -36,7 +36,6 @@ CREATE TABLE posts (
 ```
 
 ### Users Table
-
 ```
 CREATE TABLE users (
 	user_id serial PRIMARY KEY,
@@ -52,7 +51,6 @@ CREATE TABLE users (
 ```
 
 ### Inquiries
-
 ```
 CREATE TABLE inquiries (
 	inquiry_id serial PRIMARY KEY, body varchar(1000), email varchar(255) NOT NULL,
@@ -60,3 +58,6 @@ CREATE TABLE inquiries (
   created_at timestamp DEFAULT NOW() NOT NULL
 	);
 ```
+
+### Loading Default Backup
+Use pgAdmin to restore the dump saved in /database/backup.sql
