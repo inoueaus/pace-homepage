@@ -1,6 +1,10 @@
 import type { NextPage } from "next";
 
-const Blog: NextPage = props => {
+interface Post {
+  id: number;
+}
+
+const Blog: NextPage<{ posts: Post[] }> = props => {
   console.log(props);
   return <div>Blog Page</div>;
 };
@@ -8,5 +12,11 @@ const Blog: NextPage = props => {
 export default Blog;
 
 export const getStaticProps = async () => {
-  return { props: { test: "test" } };
+  const result = await fetch(`${process.env.API_URI}/posts`);
+
+  if (!result.ok) throw Error("Post Fetch Failed.");
+
+  const data = await result.json();
+
+  return { props: { posts: data } };
 };

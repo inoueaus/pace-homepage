@@ -108,3 +108,12 @@ CREATE TABLE inquiries (
 ### Loading Default Backup
 
 Use pgAdmin to restore the dump saved in /database/backup.sql
+
+# Frontend
+
+## Env File Format
+
+```
+API_URI=localhost:8081
+
+```
