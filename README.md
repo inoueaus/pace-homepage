@@ -1,6 +1,44 @@
 # Backend
 
+## function to use in Chrome console for debugging
+
+```javascript
+fetch("/posts/25", {
+  method: "DELETE",
+  headers: {
+    "content-type": "application/json",
+  },
+  body: JSON.stringify({
+    userId: 1,
+    token: "yourtoken",
+  }),
+})
+  .then(result => {
+    console.log(result);
+    return result.json();
+  })
+  .then(data => console.log(data));
+
+// login
+fetch("/users/login", {
+  method: "POST",
+  headers: {
+    "content-type": "application/json",
+  },
+  body: JSON.stringify({
+    username: "admin",
+    password: "pass",
+  }),
+})
+  .then(result => {
+    console.log(result);
+    return result.json();
+  })
+  .then(data => console.log(data));
+```
+
 ## Default Env Settings
+
 ```
 MODE=development
 PORT=8080
@@ -15,9 +53,11 @@ SALT=10
 ```
 
 ## Postgres Docker
+
 It is suggested to use pgAdmin when working with the database.
 
 ### Startup Docker Postgres
+
 ```
 docker run --name pace-pg -e POSTGRES_PASSWORD=root -d -p 5433:5432 postgres
 ```
@@ -36,6 +76,7 @@ CREATE TABLE posts (
 ```
 
 ### Users Table
+
 ```
 CREATE TABLE users (
 	user_id serial PRIMARY KEY,
@@ -51,6 +92,7 @@ CREATE TABLE users (
 ```
 
 ### Inquiries
+
 ```
 CREATE TABLE inquiries (
 	inquiry_id serial PRIMARY KEY, body varchar(1000), email varchar(255) NOT NULL,
@@ -60,4 +102,5 @@ CREATE TABLE inquiries (
 ```
 
 ### Loading Default Backup
+
 Use pgAdmin to restore the dump saved in /database/backup.sql
