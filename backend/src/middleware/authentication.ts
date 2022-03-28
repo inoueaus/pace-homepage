@@ -10,7 +10,9 @@ const requireToken = async (
   const userId = Number(req.body.userId ?? req.params.id);
   const token = req.body.token;
 
-  if (!token) res.status(403).json({ auth: false });
+  if (!token) {
+    return res.status(403).json({ auth: false });
+  }
   try {
     if (isNaN(userId)) throw TypeError("User ID must be a Number");
     if (typeof token !== "string")
@@ -21,7 +23,7 @@ const requireToken = async (
       next();
     }
   } catch (error) {
-    res.status(401).json({
+    return res.status(401).json({
       auth: false,
       message: error instanceof Error ? error.message : "Invalid request.",
     });
