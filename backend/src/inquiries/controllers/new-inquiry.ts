@@ -38,16 +38,17 @@ const newInquiry = async (req: Request, res: Response) => {
 
     if (!result) throw Error("Inquiry was not Created.");
 
-    nodemailerMailgun
-      .sendMail({
-        from: envVars.receiverEmail,
-        to: envVars.receiverEmail,
-        subject: "新しいお問合せが届きました",
-        text: `お問合せ番号：${result.inquiry_id}`,
-      })
-      .then(result => console.log(result))
-      .catch(error => console.log(error));
-    //.then(result => console.log(result));
+    if (envVars.mode === "production") {
+      nodemailerMailgun // only send emails in production mode
+        .sendMail({
+          from: envVars.receiverEmail,
+          to: envVars.receiverEmail,
+          subject: "新しいお問合せが届きました",
+          text: `お問合せ番号：${result.inquiry_id}`,
+        })
+        .then(result => console.log(result))
+        .catch(error => console.log(error));
+    }
 
     res.status(201).json({ created: true, id: result.inquiry_id });
   } catch (error) {
