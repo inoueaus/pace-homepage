@@ -1,0 +1,316 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.2 (Debian 14.2-1.pgdg110+1)
+-- Dumped by pg_dump version 14.2
+
+-- Started on 2022-03-28 09:21:23 JST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3 (class 2615 OID 2200)
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO postgres;
+
+--
+-- TOC entry 3340 (class 0 OID 0)
+-- Dependencies: 3
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 214 (class 1259 OID 16406)
+-- Name: inquiries; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.inquiries (
+    inquiry_id integer NOT NULL,
+    body character varying(1000),
+    email character varying(255) NOT NULL,
+    phone character varying(255),
+    first_name character varying(255) NOT NULL,
+    last_name character varying(255) NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.inquiries OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 16405)
+-- Name: inquiries_inquiry_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.inquiries_inquiry_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inquiries_inquiry_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3341 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: inquiries_inquiry_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.inquiries_inquiry_id_seq OWNED BY public.inquiries.inquiry_id;
+
+
+--
+-- TOC entry 210 (class 1259 OID 16385)
+-- Name: posts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.posts (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    body character varying,
+    picture character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.posts OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 16384)
+-- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.posts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.posts_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3342 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.posts_id_seq OWNED BY public.posts.id;
+
+
+--
+-- TOC entry 212 (class 1259 OID 16394)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    user_id integer NOT NULL,
+    username character varying(55),
+    pass_hash character varying(255),
+    created_at timestamp without time zone DEFAULT now(),
+    token character varying,
+    instagram_pass character varying,
+    instagram_user character varying,
+    email character varying,
+    is_admin boolean
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 16393)
+-- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_user_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_user_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3343 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_user_id_seq OWNED BY public.users.user_id;
+
+
+--
+-- TOC entry 3180 (class 2604 OID 16409)
+-- Name: inquiries inquiry_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.inquiries ALTER COLUMN inquiry_id SET DEFAULT nextval('public.inquiries_inquiry_id_seq'::regclass);
+
+
+--
+-- TOC entry 3177 (class 2604 OID 16388)
+-- Name: posts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.posts ALTER COLUMN id SET DEFAULT nextval('public.posts_id_seq'::regclass);
+
+
+--
+-- TOC entry 3178 (class 2604 OID 16397)
+-- Name: users user_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.users_user_id_seq'::regclass);
+
+
+--
+-- TOC entry 3334 (class 0 OID 16406)
+-- Dependencies: 214
+-- Data for Name: inquiries; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.inquiries (inquiry_id, body, email, phone, first_name, last_name, created_at) FROM stdin;
+1	I want Coffee	test.test@test.com		Malcolm	X	2022-03-28 00:00:08.056206
+\.
+
+
+--
+-- TOC entry 3330 (class 0 OID 16385)
+-- Dependencies: 210
+-- Data for Name: posts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.posts (id, title, body, picture, created_at, updated_at) FROM stdin;
+1	A Test Post	body for the post	\N	2022-03-27 03:58:03.240753	2022-03-27 03:58:03.240753
+2	Coffee is Great!	I like light roast	\N	2022-03-27 04:13:36.250802	2022-03-27 04:13:36.250802
+3	Okinawan Coffee is Even better!	We make it!	\N	2022-03-27 05:21:37.442924	2022-03-27 05:21:37.442924
+4	New Title	New Body	\N	2022-03-27 05:40:44.262952	2022-03-27 05:40:44.262952
+5	New Title	New Body	\N	2022-03-27 05:40:47.883545	2022-03-27 05:40:47.883545
+9	New Title	New Body	\N	2022-03-27 05:54:46.377043	2022-03-27 05:54:46.377043
+10	New Title	New Body	\N	2022-03-27 05:56:27.209045	2022-03-27 05:56:27.209045
+11	random Test 0.9359480164203522	Content here	\N	2022-03-27 06:05:24.456713	2022-03-27 06:05:24.456713
+12	random Test 0.3525606961679577	Content here	\N	2022-03-27 06:06:02.459888	2022-03-27 06:06:02.459888
+13	random Test 0.060351843617908685	Content here	\N	2022-03-27 06:06:44.728775	2022-03-27 06:06:44.728775
+14	random Test 0.9075674992599494	Content here	\N	2022-03-27 06:08:37.801081	2022-03-27 06:08:37.801081
+18	random Test 0.6828292538106622	Content here	89504e470d0a1a0a0000000d4948445200000018000000180806000000e0773df80000000473424954080808087c0864880000000970485973000000a6000000a601dd7dff380000001974455874536f667477617265007777772e696e6b73636170652e6f72679bee3c1a00000342494441544889b5964f6c1b4514c67f33bb9b5ddb5d6f5c521727a29416a9c92554f21f0ea056a8a054aa8a2848548a5004a722e8a120f50e87f64a2f207a02215409242284d443458e702071a4860baac49f1070034e13c78dedd859ef0c07e390d89bc601f19d66f67bfbbdf766de7bbb426b4d1816c7df7a4158fa753316d8d6d0baef8d15eb08320068f2e55b49c72f44ac66d568685f7c98baf1de97613aa2ed60f1c285a85971860eecabcf171bd19795cfa75b0ddda756883d5902a0fa5d82b56ff76f139216af24eddae74b15e770735fbd90ba7ebdb6e9a0387ee93925c417808bd4cbd2d69e5a9766673403af2d0070efa3435d91ca886aaa8628a3c443c09ad4faa5e48d6b5f8bc5f1b79f01750bb042cf6a0bf69f2f00b0f2d9d06ea6003ec8311354ba177100217bb1da84052a6d2284cb0e17bd5d1d8c7e7f734d0faf20842bb5608a1e3cf40dd69191001909e81bacf7a0aeb5164cc9d4e5f93bee8915b59b79f4783974bd13dc132b2a7579fe8ec40fb2b1ccaae19e5c4698e18938c3159c63957ff6c72a38c395505b616adc93cbc432ab067e9035112a8316c4d2abd847aa54a71334e6a3a8aa0180e136f14e2d750979a796f00b0ec15aab9a652cc03e5c23962b6126da77a532264aa411adbd99f0f1c68a00f8459b8d5fa2588fac23ecee1314b6c23bf327fe6f11fa1eab61251bdde92891163a7ff62e900acdf7bf63716f95fd2f20d1e4ff37754dde44ea59b438dbc9bdffc9343ffd5a221177e8f71c125e8484e700502ad72995d7592dd729ddaf73f4d1046f4ee442c2d7b3265ae6c3da72a150a65adba05adbe0f73fee3f30d085c20e7da1655e62193380dfc90d1f1d78a0680fb63e963123199d2ca2c5d54ef6dce911e2aebdab78dcb539777aa49b10fa0aa393c556158987af00735bf9feb8c3c5891c0707623b8a1f1c88717122477fdce9a4e6d083575b7eda736ee6cc71a4314dc7e86e361553dffccc0f3f2eb170b775d687063d461e3fc0b34f1fc134bb2add470539b2376f6f770030fbfc1bc0b54e277b800f5c22fdd507ed07a2eba3dfcae463e0893d8acfa18257db91b7d1ddc9d99bb72195458b7709a9aed0a8857e0752d94e7108cb602bbe7f31891f64112af3f750dcfc6d6935a8cc6319338c4e167792f80b23903315fa37efd50000000049454e44ae426082	2022-03-27 06:42:23.266156	2022-03-27 06:42:23.266156
+15	random Test 0.8912845346378295	Content here	\N	2022-03-27 06:21:35.740571	2022-03-27 06:21:35.740571
+20	random Test 0.3880489954970825	Content here	89504e470d0a1a0a0000000d4948445200000018000000180806000000e0773df80000000473424954080808087c0864880000000970485973000000a6000000a601dd7dff380000001974455874536f667477617265007777772e696e6b73636170652e6f72679bee3c1a00000342494441544889b5964f6c1b4514c67f33bb9b5ddb5d6f5c521727a29416a9c92554f21f0ea056a8a054aa8a2848548a5004a722e8a120f50e87f64a2f207a02215409242284d443458e702071a4860baac49f1070034e13c78dedd859ef0c07e390d89bc601f19d66f67bfbbdf766de7bbb426b4d1816c7df7a4158fa753316d8d6d0baef8d15eb08320068f2e55b49c72f44ac66d568685f7c98baf1de97613aa2ed60f1c285a85971860eecabcf171bd19795cfa75b0ddda756883d5902a0fa5d82b56ff76f139216af24eddae74b15e770735fbd90ba7ebdb6e9a0387ee93925c417808bd4cbd2d69e5a9766673403af2d0070efa3435d91ca886aaa8628a3c443c09ad4faa5e48d6b5f8bc5f1b79f01750bb042cf6a0bf69f2f00b0f2d9d06ea6003ec8311354ba177100217bb1da84052a6d2284cb0e17bd5d1d8c7e7f734d0faf20842bb5608a1e3cf40dd69191001909e81bacf7a0aeb5164cc9d4e5f93bee8915b59b79f4783974bd13dc132b2a7579fe8ec40fb2b1ccaae19e5c4698e18938c3159c63957ff6c72a38c395505b616adc93cbc432ab067e9035112a8316c4d2abd847aa54a71334e6a3a8aa0180e136f14e2d750979a796f00b0ec15aab9a652cc03e5c23962b6126da77a532264aa411adbd99f0f1c68a00f8459b8d5fa2588fac23ecee1314b6c23bf327fe6f11fa1eab61251bdde92891163a7ff62e900acdf7bf63716f95fd2f20d1e4ff37754dde44ea59b438dbc9bdffc9343ffd5a221177e8f71c125e8484e700502ad72995d7592dd729ddaf73f4d1046f4ee442c2d7b3265ae6c3da72a150a65adba05adbe0f73fee3f30d085c20e7da1655e62193380dfc90d1f1d78a0680fb63e963123199d2ca2c5d54ef6dce911e2aebdab78dcb539777aa49b10fa0aa393c556158987af00735bf9feb8c3c5891c0707623b8a1f1c88717122477fdce9a4e6d083575b7eda736ee6cc71a4314dc7e86e361553dffccc0f3f2eb170b775d687063d461e3fc0b34f1fc134bb2add470539b2376f6f770030fbfc1bc0b54e277b800f5c22fdd507ed07a2eba3dfcae463e0893d8acfa18257db91b7d1ddc9d99bb72195458b7709a9aed0a8857e0752d94e7108cb602bbe7f31891f64112af3f750dcfc6d6935a8cc6319338c4e167792f80b23903315fa37efd50000000049454e44ae426082	2022-03-27 07:22:00.05463	2022-03-27 07:22:00.05463
+21	random Test 0.48006714469575584	Content here	89504e470d0a1a0a0000000d4948445200000018000000180806000000e0773df80000000473424954080808087c0864880000000970485973000000a6000000a601dd7dff380000001974455874536f667477617265007777772e696e6b73636170652e6f72679bee3c1a00000342494441544889b5964f6c1b4514c67f33bb9b5ddb5d6f5c521727a29416a9c92554f21f0ea056a8a054aa8a2848548a5004a722e8a120f50e87f64a2f207a02215409242284d443458e702071a4860baac49f1070034e13c78dedd859ef0c07e390d89bc601f19d66f67bfbbdf766de7bbb426b4d1816c7df7a4158fa753316d8d6d0baef8d15eb08320068f2e55b49c72f44ac66d568685f7c98baf1de97613aa2ed60f1c285a85971860eecabcf171bd19795cfa75b0ddda756883d5902a0fa5d82b56ff76f139216af24eddae74b15e770735fbd90ba7ebdb6e9a0387ee93925c417808bd4cbd2d69e5a9766673403af2d0070efa3435d91ca886aaa8628a3c443c09ad4faa5e48d6b5f8bc5f1b79f01750bb042cf6a0bf69f2f00b0f2d9d06ea6003ec8311354ba177100217bb1da84052a6d2284cb0e17bd5d1d8c7e7f734d0faf20842bb5608a1e3cf40dd69191001909e81bacf7a0aeb5164cc9d4e5f93bee8915b59b79f4783974bd13dc132b2a7579fe8ec40fb2b1ccaae19e5c4698e18938c3159c63957ff6c72a38c395505b616adc93cbc432ab067e9035112a8316c4d2abd847aa54a71334e6a3a8aa0180e136f14e2d750979a796f00b0ec15aab9a652cc03e5c23962b6126da77a532264aa411adbd99f0f1c68a00f8459b8d5fa2588fac23ecee1314b6c23bf327fe6f11fa1eab61251bdde92891163a7ff62e900acdf7bf63716f95fd2f20d1e4ff37754dde44ea59b438dbc9bdffc9343ffd5a221177e8f71c125e8484e700502ad72995d7592dd729ddaf73f4d1046f4ee442c2d7b3265ae6c3da72a150a65adba05adbe0f73fee3f30d085c20e7da1655e62193380dfc90d1f1d78a0680fb63e963123199d2ca2c5d54ef6dce911e2aebdab78dcb539777aa49b10fa0aa393c556158987af00735bf9feb8c3c5891c0707623b8a1f1c88717122477fdce9a4e6d083575b7eda736ee6cc71a4314dc7e86e361553dffccc0f3f2eb170b775d687063d461e3fc0b34f1fc134bb2add470539b2376f6f770030fbfc1bc0b54e277b800f5c22fdd507ed07a2eba3dfcae463e0893d8acfa18257db91b7d1ddc9d99bb72195458b7709a9aed0a8857e0752d94e7108cb602bbe7f31891f64112af3f750dcfc6d6935a8cc6319338c4e167792f80b23903315fa37efd50000000049454e44ae426082	2022-03-27 09:16:46.434286	2022-03-27 09:16:46.434286
+22	random Test 0.657957585766942	Content here	89504e470d0a1a0a0000000d4948445200000018000000180806000000e0773df80000000473424954080808087c0864880000000970485973000000a6000000a601dd7dff380000001974455874536f667477617265007777772e696e6b73636170652e6f72679bee3c1a00000342494441544889b5964f6c1b4514c67f33bb9b5ddb5d6f5c521727a29416a9c92554f21f0ea056a8a054aa8a2848548a5004a722e8a120f50e87f64a2f207a02215409242284d443458e702071a4860baac49f1070034e13c78dedd859ef0c07e390d89bc601f19d66f67bfbbdf766de7bbb426b4d1816c7df7a4158fa753316d8d6d0baef8d15eb08320068f2e55b49c72f44ac66d568685f7c98baf1de97613aa2ed60f1c285a85971860eecabcf171bd19795cfa75b0ddda756883d5902a0fa5d82b56ff76f139216af24eddae74b15e770735fbd90ba7ebdb6e9a0387ee93925c417808bd4cbd2d69e5a9766673403af2d0070efa3435d91ca886aaa8628a3c443c09ad4faa5e48d6b5f8bc5f1b79f01750bb042cf6a0bf69f2f00b0f2d9d06ea6003ec8311354ba177100217bb1da84052a6d2284cb0e17bd5d1d8c7e7f734d0faf20842bb5608a1e3cf40dd69191001909e81bacf7a0aeb5164cc9d4e5f93bee8915b59b79f4783974bd13dc132b2a7579fe8ec40fb2b1ccaae19e5c4698e18938c3159c63957ff6c72a38c395505b616adc93cbc432ab067e9035112a8316c4d2abd847aa54a71334e6a3a8aa0180e136f14e2d750979a796f00b0ec15aab9a652cc03e5c23962b6126da77a532264aa411adbd99f0f1c68a00f8459b8d5fa2588fac23ecee1314b6c23bf327fe6f11fa1eab61251bdde92891163a7ff62e900acdf7bf63716f95fd2f20d1e4ff37754dde44ea59b438dbc9bdffc9343ffd5a221177e8f71c125e8484e700502ad72995d7592dd729ddaf73f4d1046f4ee442c2d7b3265ae6c3da72a150a65adba05adbe0f73fee3f30d085c20e7da1655e62193380dfc90d1f1d78a0680fb63e963123199d2ca2c5d54ef6dce911e2aebdab78dcb539777aa49b10fa0aa393c556158987af00735bf9feb8c3c5891c0707623b8a1f1c88717122477fdce9a4e6d083575b7eda736ee6cc71a4314dc7e86e361553dffccc0f3f2eb170b775d687063d461e3fc0b34f1fc134bb2add470539b2376f6f770030fbfc1bc0b54e277b800f5c22fdd507ed07a2eba3dfcae463e0893d8acfa18257db91b7d1ddc9d99bb72195458b7709a9aed0a8857e0752d94e7108cb602bbe7f31891f64112af3f750dcfc6d6935a8cc6319338c4e167792f80b23903315fa37efd50000000049454e44ae426082	2022-03-27 09:18:59.840025	2022-03-27 09:18:59.840025
+23	random Test 0.4510995293193618	Content here	89504e470d0a1a0a0000000d4948445200000018000000180806000000e0773df80000000473424954080808087c0864880000000970485973000000a6000000a601dd7dff380000001974455874536f667477617265007777772e696e6b73636170652e6f72679bee3c1a00000342494441544889b5964f6c1b4514c67f33bb9b5ddb5d6f5c521727a29416a9c92554f21f0ea056a8a054aa8a2848548a5004a722e8a120f50e87f64a2f207a02215409242284d443458e702071a4860baac49f1070034e13c78dedd859ef0c07e390d89bc601f19d66f67bfbbdf766de7bbb426b4d1816c7df7a4158fa753316d8d6d0baef8d15eb08320068f2e55b49c72f44ac66d568685f7c98baf1de97613aa2ed60f1c285a85971860eecabcf171bd19795cfa75b0ddda756883d5902a0fa5d82b56ff76f139216af24eddae74b15e770735fbd90ba7ebdb6e9a0387ee93925c417808bd4cbd2d69e5a9766673403af2d0070efa3435d91ca886aaa8628a3c443c09ad4faa5e48d6b5f8bc5f1b79f01750bb042cf6a0bf69f2f00b0f2d9d06ea6003ec8311354ba177100217bb1da84052a6d2284cb0e17bd5d1d8c7e7f734d0faf20842bb5608a1e3cf40dd69191001909e81bacf7a0aeb5164cc9d4e5f93bee8915b59b79f4783974bd13dc132b2a7579fe8ec40fb2b1ccaae19e5c4698e18938c3159c63957ff6c72a38c395505b616adc93cbc432ab067e9035112a8316c4d2abd847aa54a71334e6a3a8aa0180e136f14e2d750979a796f00b0ec15aab9a652cc03e5c23962b6126da77a532264aa411adbd99f0f1c68a00f8459b8d5fa2588fac23ecee1314b6c23bf327fe6f11fa1eab61251bdde92891163a7ff62e900acdf7bf63716f95fd2f20d1e4ff37754dde44ea59b438dbc9bdffc9343ffd5a221177e8f71c125e8484e700502ad72995d7592dd729ddaf73f4d1046f4ee442c2d7b3265ae6c3da72a150a65adba05adbe0f73fee3f30d085c20e7da1655e62193380dfc90d1f1d78a0680fb63e963123199d2ca2c5d54ef6dce911e2aebdab78dcb539777aa49b10fa0aa393c556158987af00735bf9feb8c3c5891c0707623b8a1f1c88717122477fdce9a4e6d083575b7eda736ee6cc71a4314dc7e86e361553dffccc0f3f2eb170b775d687063d461e3fc0b34f1fc134bb2add470539b2376f6f770030fbfc1bc0b54e277b800f5c22fdd507ed07a2eba3dfcae463e0893d8acfa18257db91b7d1ddc9d99bb72195458b7709a9aed0a8857e0752d94e7108cb602bbe7f31891f64112af3f750dcfc6d6935a8cc6319338c4e167792f80b23903315fa37efd50000000049454e44ae426082	2022-03-27 09:19:36.293963	2022-03-27 09:19:36.293963
+24	random Test 0.9318660505442284	Content here	89504e470d0a1a0a0000000d4948445200000018000000180806000000e0773df80000000473424954080808087c0864880000000970485973000000a6000000a601dd7dff380000001974455874536f667477617265007777772e696e6b73636170652e6f72679bee3c1a00000342494441544889b5964f6c1b4514c67f33bb9b5ddb5d6f5c521727a29416a9c92554f21f0ea056a8a054aa8a2848548a5004a722e8a120f50e87f64a2f207a02215409242284d443458e702071a4860baac49f1070034e13c78dedd859ef0c07e390d89bc601f19d66f67bfbbdf766de7bbb426b4d1816c7df7a4158fa753316d8d6d0baef8d15eb08320068f2e55b49c72f44ac66d568685f7c98baf1de97613aa2ed60f1c285a85971860eecabcf171bd19795cfa75b0ddda756883d5902a0fa5d82b56ff76f139216af24eddae74b15e770735fbd90ba7ebdb6e9a0387ee93925c417808bd4cbd2d69e5a9766673403af2d0070efa3435d91ca886aaa8628a3c443c09ad4faa5e48d6b5f8bc5f1b79f01750bb042cf6a0bf69f2f00b0f2d9d06ea6003ec8311354ba177100217bb1da84052a6d2284cb0e17bd5d1d8c7e7f734d0faf20842bb5608a1e3cf40dd69191001909e81bacf7a0aeb5164cc9d4e5f93bee8915b59b79f4783974bd13dc132b2a7579fe8ec40fb2b1ccaae19e5c4698e18938c3159c63957ff6c72a38c395505b616adc93cbc432ab067e9035112a8316c4d2abd847aa54a71334e6a3a8aa0180e136f14e2d750979a796f00b0ec15aab9a652cc03e5c23962b6126da77a532264aa411adbd99f0f1c68a00f8459b8d5fa2588fac23ecee1314b6c23bf327fe6f11fa1eab61251bdde92891163a7ff62e900acdf7bf63716f95fd2f20d1e4ff37754dde44ea59b438dbc9bdffc9343ffd5a221177e8f71c125e8484e700502ad72995d7592dd729ddaf73f4d1046f4ee442c2d7b3265ae6c3da72a150a65adba05adbe0f73fee3f30d085c20e7da1655e62193380dfc90d1f1d78a0680fb63e963123199d2ca2c5d54ef6dce911e2aebdab78dcb539777aa49b10fa0aa393c556158987af00735bf9feb8c3c5891c0707623b8a1f1c88717122477fdce9a4e6d083575b7eda736ee6cc71a4314dc7e86e361553dffccc0f3f2eb170b775d687063d461e3fc0b34f1fc134bb2add470539b2376f6f770030fbfc1bc0b54e277b800f5c22fdd507ed07a2eba3dfcae463e0893d8acfa18257db91b7d1ddc9d99bb72195458b7709a9aed0a8857e0752d94e7108cb602bbe7f31891f64112af3f750dcfc6d6935a8cc6319338c4e167792f80b23903315fa37efd50000000049454e44ae426082	2022-03-27 09:22:00.592035	2022-03-27 09:22:00.592035
+\.
+
+
+--
+-- TOC entry 3332 (class 0 OID 16394)
+-- Dependencies: 212
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (user_id, username, pass_hash, created_at, token, instagram_pass, instagram_user, email, is_admin) FROM stdin;
+1	admin	$2a$10$KRYEVCIoyL3XvjZ7YYagqOMmmSVeW0ng1PlAm6zwJPvAZLRJkhDKm	2022-03-27 07:51:55.300921	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjQ4NDI1NDcyLCJleHAiOjE2NDg0MzI2NzJ9.Wv7_ZnXe_o_55GMLpp165czedJ82ckDWfpfvFKZ03xw	$2a$10$/oVoC32s5rx7vN8eyw4b2eZ9TLgyQuJTZ18LMvjJ4EIN675rNr17K	insta	\N	\N
+\.
+
+
+--
+-- TOC entry 3344 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: inquiries_inquiry_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.inquiries_inquiry_id_seq', 1, true);
+
+
+--
+-- TOC entry 3345 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.posts_id_seq', 24, true);
+
+
+--
+-- TOC entry 3346 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_user_id_seq', 1, true);
+
+
+--
+-- TOC entry 3189 (class 2606 OID 16414)
+-- Name: inquiries inquiries_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.inquiries
+    ADD CONSTRAINT inquiries_pkey PRIMARY KEY (inquiry_id);
+
+
+--
+-- TOC entry 3183 (class 2606 OID 16392)
+-- Name: posts posts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.posts
+    ADD CONSTRAINT posts_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3185 (class 2606 OID 16404)
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 3187 (class 2606 OID 16400)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (user_id);
+
+
+-- Completed on 2022-03-28 09:21:23 JST
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -33,7 +33,7 @@ const newInquiry = async (req: Request, res: Response) => {
       throw TypeError("Last Name Error.");
 
     const [result] =
-      await sql`INSERT INTO posts (first_name, last_name, email, phone, body)
+      await sql`INSERT INTO inquiries (first_name, last_name, email, phone, body)
     VALUES (${firstName}, ${lastName}, ${email}, ${phone}, ${body})
     RETURNING inquiry_id;`;
 
