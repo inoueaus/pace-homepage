@@ -1,3 +1,19 @@
+# Backend
+
+## Default Env Settings
+```
+MODE=development
+PORT=8080
+DB_HOST=localhost
+DB_PORT=5433
+DB_PASS=root
+DB_USER=postgres
+DB_NAME=postgres
+TOKEN_KEY=secretkey
+SALT=10
+
+```
+
 ## Postgres Docker
 
 Startup Docker Postgres
