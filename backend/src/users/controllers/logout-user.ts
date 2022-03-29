@@ -1,14 +1,18 @@
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import sql from "../../db";
 
 export const logoutUser = async (req: Request, res: Response) => {
-  const userId = Number(req.body.userId);
-  const token = req.body.token;
+  const token = req.headers.token;
 
   try {
-    if (isNaN(userId)) throw TypeError("User ID must be a Number");
-    if (typeof token !== "string")
-      throw TypeError("Must provide a valid Token");
+    if (typeof token !== "string") throw TypeError("Must provide a Token");
+
+    const decodedToken = jwt.decode(token); // allow logout for invalid tokens as well
+    if (!(decodedToken instanceof Object) || isNaN(Number(decodedToken.id)))
+      throw TypeError("Invalid Token Provided.");
+
+    const userId = Number(decodedToken.id);
 
     const [result] = await sql<
       { token: string }[]

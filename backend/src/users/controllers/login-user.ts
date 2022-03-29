@@ -35,8 +35,8 @@ const loginUser = async (req: Request, res: Response) => {
           throw Error("Invalid Password.");
         }
       })
-      .then(result =>
-        res.json({ authenticated: true, token: result[0].token, userId })
+      .then(([result]) =>
+        res.json({ authenticated: true, token: result.token, userId })
       );
   } catch (error) {
     res.statusCode = 401;
