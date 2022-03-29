@@ -40,12 +40,19 @@ describe("Users Router Tests", () => {
       });
   });
 
+  test("Try using invalid Token to access restricted content", () =>
+    request(app)
+      .get("/inquiries")
+      .set("Cookie", "token=2-05DU1MFeAlLs+y5HyOpW4YQNIaM;")
+      .then(result => {
+        expect(result.statusCode).toBe(401);
+      }));
+
   test("Logout", () =>
     request(app)
       .post("/users/logout")
       .set("Cookie", cookie)
       .then(response => {
-        console.log(response.headers, response.body);
         expect(response.statusCode).toBe(200);
       }));
 

@@ -96,7 +96,6 @@ describe("Inquiries Router Tests", () => {
       .delete(`/inquiries/${newInquiryId}`)
       .set("Cookie", cookie)
       .then(response => {
-        console.log(response.body);
         expect(response.statusCode).toBe(200);
         expect(response.body.deleted).toBe(true);
         expect(response.body.id).toBe(newInquiryId);
