@@ -52,7 +52,6 @@ describe("Posts Router Tests", () => {
       .post("/posts/new")
       .set("Cookie", cookie)
       .send({
-        userId: 1,
         title: `Jest Test ${Math.random().toString(36).slice(4, 8)}`,
         body: `${Math.random()
           .toString(36)
@@ -77,7 +76,6 @@ describe("Posts Router Tests", () => {
   test("Send delete request without token", () =>
     request(app)
       .delete(`/posts/${newPostId}`)
-      .send({ userId: 1 })
       .then(response => {
         expect(response.statusCode).toBe(403);
       }));
