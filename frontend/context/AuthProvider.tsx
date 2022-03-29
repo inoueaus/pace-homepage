@@ -18,6 +18,7 @@ const AuthProvider: React.FC = props => {
       headers: {
         "content-type": "application/json",
       },
+      credentials: "include",
     }).finally(() => setIsAuth(false));
 
   const defaultValue: AuthContextModel = {

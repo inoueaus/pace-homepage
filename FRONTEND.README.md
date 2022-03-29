@@ -3,6 +3,8 @@
 ## Env File Format
 
 ```
-API_URI=localhost:8081
+API_URI=http://localhost:8081
+NEXT_PUBLIC_API_URI=http://localhost:8081
+
 
 ```
