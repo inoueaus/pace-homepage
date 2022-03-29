@@ -4,6 +4,7 @@ import sql from "../../src/db";
 
 describe("Inquiries Router Tests", () => {
   let token: string;
+  let newInquiryId: number;
 
   beforeAll(() => {
     return request(app)
@@ -39,12 +40,20 @@ describe("Inquiries Router Tests", () => {
         body: "コーヒー農家は儲からないと聞くが、搾取されていませんか？",
       })
       .then(response => {
+        newInquiryId = response.body.id;
         expect(response.statusCode).toBe(201);
         expect(response.body.created).toBe(true);
         expect(response.body.id);
       }));
 
-  test("Get one Inquiry", () => {});
+  test("Get one Inquiry", () =>
+    request(app)
+      .get(`/inquiries/${newInquiryId}`)
+      .set("token", token)
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body.id).toBe(newInquiryId);
+      }));
 
   afterAll(() => sql.end());
 });

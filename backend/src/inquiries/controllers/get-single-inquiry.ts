@@ -7,12 +7,20 @@ const getSingleInquiry = async (req: Request, res: Response) => {
   try {
     if (isNaN(inquiryId)) throw Error("Inquiry ID must be a number.");
 
-    const result =
-      await sql`SELECT inquiry_id as id, body, email, phone, first_name as firstName, last_name as lastName, created_at as createdAt
+    const [inquiry] =
+      await sql`SELECT inquiry_id AS id, body, email, phone, first_name, last_name, created_at
     FROM inquiries
     WHERE inquiry_id = ${inquiryId}`;
 
-    res.json(result);
+    res.json({
+      id: inquiry.id,
+      body: inquiry.body,
+      phone: inquiry.phone,
+      email: inquiry.email,
+      firstName: inquiry.first_name,
+      lastName: inquiry.last_name,
+      createdAt: inquiry.created_at,
+    });
   } catch (error) {
     res.status(400).json({
       message: error instanceof Error ? error.message : "Invalid request.",

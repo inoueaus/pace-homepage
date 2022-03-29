@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import sql from "../../db";
 
 interface InquiryDBRecord {
-  inquiry_id: number;
+  id: number;
   body: string;
   phone: string;
   email: string;
@@ -21,7 +21,7 @@ const getInquiries = async (req: Request, res: Response) => {
 
     const result = await sql<
       InquiryDBRecord[]
-    >`SELECT inquiry_id, body, email, phone, first_name, last_name, created_at
+    >`SELECT inquiry_id AS id, body, email, phone, first_name, last_name, created_at
     FROM inquiries
     ORDER BY created_at DESC
     LIMIT ${limit} OFFSET ${limit * pageNo}`;
@@ -29,7 +29,7 @@ const getInquiries = async (req: Request, res: Response) => {
     res.json(
       result.map(inquiry => ({
         // must format to camel case as per JSON standards
-        id: inquiry.inquiry_id,
+        id: inquiry.id,
         body: inquiry.body,
         phone: inquiry.phone,
         email: inquiry.email,
