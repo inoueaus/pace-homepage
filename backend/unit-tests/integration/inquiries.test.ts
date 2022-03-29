@@ -46,6 +46,26 @@ describe("Inquiries Router Tests", () => {
         expect(response.body.id);
       }));
 
+  test("Get 2 Inquiries", () => {
+    return request(app)
+      .get("/inquiries?limit=2")
+      .set("token", token)
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body.length).toBe(2);
+      });
+  });
+
+  test("Get 2 Inquiries from 2nd page", () => {
+    return request(app)
+      .get("/inquiries?limit=2&page=1")
+      .set("token", token)
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body.length).toBe(2);
+      });
+  });
+
   test("Get one Inquiry", () =>
     request(app)
       .get(`/inquiries/${newInquiryId}`)
@@ -53,6 +73,7 @@ describe("Inquiries Router Tests", () => {
       .then(response => {
         expect(response.statusCode).toBe(200);
         expect(response.body.id).toBe(newInquiryId);
+        expect(response.body.firstName);
       }));
 
   afterAll(() => sql.end());
