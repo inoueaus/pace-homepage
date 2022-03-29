@@ -74,6 +74,14 @@ describe("Posts Router Tests", () => {
         expect(response.body.id).toBe(newPostId);
       }));
 
+  test("Send delete request without token", () =>
+    request(app)
+      .delete(`/posts/${newPostId}`)
+      .send({ userId: 1 })
+      .then(response => {
+        expect(response.statusCode).toBe(403);
+      }));
+
   test("Delete last Post", () =>
     request(app)
       .delete(`/posts/${newPostId}`)
