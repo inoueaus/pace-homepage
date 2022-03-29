@@ -7,7 +7,7 @@ const requireToken = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.body.token ?? req.headers.token;
+  const token = req.body.token ?? req.headers.token ?? req.cookies.token;
 
   if (!token) {
     return res.status(403).json({ auth: false });

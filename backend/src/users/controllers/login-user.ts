@@ -35,9 +35,10 @@ const loginUser = async (req: Request, res: Response) => {
           throw Error("Invalid Password.");
         }
       })
-      .then(([result]) =>
-        res.json({ authenticated: true, token: result.token, userId })
-      );
+      .then(([result]) => {
+        res.cookie("token", result.token);
+        res.json({ authenticated: true, userId });
+      });
   } catch (error) {
     res.statusCode = 401;
     res.json({
