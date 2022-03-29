@@ -8,7 +8,7 @@ const requireToken = async (
   next: NextFunction
 ) => {
   console.log(req.headers);
-  const userId = Number(req.body.userId ?? req.params.id ?? req.headers.userid);
+  const userId = Number(req.body.userId ?? req.params.id ?? req.headers.userid); // use headers for GET
   const token = req.body.token ?? req.headers.token;
 
   if (!token) {
