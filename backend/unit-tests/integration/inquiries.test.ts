@@ -28,5 +28,23 @@ describe("Inquiries Router Tests", () => {
       });
   });
 
+  test("Create new Inquiry", () =>
+    request(app)
+      .post("/inquiries/new")
+      .send({
+        firstName: "カール",
+        lastName: "マークス",
+        email: "marx@revolution.org",
+        phone: "080-0102-0304",
+        body: "コーヒー農家は儲からないと聞くが、搾取されていませんか？",
+      })
+      .then(response => {
+        expect(response.statusCode).toBe(201);
+        expect(response.body.created).toBe(true);
+        expect(response.body.id);
+      }));
+
+  test("Get one Inquiry", () => {});
+
   afterAll(() => sql.end());
 });
