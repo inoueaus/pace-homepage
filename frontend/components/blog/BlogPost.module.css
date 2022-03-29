@@ -1,4 +1,5 @@
 .title {
+  color: #372c3e;
 }
 
 .body {
@@ -7,7 +8,10 @@
 }
 
 .body section {
-  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  max-height: 200px;
+  overflow: hidden;
+  mask-border: linear-gradient(180deg, #000 60%, transparent);
 }
 
 .body small {

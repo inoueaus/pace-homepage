@@ -1,24 +1,27 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import BlogPost from "../../components/blog/BlogPost";
+import UnorderedList from "../../components/UnorderedList";
 
 const Blog: NextPage<{ posts: PostModel[] }> = ({ posts }) => {
   return (
     <div>
-      <ul>
+      <UnorderedList>
         {posts.map(post => (
-          <Link key={post.id} href={`/blog/${post.id}`} passHref={true}>
-            <BlogPost post={post} />
+          <Link key={post.id} href={`/blog/${post.id}`}>
+            <a>
+              <BlogPost post={post} />
+            </a>
           </Link>
         ))}
-      </ul>
+      </UnorderedList>
     </div>
   );
 };
 
 export default Blog;
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const result = await fetch(`${process.env.API_URI}/posts`); // fetchs first ten posts
 
   if (!result.ok) throw Error("Post Fetch Failed.");
