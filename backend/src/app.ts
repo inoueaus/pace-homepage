@@ -4,12 +4,13 @@ import cookieParser from "cookie-parser";
 import postsRouter from "./posts";
 import usersRouter from "./users";
 import inquiriesRouter from "./inquiries";
+import { envVars } from "./env-variables";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cookieParser());
+app.use(cookieParser(envVars.tokenKey));
 app.use("/posts", postsRouter);
 app.use("/users", usersRouter);
 app.use("/inquiries", inquiriesRouter);

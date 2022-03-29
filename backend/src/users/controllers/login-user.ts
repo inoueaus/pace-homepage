@@ -36,7 +36,10 @@ const loginUser = async (req: Request, res: Response) => {
         }
       })
       .then(([result]) => {
-        res.cookie("token", result.token);
+        res.cookie("token", result.token, {
+          maxAge: 1000 * 60 * 60 * 2, // keep for 2 hours, same as token
+          signed: true,
+        });
         res.json({ authenticated: true, userId });
       });
   } catch (error) {
