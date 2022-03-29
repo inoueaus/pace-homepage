@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const AppLayout: React.FC = props => {
   const router = useRouter();
@@ -13,6 +14,9 @@ const AppLayout: React.FC = props => {
   ];
   return (
     <>
+    <Head>
+      <title>沖縄コーヒー農園 Pace</title>
+    </Head>
       <nav>
         <ul>
           {links.map((link, index) => (
