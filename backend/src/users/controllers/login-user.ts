@@ -15,9 +15,9 @@ const loginUser = async (req: Request, res: Response) => {
       throw TypeError("Invalid password provided");
 
     const [user] =
-      await sql`SELECT user_id, pass_hash FROM users WHERE username = ${username};`;
+      await sql`SELECT user_id AS id, pass_hash FROM users WHERE username = ${username};`;
 
-    const userId = Number(user.user_id);
+    const userId = Number(user.id);
     if (isNaN(userId)) throw Error("User not found.");
 
     bcrypt
@@ -25,7 +25,7 @@ const loginUser = async (req: Request, res: Response) => {
       .then(result => {
         if (result) {
           const token = jwt.sign(
-            { user_id: user.id, username }, // issue new token to user if password checks out
+            { userId: user.id, username }, // issue new token to user if password checks out
             envVars.tokenKey,
             { expiresIn: "2h" }
           );
