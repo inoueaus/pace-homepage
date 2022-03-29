@@ -20,7 +20,8 @@ describe("Users Router Tests", () => {
       })
       .then(response => {
         expect(response.statusCode).toBe(200);
-        expect(response.body.token);
+        const setCookies = response.headers["set-cookie"][0] as string;
+        expect(setCookies.includes("token")).toBe(true);
       });
   });
 
@@ -33,7 +34,6 @@ describe("Users Router Tests", () => {
       })
       .then(response => {
         expect(response.statusCode).toBe(401);
-        expect(response.body.token).toBe(undefined);
       });
   });
 
