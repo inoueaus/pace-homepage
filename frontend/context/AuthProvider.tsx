@@ -4,11 +4,26 @@ import { AuthContext, AuthContextModel } from "./auth-context";
 const AuthProvider: React.FC = props => {
   const [isAuth, setIsAuth] = useState(false);
 
-  useEffect(() => {});
+  useEffect(() => {
+    setIsAuth(
+      document.cookie.split(";").some(cookie => cookie.includes("token"))
+    );
+  }, []);
+
+  console.log(process.env.NEXT_PUBLIC_API_URI);
+
+  const logoutUser = () =>
+    fetch(`${process.env.NEXT_PUBLIC_API_URI}/users/logout`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).finally(() => setIsAuth(false));
 
   const defaultValue: AuthContextModel = {
     isAuth,
     setIsAuth,
+    logoutUser,
   };
 
   return (
