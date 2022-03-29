@@ -7,15 +7,12 @@ const requireToken = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.headers);
-  const userId = Number(req.body.userId ?? req.params.id ?? req.headers.userid); // use headers for GET
   const token = req.body.token ?? req.headers.token;
 
   if (!token) {
     return res.status(403).json({ auth: false });
   }
   try {
-    if (isNaN(userId)) throw TypeError("User ID must be a Number");
     if (typeof token !== "string")
       throw TypeError("Must provide a valid Token");
 
