@@ -7,8 +7,9 @@ const requireToken = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userId = Number(req.body.userId ?? req.params.id);
-  const token = req.body.token;
+  console.log(req.headers);
+  const userId = Number(req.body.userId ?? req.params.id ?? req.headers.userid);
+  const token = req.body.token ?? req.headers.token;
 
   if (!token) {
     return res.status(403).json({ auth: false });
