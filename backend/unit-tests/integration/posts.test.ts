@@ -60,7 +60,7 @@ describe("Posts Router Tests", () => {
       .then(response => {
         newPostId = response.body.id;
         expect(response.statusCode).toBe(201);
-        expect(response.body.id);
+        expect(typeof response.body.id).toBe("number");
         expect(response.body.created).toBe(true);
       });
   });

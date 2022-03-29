@@ -51,7 +51,7 @@ describe("Inquiries Router Tests", () => {
         newInquiryId = response.body.id;
         expect(response.statusCode).toBe(201);
         expect(response.body.created).toBe(true);
-        expect(response.body.id);
+        expect(typeof response.body.id).toBe("number");
       }));
 
   test("Get 2 Inquiries", () => {
@@ -81,7 +81,7 @@ describe("Inquiries Router Tests", () => {
       .then(response => {
         expect(response.statusCode).toBe(200);
         expect(response.body.id).toBe(newInquiryId);
-        expect(response.body.firstName);
+        expect(typeof response.body.firstName).toBe("string");
       }));
 
   test("Try to Get one Inquiry without Token", () =>
