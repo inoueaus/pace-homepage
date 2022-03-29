@@ -29,6 +29,14 @@ describe("Inquiries Router Tests", () => {
       });
   });
 
+  test("Try to get all Inquiries without token", () => {
+    return request(app)
+      .get("/inquiries")
+      .then(response => {
+        expect(response.statusCode).toBe(403);
+      });
+  });
+
   test("Create new Inquiry", () =>
     request(app)
       .post("/inquiries/new")
@@ -76,12 +84,19 @@ describe("Inquiries Router Tests", () => {
         expect(response.body.firstName);
       }));
 
+  test("Try to Get one Inquiry without Token", () =>
+    request(app)
+      .get(`/inquiries/${newInquiryId}`)
+      .then(response => {
+        expect(response.statusCode).toBe(403);
+      }));
+
   test("Delete inquiry", () =>
     request(app)
       .delete(`/inquiries/${newInquiryId}`)
       .set("token", token)
       .then(response => {
-        console.log(response.body)
+        console.log(response.body);
         expect(response.statusCode).toBe(200);
         expect(response.body.deleted).toBe(true);
         expect(response.body.id).toBe(newInquiryId);
