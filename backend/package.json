@@ -9,7 +9,7 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "jest --verbose ./unit-tests"
+    "test": "jest --verbose ./unit-tests/integration"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

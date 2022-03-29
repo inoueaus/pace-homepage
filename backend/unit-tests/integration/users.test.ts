@@ -1,6 +1,6 @@
-import app from "../src/app"
+import app from "../../src/app"
 import request from "supertest";
-import sql from "../src/db";
+import sql from "../../src/db";
 
 describe("Users Router Tests", () => {
   test("Ping users route", () => {
