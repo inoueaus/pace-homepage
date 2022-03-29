@@ -11,7 +11,11 @@ const AuthProvider: React.FC = props => {
     setIsAuth,
   };
 
-  return <AuthContext.Provider value={defaultValue}></AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={defaultValue}>
+      {props.children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;
