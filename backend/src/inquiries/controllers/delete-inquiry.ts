@@ -8,8 +8,8 @@ const deleteInquiry = async (req: Request, res: Response) => {
     if (isNaN(inquiryId)) throw TypeError("Inquiry ID is not a number.");
 
     const [result] = await sql`DELETE FROM inquiries
-    WHERE id = ${inquiryId}
-    RETURNING id`;
+    WHERE inquiry_id = ${inquiryId}
+    RETURNING inquiry_id AS id`;
 
     if (!result) throw Error("Specified ID not in DB.");
 

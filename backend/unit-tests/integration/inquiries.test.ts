@@ -76,5 +76,16 @@ describe("Inquiries Router Tests", () => {
         expect(response.body.firstName);
       }));
 
+  test("Delete inquiry", () =>
+    request(app)
+      .delete(`/inquiries/${newInquiryId}`)
+      .set("token", token)
+      .then(response => {
+        console.log(response.body)
+        expect(response.statusCode).toBe(200);
+        expect(response.body.deleted).toBe(true);
+        expect(response.body.id).toBe(newInquiryId);
+      }));
+
   afterAll(() => sql.end());
 });
