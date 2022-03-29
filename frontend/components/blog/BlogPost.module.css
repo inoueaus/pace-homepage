@@ -1,0 +1,15 @@
+.title {
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+}
+
+.body section {
+  margin-bottom: 1rem;
+}
+
+.body small {
+  color: grey;
+}

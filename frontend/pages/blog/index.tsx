@@ -1,18 +1,14 @@
 import type { NextPage } from "next";
 import Link from "next/link";
+import BlogPost from "../../components/blog/BlogPost";
 
 const Blog: NextPage<{ posts: PostModel[] }> = ({ posts }) => {
   return (
     <div>
       <ul>
         {posts.map(post => (
-          <Link href={`/blog/${post.id}`} key={post.id}>
-            <li>
-              <h3>{post.title}</h3>
-              <small>{post.body}</small>
-              <br />
-              <small>{new Date(post.createdAt).toLocaleString()}</small>
-            </li>
+          <Link key={post.id} href={`/blog/${post.id}`} passHref={true}>
+            <BlogPost post={post} />
           </Link>
         ))}
       </ul>
