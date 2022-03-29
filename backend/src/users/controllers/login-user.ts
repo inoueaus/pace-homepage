@@ -36,10 +36,7 @@ const loginUser = async (req: Request, res: Response) => {
         }
       })
       .then(([result]) => {
-        res.cookie("token", result.token, {
-          maxAge: 1000 * 60 * 60 * 2, // keep for 2 hours, same as token
-          signed: true,
-        });
+        res.cookie("token", result.token); // must set expiration date at some point
         res.json({ authenticated: true, userId });
       });
   } catch (error) {
