@@ -1,5 +1,11 @@
 import { createContext } from "react";
 
-export const AuthContext = createContext({
-  token: "",
+export interface AuthContextModel {
+  isAuth: boolean;
+  setIsAuth: (isAuth: boolean) => void;
+}
+
+export const AuthContext = createContext<AuthContextModel>({
+  isAuth: false,
+  setIsAuth: () => {},
 });
