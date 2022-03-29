@@ -40,5 +40,14 @@ describe("Users Router Tests", () => {
       });
   });
 
+  test("Logout", () =>
+    request(app)
+      .post("/users/logout")
+      .set("Cookie", cookie)
+      .then(response => {
+        console.log(response.headers, response.body);
+        expect(response.statusCode).toBe(200);
+      }));
+
   afterAll(() => sql.end());
 });

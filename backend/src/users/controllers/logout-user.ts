@@ -3,27 +3,23 @@ import jwt from "jsonwebtoken";
 import sql from "../../db";
 
 export const logoutUser = async (req: Request, res: Response) => {
-  const token = req.headers.token;
+  const token = req.cookies.token;
 
   try {
     if (typeof token !== "string") throw TypeError("Must provide a Token");
 
     const decodedToken = jwt.decode(token); // allow logout for invalid tokens as well
-    if (!(decodedToken instanceof Object) || isNaN(Number(decodedToken.id)))
+    if (!(decodedToken instanceof Object) || isNaN(Number(decodedToken.userId)))
       throw TypeError("Invalid Token Provided.");
 
-    const userId = Number(decodedToken.id);
+    const userId = Number(decodedToken.userId);
 
-    const [result] = await sql<
-      { token: string }[]
-    >`SELECT token FROM users WHERE user_id = ${userId}`; // get current token from db
-    if (!result) throw Error("Invalid user ID.");
-    if (result.token !== token)
-      throw Error("Token does not match token stored in Database."); // throw error if not user's token
+    if (isNaN(userId)) throw TypeError("User ID not a number in Token");
 
     await sql`UPDATE users SET token = null WHERE user_id = ${userId}`; // delete token from db
 
-    res.json({ loggedOut: true });
+    res.clearCookie("token");
+    res.status(200).json({ loggedOut: true });
   } catch (error) {
     res.status(401).json({
       message: error instanceof Error ? error.message : "Invalid request.",
