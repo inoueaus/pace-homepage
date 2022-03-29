@@ -3,7 +3,7 @@ import request from "supertest";
 import sql from "../../src/db";
 
 describe("Inquiries Router Tests", () => {
-  let token: string;
+  let cookie: string;
   let newInquiryId: number;
 
   beforeAll(() => {
@@ -14,16 +14,16 @@ describe("Inquiries Router Tests", () => {
         password: "pass",
       })
       .then(response => {
-        token = response.body.token;
+        const [tokenCookie] = response.headers["set-cookie"] as string;
+        cookie = tokenCookie.split(";")[0] + ";";
         expect(response.statusCode).toBe(200);
-        expect(response.body.token);
       });
   });
 
   test("Get all Inquiries", () => {
     return request(app)
       .get("/inquiries")
-      .set("token", token)
+      .set("Cookie", cookie)
       .then(response => {
         expect(response.statusCode).toBe(200);
       });
@@ -57,7 +57,7 @@ describe("Inquiries Router Tests", () => {
   test("Get 2 Inquiries", () => {
     return request(app)
       .get("/inquiries?limit=2")
-      .set("token", token)
+      .set("Cookie", cookie)
       .then(response => {
         expect(response.statusCode).toBe(200);
         expect(response.body.length).toBe(2);
@@ -67,7 +67,7 @@ describe("Inquiries Router Tests", () => {
   test("Get 2 Inquiries from 2nd page", () => {
     return request(app)
       .get("/inquiries?limit=2&page=1")
-      .set("token", token)
+      .set("Cookie", cookie)
       .then(response => {
         expect(response.statusCode).toBe(200);
         expect(response.body.length).toBe(2);
@@ -77,7 +77,7 @@ describe("Inquiries Router Tests", () => {
   test("Get one Inquiry", () =>
     request(app)
       .get(`/inquiries/${newInquiryId}`)
-      .set("token", token)
+      .set("Cookie", cookie)
       .then(response => {
         expect(response.statusCode).toBe(200);
         expect(response.body.id).toBe(newInquiryId);
@@ -94,7 +94,7 @@ describe("Inquiries Router Tests", () => {
   test("Delete inquiry", () =>
     request(app)
       .delete(`/inquiries/${newInquiryId}`)
-      .set("token", token)
+      .set("Cookie", cookie)
       .then(response => {
         console.log(response.body);
         expect(response.statusCode).toBe(200);

@@ -1,9 +1,9 @@
-import app from "../../src/app"
+import app from "../../src/app";
 import request from "supertest";
 import sql from "../../src/db";
 
 describe("Posts Router Tests", () => {
-  let token: string;
+  let cookie: string;
   let newPostId: number;
 
   beforeAll(() => {
@@ -14,9 +14,9 @@ describe("Posts Router Tests", () => {
         password: "pass",
       })
       .then(response => {
-        token = response.body.token;
+        const [tokenCookie] = response.headers["set-cookie"] as string;
+        cookie = tokenCookie.split(";")[0] + ";";
         expect(response.statusCode).toBe(200);
-        expect(response.body.token);
       });
   });
 
@@ -50,8 +50,8 @@ describe("Posts Router Tests", () => {
   test("Create new Post", () => {
     return request(app)
       .post("/posts/new")
+      .set("Cookie", cookie)
       .send({
-        token,
         userId: 1,
         title: `Jest Test ${Math.random().toString(36).slice(4, 8)}`,
         body: `${Math.random()
@@ -85,7 +85,7 @@ describe("Posts Router Tests", () => {
   test("Delete last Post", () =>
     request(app)
       .delete(`/posts/${newPostId}`)
-      .send({ token, userId: 1 })
+      .set("Cookie", cookie)
       .then(response => {
         expect(response.statusCode).toBe(200);
         expect(response.body.deleted).toBe(true);
