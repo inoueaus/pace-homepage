@@ -20,6 +20,7 @@ if (!process.env.TOKEN_KEY) throw Error("TOKEN_KEY is undefined!");
 if (!process.env.RECEIVER_EMAIL) throw Error("RECEIVER_EMAIL is undefined!");
 if (!process.env.MAILGUN_KEY) throw Error("MAILGUN_KEY is undefined!");
 if (!process.env.MAILGUN_DOMAIN) throw Error("MAILGUN_DOMAIN is undefined!");
+if (!process.env.NEXT_SERVER_URL) throw Error("NEXT_SERVER_URL is undefined!");
 
 export const envVars = {
   mode,
@@ -34,4 +35,5 @@ export const envVars = {
   receiverEmail: process.env.RECEIVER_EMAIL,
   mailgunKey: process.env.MAILGUN_KEY,
   mailgunDomain: process.env.MAILGUN_DOMAIN,
+  nextServerUrl: process.env.NEXT_SERVER_URL,
 };

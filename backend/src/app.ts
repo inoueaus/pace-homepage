@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser(envVars.tokenKey));
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: envVars.nextServerUrl,
     methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
     credentials: true,
   })

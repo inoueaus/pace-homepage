@@ -52,7 +52,7 @@ SALT=10
 RECEIVER_EMAIL=mayeraus@icloud.com
 MAILGUN_KEY=6ab17df5ee912ac97919b83814d8ae96-8ed21946-90b754d2
 MAILGUN_DOMAIN=sandbox855f632013ac4f6a97f988fc94fdbb24.mailgun.org
-
+NEXT_SERVER_URL=http://localhost:3000
 
 ```
 
