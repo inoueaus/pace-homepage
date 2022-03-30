@@ -28,11 +28,11 @@ const Inquiry: NextPage = () => {
 
   const handleSubmit: FormEventHandler = event => {
     event.preventDefault();
-    const firstName = firstNameRef.current!.value;
-    const lastName = lastNameRef.current!.value;
-    const email = emailRef.current!.value;
-    const phone = phoneRef.current!.value;
-    const body = bodyRef.current!.value;
+    const firstName = firstNameRef.current!.value.trim();
+    const lastName = lastNameRef.current!.value.trim();
+    const email = emailRef.current!.value.trim();
+    const phone = phoneRef.current!.value.trim();
+    const body = bodyRef.current!.value.trim();
 
     if (firstName && lastName && email && phone && body) {
       sendInquiry({
