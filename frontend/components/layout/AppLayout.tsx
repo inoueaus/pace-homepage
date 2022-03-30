@@ -42,7 +42,7 @@ const AppLayout: React.FC = props => {
           )}
         </ul>
       </nav>
-      {props.children}
+      <main>{props.children}</main>
       <footer className={styles.footer}>
         <div>Copyright 2022 株式会社Pace（パーチェ）</div>
         <small>〒903-0804 沖縄県那覇市首里石嶺町</small>
