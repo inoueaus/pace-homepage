@@ -10,8 +10,8 @@ interface PropertiesToUpdate {
 }
 
 const updatePost = async (req: Request, res: Response) => {
-  const title = req.body.title as string;
-  const body = req.body.body as string;
+  const title = req.body.title as string; // typescript cant infer type from line 19
+  const body = req.body.body as string; // so manually asign type here
   const pictureProvided = req.body.picture;
   const id = Number(req.params.id);
 
@@ -26,10 +26,10 @@ const updatePost = async (req: Request, res: Response) => {
         : null;
 
     const propertiesToUpdate: PropertiesToUpdate = {
-      updated_at: new Date(),
+      updated_at: new Date(), // must use date object with postgres.js dynamic query
     };
 
-    if (title) propertiesToUpdate.title = title;
+    if (title) propertiesToUpdate.title = title; // only update values provided
     if (body) propertiesToUpdate.body = body;
     if (pictureHex) propertiesToUpdate.picture = pictureHex;
 
