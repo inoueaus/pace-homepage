@@ -1,11 +1,55 @@
 .card {
-  padding: 1rem;
+  width: 90%;
   border: 1px solid white;
   border-radius: 4px;
   background-color: white;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.103);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.103);
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  margin: 4rem auto;
+  padding: 1rem;
+}
+
+.card h1 {
+  text-align: center;
+  font-size: 3rem;
+  color: #372c2e;
+  padding: 0;
+  margin: 1rem;
+}
+
+.card h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #de9e48;
+  padding: 0;
+  margin: 1rem 0 2rem 0;
+}
+
+.card span {
+  text-align: left;
+  color: #372c2e;
+  padding: 0 5rem 3rem 5rem;
+}
+
+.card a {
+  color: white;
+  background-color: #372c2e;
+  border: 1px solid #372c2e;
+  border-radius: 8px;
+  width: 80%;
   margin: 1rem auto;
+  text-align: center;
+  padding: 2rem 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.full {
+  min-height: 90vh;
+}
+
+.half {
+  min-height: 40vh;
 }

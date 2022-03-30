@@ -18,89 +18,56 @@
   color: #de9e48;
 }
 
-.title a {
-  color: #0070f3;
-  text-decoration: none;
+.feed {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 700px;
 }
 
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
+.life-cycle {
+  margin: 2rem auto;
+  min-height: 100vh;
+  color: #372c2e;
 }
 
-.title {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 4rem;
-}
-
-.title,
-.description {
+.life-cycle h1 {
   text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #372c2e63;
 }
 
-.description {
-  margin: 4rem 0;
-  line-height: 1.5;
-  font-size: 1.5rem;
-}
-
-.code {
-  background: #fafafa;
-  border-radius: 5px;
-  padding: 0.75rem;
-  font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
-}
-
-.grid {
+.row-wrap {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
   flex-wrap: wrap;
-  max-width: 800px;
 }
 
-.card {
-  margin: 1rem;
-  padding: 1.5rem;
-  text-align: left;
-  color: inherit;
-  text-decoration: none;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 300px;
+.inquiry {
+  display: flex;
+  flex-direction: column;
+  margin: 8rem auto;
 }
 
-.card:hover,
-.card:focus,
-.card:active {
-  color: #0070f3;
-  border-color: #0070f3;
+.inquiry h1 {
+  text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #372c2e63;
 }
 
-.card h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
+.inquiry a {
+  color: white;
+  background-color: #372c2e;
+  border: 1px solid #372c2e;
+  border-radius: 8px;
+  width: 80%;
+  margin: 2rem auto 2rem auto;
+  text-align: center;
+  padding: 2rem 0;
+  cursor: pointer;
+  user-select: none;
 }
 
-.card p {
-  margin: 0;
-  font-size: 1.25rem;
-  line-height: 1.5;
-}
-
-.logo {
-  height: 1em;
-  margin-left: 0.5rem;
-}
-
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-    flex-direction: column;
-  }
+.inquiry a:hover {
+  background-color: #563727;
+  border: 1px solid #563727;
 }
