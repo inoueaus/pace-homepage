@@ -8,7 +8,7 @@
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  margin: 4rem auto;
+  margin: 2rem auto;
   padding: 1rem;
 }
 
@@ -29,8 +29,8 @@
 }
 .card h3 {
   text-align: center;
-  width: 50%;
-  font-size: 1rem;
+  width: 60%;
+  font-size: 1.2rem;
   color: #de9e48;
   padding: 0;
   margin: 1rem auto 2rem auto;

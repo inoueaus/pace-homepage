@@ -59,7 +59,7 @@ const Inquiry: NextPage = () => {
     <>
       <Card>
         <h1>お問い合わせ</h1>
-        <h2>発注のご相談、お気軽にどうぞ</h2>
+        <h3>発注のご相談、お気軽にどうぞ</h3>
       </Card>
       <Card>
         <form onSubmit={handleSubmit}>
