@@ -2,15 +2,22 @@ import { Request, Response } from "express";
 import sql from "../../db";
 import { convertB64StringToHex } from "./helpers";
 
+interface PropertiesToUpdate {
+  title?: string;
+  body?: string;
+  picture?: string;
+  updated_at: Date;
+}
+
 const updatePost = async (req: Request, res: Response) => {
-  const title = req.body.title;
-  const body = req.body.body;
+  const title = req.body.title as string;
+  const body = req.body.body as string;
   const pictureProvided = req.body.picture;
   const id = Number(req.params.id);
 
   try {
-    if (typeof title !== "string") throw Error("No title provided.");
-    if (typeof body !== "string") throw Error("No body provided");
+    if (!(typeof title === "string" || typeof body === "string"))
+      throw Error("No title or body provided.");
     if (isNaN(id)) throw TypeError("Id must be a string");
 
     const pictureHex =
@@ -18,17 +25,20 @@ const updatePost = async (req: Request, res: Response) => {
         ? convertB64StringToHex(pictureProvided)
         : null;
 
-    const [result] = await sql`UPDATE posts SET ${sql({
-      title,
-      body,
-      picture: pictureHex,
-    })}
+    const propertiesToUpdate: PropertiesToUpdate = {
+      updated_at: new Date(),
+    };
+
+    if (title) propertiesToUpdate.title = title;
+    if (body) propertiesToUpdate.body = body;
+    if (pictureHex) propertiesToUpdate.picture = pictureHex;
+
+    const [result] = await sql`UPDATE posts SET ${sql(propertiesToUpdate)}
     WHERE id = ${id} RETURNING id`;
 
-    res.json({ id: result.id, updated: true });
+    res.status(200).json({ id: result.id, updated: true });
   } catch (error) {
-    res.statusCode = 400;
-    res.json({
+    res.status(400).json({
       message: error instanceof Error ? error.message : "Invalid request.",
       updated: false,
     });
