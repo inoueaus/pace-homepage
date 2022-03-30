@@ -12,8 +12,21 @@ const BlogPost: React.FC<{ post: PostModel; singlePost?: boolean }> = ({
       <h3 className={styles.title}>{post.title}</h3>
       <div className={styles.body}>
         <div className={styles["text-picture-container"]}>
-          {post.picture && <Image src={post.picture} />}
-          <section className={singlePost ? styles["long-body"] : undefined}>
+          {post.picture && (
+            <div className={styles["picture"]}>
+              <Image
+                src={`data:image/png;base64,${post.picture}`}
+                layout="responsive"
+                width="100%"
+                height="100%"
+              />
+            </div>
+          )}
+          <section
+            className={`${styles["body-text"]} ${
+              singlePost && styles["long-body"]
+            }`}
+          >
             {post.body}
           </section>
         </div>
