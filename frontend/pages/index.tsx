@@ -2,6 +2,8 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import ImageCard from "../components/UI/ImageCard";
 import Card from "../components/UI/Card";
+import InquiryFooter from "../components/index/InquiryFooter";
+import LifeCycle from "../components/index/LifeCycle";
 
 import styles from "../styles/Home.module.css";
 
@@ -9,12 +11,6 @@ import logo from "../public/images/original.jpg";
 import mame from "../public/images/mame.jpg";
 import coffee from "../public/images/coffee.jpg";
 import art from "../public/images/art.jpg";
-import nae from "../public/images/nae.jpg";
-import flower from "../public/images/flower.jpg";
-import plant from "../public/images/plant.jpg";
-import Link from "next/link";
-import InquiryFooter from "../components/index/InquiryFooter";
-import LifeCycle from "../components/index/LifeCycle";
 
 const Home: NextPage = () => {
   const coeText =
@@ -37,8 +33,8 @@ const Home: NextPage = () => {
         <h2>沖縄産コーヒーでCOE取得を目指す</h2>
         <span>{coeText}</span>
       </Card>
-      <LifeCycle/>
-      <InquiryFooter/>
+      <LifeCycle />
+      <InquiryFooter />
     </div>
   );
 };

@@ -23,21 +23,3 @@
   width: 100%;
   max-width: 700px;
 }
-
-.life-cycle {
-  margin: 2rem auto;
-  min-height: 100vh;
-  color: #372c2e;
-}
-
-.life-cycle h1 {
-  text-align: center;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #372c2e63;
-}
-
-.row-wrap {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
