@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import Observer from "../../components/UI/Observer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BlogPost from "../../components/blog/BlogPost";
 import UnorderedList from "../../components/UnorderedList";
 
@@ -27,13 +27,26 @@ const Blog: NextPage<{ preLoadedPosts: PostModel[] }> = ({
 }) => {
   const [page, setPage] = useState(0);
   const [posts, setPosts] = useState(preLoadedPosts);
+  const [loading, setLoading] = useState(true);
   const [allLoaded, setAllLoaded] = useState(false);
+  const [inView, setInview] = useState(false);
 
-  const handleScrollToBottom = () =>
-    fetchPosts(page, 5).then(data => {
-      if (data) {
-      }
-    });
+  useEffect(() => {
+    setLoading(false); // this stops first fire on page load
+    if (!(allLoaded || loading)) {
+      setLoading(true);
+      fetchPosts(page + 1, 5)
+        .then(data => {
+          if (data && data.length) {
+            setPage(prev => prev + 1); // load more if not on last page
+            setPosts(prev => [...prev, ...data]);
+          } else {
+            setAllLoaded(true);
+          }
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [inView]);
 
   return (
     <div>
@@ -47,7 +60,7 @@ const Blog: NextPage<{ preLoadedPosts: PostModel[] }> = ({
             </Link>
           ))}
       </UnorderedList>
-      <Observer callback={handleScrollToBottom} />
+      <Observer setInView={setInview} />
     </div>
   );
 };
