@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Link from "next/link";
+import Observer from "../../components/UI/Observer";
 import { useState } from "react";
 import BlogPost from "../../components/blog/BlogPost";
 import UnorderedList from "../../components/UnorderedList";
@@ -7,7 +8,7 @@ import UnorderedList from "../../components/UnorderedList";
 const fetchPosts = async (page: number, limit: number) => {
   try {
     const result = await fetch(
-      `${process.env.API_URI}/posts?limit=${limit}&page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URI}/posts?limit=${limit}&page=${page}`,
       { credentials: "include" }
     ); // fetchs first ten posts
 
@@ -21,28 +22,32 @@ const fetchPosts = async (page: number, limit: number) => {
   }
 };
 
-const Blog: NextPage<{ preLoadedPosts: PostModel[] }> = ({ preLoadedPosts }) => {
+const Blog: NextPage<{ preLoadedPosts: PostModel[] }> = ({
+  preLoadedPosts,
+}) => {
   const [page, setPage] = useState(0);
   const [posts, setPosts] = useState(preLoadedPosts);
   const [allLoaded, setAllLoaded] = useState(false);
 
-  const handleScrollToBottom = () => fetchPosts(page, 5).then(data => {
-    if (data) {
-
-    }
-  });
+  const handleScrollToBottom = () =>
+    fetchPosts(page, 5).then(data => {
+      if (data) {
+      }
+    });
 
   return (
     <div>
       <UnorderedList>
-        {posts && posts.map(post => (
-          <Link key={post.id} href={`/blog/${post.id}`}>
-            <a>
-              <BlogPost post={post} />
-            </a>
-          </Link>
-        ))}
+        {posts &&
+          posts.map(post => (
+            <Link key={post.id} href={`/blog/${post.id}`}>
+              <a>
+                <BlogPost post={post} />
+              </a>
+            </Link>
+          ))}
       </UnorderedList>
+      <Observer callback={handleScrollToBottom} />
     </div>
   );
 };
