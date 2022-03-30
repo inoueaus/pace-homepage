@@ -4,6 +4,7 @@ import { FormEventHandler, useEffect, useRef, useState } from "react";
 import ErrorBox from "../../components/inquiry/ErrorBox";
 import Card from "../../components/UI/Card";
 import FormInput from "../../components/UI/input/FormInput";
+import FormSubmit from "../../components/UI/input/FormSubmit";
 import { sendInquiry } from "../../helpers/inquiry-helpers";
 import styles from "../../styles/Inquiry.module.css";
 
@@ -102,9 +103,7 @@ const Inquiry: NextPage = () => {
             <label htmlFor="body">お問い合わせ内容</label>
             <textarea name="body" ref={bodyRef} />
           </div>
-          <button className={styles.submit} type="submit">
-            送信
-          </button>
+          <FormSubmit />
         </form>
       </Card>
     </>
