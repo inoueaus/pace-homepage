@@ -1,9 +1,12 @@
 import type { NextPage } from "next";
 import Image from "next/image";
+import ImageCard from "../components/UI/ImageCard";
 
 import styles from "../styles/Home.module.css";
 
 import logo from "../public/images/original.jpg";
+import mame from "../public/images/mame.jpg";
+import coffee from "../public/images/coffee.jpg";
 
 const Home: NextPage = () => {
   return (
@@ -13,6 +16,10 @@ const Home: NextPage = () => {
         <h1>沖縄県産コーヒー農園、Pace</h1>
         <h3>コーヒーを通してすべての人に、平安を。</h3>
       </div>
+      <ImageCard image={mame}>
+        沖縄県のやんばるでコーヒーの栽培を行います
+      </ImageCard>
+      <ImageCard image={coffee}>コーヒー豆の加工・販売を行います</ImageCard>
     </>
   );
 };
