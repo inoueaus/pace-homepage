@@ -1,12 +1,11 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEventHandler, useEffect, useRef, useState } from "react";
+import ErrorBox from "../../components/inquiry/ErrorBox";
 import Card from "../../components/UI/Card";
 import FormInput from "../../components/UI/input/FormInput";
 import { sendInquiry } from "../../helpers/inquiry-helpers";
 import styles from "../../styles/Inquiry.module.css";
-
-const generateId = () => Math.random().toString(36).slice(4, 8);
 
 const Inquiry: NextPage = () => {
   const router = useRouter();
@@ -70,14 +69,7 @@ const Inquiry: NextPage = () => {
       </Card>
       <Card>
         {formErrors.length ? (
-          <div className={styles.errors} ref={errorsRef}>
-            <h5>以下の項目の記入が必要です。</h5>
-            <ul>
-              {formErrors.map(error => (
-                <li key={generateId()}>{error}</li>
-              ))}
-            </ul>
-          </div>
+          <ErrorBox errors={formErrors} ref={errorsRef} />
         ) : null}
         <form onSubmit={handleSubmit}>
           <FormInput

@@ -1,0 +1,19 @@
+.errors {
+  width: 80%;
+  margin: 0 auto;
+  color: red;
+  border: 1px solid rgb(255, 227, 227);
+  border-radius: 4px;
+  background-color: rgb(255, 245, 245);
+  padding: 1rem;
+}
+
+.errors h5 {
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.errors ul {
+  margin-bottom: 0rem;
+}
