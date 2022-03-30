@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import sql from "../../db";
-import { convertB64StringToHex } from "./helpers";
+import { convertB64StringToHex } from "../helpers";
 
 const newPost = async (req: Request, res: Response) => {
   const title = req.body.title;

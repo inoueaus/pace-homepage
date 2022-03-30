@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import sql from "../../db";
-import { convertB64StringToHex } from "./helpers";
+import { convertB64StringToHex } from "../helpers";
 
 interface PropertiesToUpdate {
   title?: string;
