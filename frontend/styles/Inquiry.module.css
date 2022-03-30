@@ -1,0 +1,25 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 1rem auto;
+}
+
+.form-group label {
+  color: #372c2e;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  border: 1px solid rgb(214, 214, 214);
+  border-radius: 4px;
+  height: 40px;
+  padding: 1rem;
+}
+
+.form-group textarea {
+  border: 1px solid rgb(214, 214, 214);
+  border-radius: 4px;
+  height: 200px;
+  padding: 1rem;
+}
