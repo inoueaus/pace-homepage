@@ -1,6 +1,6 @@
 .generic-ul {
   list-style-type: none;
-  margin: 0 auto 0 auto;
+  margin: 1rem auto 1rem auto;
   padding: 0;
   width: 90%;
 }

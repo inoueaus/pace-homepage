@@ -1,12 +1,16 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
+import BlogPost from "../../components/blog/BlogPost";
+import UnorderedList from "../../components/UnorderedList";
 
-const Post: NextPage = props => {
+const Post: NextPage<{ post: PostModel }> = ({ post }) => {
   const router = useRouter();
 
-  console.log(props);
-
-  return <div>Post</div>;
+  return (
+    <UnorderedList>
+      <BlogPost post={post} singlePost={true}/>
+    </UnorderedList>
+  );
 };
 
 export default Post;
@@ -17,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (isNaN(Number(query.id))) {
     res.statusCode = 302;
-    res.setHeader("location", "/blog");
+    res.setHeader("location", "/blog"); // redirect to blog if invalid post id
     res.end();
     return { props: {} };
   }
@@ -29,13 +33,13 @@ export const getServerSideProps: GetServerSideProps = async ({
 
     const data = await result.json();
 
-    return { props: { post: data } };
+    return { props: { post: data } }; // only return data on successful fetch
   } catch (error) {
     res.statusCode = 302;
     res.setHeader("location", "/blog");
     res.end();
   }
   return {
-    props: {},
+    props: {}, // return no data by default
   };
 };

@@ -3,7 +3,7 @@
   border: 1px solid white;
   border-radius: 4px;
   background-color: white;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.103);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.103);
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;

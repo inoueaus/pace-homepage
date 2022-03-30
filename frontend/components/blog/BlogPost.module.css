@@ -9,11 +9,22 @@
 
 .body section {
   padding-bottom: 1rem;
-  max-height: 200px;
+  height: 80px;
   overflow: hidden;
-  mask-border: linear-gradient(180deg, #000 60%, transparent);
 }
 
 .body small {
   color: grey;
+}
+
+.text-picture-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.long-body {
+  height: auto;
+  min-height: 400px;
+  overflow: auto;
 }
