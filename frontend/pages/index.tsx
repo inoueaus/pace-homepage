@@ -13,6 +13,7 @@ import nae from "../public/images/nae.jpg";
 import flower from "../public/images/flower.jpg";
 import plant from "../public/images/plant.jpg";
 import Link from "next/link";
+import InquiryFooter from "../components/index/InquiryFooter";
 
 const Home: NextPage = () => {
   const coeText =
@@ -53,15 +54,7 @@ const Home: NextPage = () => {
           </ImageCard>
         </div>
       </div>
-      <div className={styles["inquiry"]}>
-        <h1>お問い合わせ</h1>
-
-        <Link href="/inquiry">
-          <a style={{ color: "white", backgroundColor: "#372c2e" }}>
-            お問い合せはこちら
-          </a>
-        </Link>
-      </div>
+      <InquiryFooter />
     </div>
   );
 };
