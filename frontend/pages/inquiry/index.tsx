@@ -1,9 +1,14 @@
 import type { NextPage } from "next";
-import { FormEventHandler, useRef } from "react";
+import { useRouter } from "next/router";
+import { FormEventHandler, useRef, useState } from "react";
 import Card from "../../components/UI/Card";
 import styles from "../../styles/Inquiry.module.css";
 
 const Inquiry: NextPage = () => {
+  const router = useRouter();
+
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -12,6 +17,42 @@ const Inquiry: NextPage = () => {
 
   const handleSubmit: FormEventHandler = event => {
     event.preventDefault();
+    const firstName = firstNameRef.current!.value;
+    const lastName = lastNameRef.current!.value;
+    const email = emailRef.current!.value;
+    const phone = phoneRef.current!.value;
+    const body = bodyRef.current!.value;
+
+    if (firstName && lastName && email && phone && body) {
+      const jsonBody = JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        phone,
+        body,
+      });
+      console.log(jsonBody);
+      fetch(`${process.env.NEXT_PUBLIC_API_URI}/inquiries/new`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonBody,
+      })
+        .then(result => {
+          if (!result.ok) throw Error(`Request Failed: ${result.status}`);
+          return result.json();
+        })
+        .then(data => {
+          if (data.created && data.id) {
+            router.push({
+              pathname: "/inquiry/sent",
+              query: { inquiryId: data.id },
+            });
+          }
+        })
+        .catch(error => console.error(error));
+    }
   };
 
   return (
@@ -52,6 +93,9 @@ const Inquiry: NextPage = () => {
             <label htmlFor="body">お問い合わせ内容</label>
             <textarea name="body" ref={bodyRef} />
           </div>
+          <button className={styles.submit} type="submit">
+            送信
+          </button>
         </form>
       </Card>
     </>

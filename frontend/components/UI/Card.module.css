@@ -27,6 +27,14 @@
   padding: 0;
   margin: 1rem 0 2rem 0;
 }
+.card h3 {
+  text-align: center;
+  width: 50%;
+  font-size: 1rem;
+  color: #de9e48;
+  padding: 0;
+  margin: 1rem auto 2rem auto;
+}
 
 .card span {
   text-align: left;

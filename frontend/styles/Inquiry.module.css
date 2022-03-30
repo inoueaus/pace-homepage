@@ -23,3 +23,17 @@
   height: 200px;
   padding: 1rem;
 }
+
+.submit {
+  color: white;
+  display: block;
+  background-color: #372c2e;
+  border: 1px solid #372c2e;
+  border-radius: 8px;
+  width: 50%;
+  text-align: center;
+  padding: 1rem 0;
+  cursor: pointer;
+  user-select: none;
+  margin: 1rem auto 0 auto;
+}
