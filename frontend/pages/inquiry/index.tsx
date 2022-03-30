@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEventHandler, useEffect, useRef, useState } from "react";
 import Card from "../../components/UI/Card";
+import FormInput from "../../components/UI/input/FormInput";
 import { sendInquiry } from "../../helpers/inquiry-helpers";
 import styles from "../../styles/Inquiry.module.css";
 
@@ -79,32 +80,32 @@ const Inquiry: NextPage = () => {
           </div>
         ) : null}
         <form onSubmit={handleSubmit}>
-          <div className={styles["form-group"]}>
-            <label htmlFor="last-name">姓</label>
-            <input name="last-name" type="text" ref={firstNameRef} />
-          </div>
-          <div className={styles["form-group"]}>
-            <label htmlFor="first-name">名</label>
-            <input name="first-name" type="text" ref={lastNameRef} />
-          </div>
-          <div className={styles["form-group"]}>
-            <label htmlFor="email">メール</label>
-            <input
-              name="email"
-              type="email"
-              placeholder="example@example.com"
-              ref={emailRef}
-            />
-          </div>
-          <div className={styles["form-group"]}>
-            <label htmlFor="phone">電話番号</label>
-            <input
-              name="phone"
-              type="tel"
-              placeholder="000-0000-0000"
-              ref={phoneRef}
-            />
-          </div>
+          <FormInput
+            config={{ name: "last-name", label: "姓", type: "text" }}
+            ref={lastNameRef}
+          />
+          <FormInput
+            config={{ name: "first-name", label: "名", type: "text" }}
+            ref={firstNameRef}
+          />
+          <FormInput
+            config={{
+              name: "email",
+              label: "メール",
+              placeholder: "example@example.com",
+              type: "text",
+            }}
+            ref={emailRef}
+          />
+          <FormInput
+            config={{
+              name: "phone",
+              label: "電話番号",
+              placeholder: "000-0000-0000",
+              type: "tel",
+            }}
+            ref={phoneRef}
+          />
           <div className={styles["form-group"]}>
             <label htmlFor="body">お問い合わせ内容</label>
             <textarea name="body" ref={bodyRef} />
