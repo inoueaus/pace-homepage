@@ -43,6 +43,10 @@ const AppLayout: React.FC = props => {
         </ul>
       </nav>
       {props.children}
+      <footer className={styles.footer}>
+        <div>Copyright 2022 Pace農園</div>
+        <small>沖縄県那覇市首里石嶺町</small>
+      </footer>
     </>
   );
 };
