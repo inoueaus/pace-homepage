@@ -10,8 +10,6 @@ const AuthProvider: React.FC = props => {
     );
   }, []);
 
-  console.log(process.env.NEXT_PUBLIC_API_URI);
-
   const logoutUser = () =>
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/users/logout`, {
       method: "POST",
