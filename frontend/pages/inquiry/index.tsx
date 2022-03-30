@@ -1,8 +1,11 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { FormEventHandler, useRef, useState } from "react";
+import { FormEventHandler, useEffect, useRef, useState } from "react";
 import Card from "../../components/UI/Card";
+import { sendInquiry } from "../../helpers/inquiry-helpers";
 import styles from "../../styles/Inquiry.module.css";
+
+const generateId = () => Math.random().toString(36).slice(4, 8);
 
 const Inquiry: NextPage = () => {
   const router = useRouter();
@@ -14,6 +17,13 @@ const Inquiry: NextPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const errorsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (errorsRef.current) {
+      errorsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [formErrors]);
 
   const handleSubmit: FormEventHandler = event => {
     event.preventDefault();
@@ -24,25 +34,13 @@ const Inquiry: NextPage = () => {
     const body = bodyRef.current!.value;
 
     if (firstName && lastName && email && phone && body) {
-      const jsonBody = JSON.stringify({
+      sendInquiry({
         firstName,
         lastName,
         email,
         phone,
         body,
-      });
-      console.log(jsonBody);
-      fetch(`${process.env.NEXT_PUBLIC_API_URI}/inquiries/new`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonBody,
       })
-        .then(result => {
-          if (!result.ok) throw Error(`Request Failed: ${result.status}`);
-          return result.json();
-        })
         .then(data => {
           if (data.created && data.id) {
             router.push({
@@ -52,6 +50,14 @@ const Inquiry: NextPage = () => {
           }
         })
         .catch(error => console.error(error));
+    } else {
+      const newErrors: string[] = [];
+      if (!firstName) newErrors.push("名");
+      if (!lastName) newErrors.push("姓");
+      if (!email) newErrors.push("メール");
+      if (!phone) newErrors.push("電話番号");
+      if (!body) newErrors.push("お問い合わせ内容");
+      setFormErrors(newErrors);
     }
   };
 
@@ -62,6 +68,16 @@ const Inquiry: NextPage = () => {
         <h3>発注のご相談、お気軽にどうぞ</h3>
       </Card>
       <Card>
+        {formErrors.length ? (
+          <div className={styles.errors} ref={errorsRef}>
+            <h5>以下の項目の記入が必要です。</h5>
+            <ul>
+              {formErrors.map(error => (
+                <li key={generateId()}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
         <form onSubmit={handleSubmit}>
           <div className={styles["form-group"]}>
             <label htmlFor="last-name">姓</label>
