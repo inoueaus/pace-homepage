@@ -14,7 +14,7 @@ const FormInput = React.forwardRef<
 >(({ config }, ref) => {
   return (
     <div className={styles["form-group"]}>
-      <label htmlFor={config.name}>姓</label>
+      <label htmlFor={config.name}>{config.label}</label>
       <input
         name={config.name}
         type={config.type}
