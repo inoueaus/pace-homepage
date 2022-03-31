@@ -99,7 +99,7 @@ CREATE TABLE users (
 ```
 CREATE TABLE inquiries (
 	inquiry_id serial PRIMARY KEY, body varchar(1000), email varchar(255) NOT NULL,
- phone varchar(255), first_name varchar(255) NOT NULL, last_name varchar(255) NOT NULL,
+ phone varchar(255), first_name varchar(255) NOT NULL, last_name varchar(255) NOT NULL, viewed boolean NOT NULL DEFAULT FALSE
   created_at timestamp DEFAULT NOW() NOT NULL
 	);
 ```
