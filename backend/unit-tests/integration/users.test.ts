@@ -25,6 +25,18 @@ describe("Users Router Tests", () => {
       });
   });
 
+  test("Try to login with incorrect password", () => {
+    return request(app)
+      .post("/users/login")
+      .send({
+        username: "admin",
+        password: `phony-pass-${Math.random().toString(36)}`,
+      })
+      .then(response => {
+        expect(response.statusCode).toBe(401);
+      });
+  });
+
   test("Login as Admin", () => {
     return request(app)
       .post("/users/login")
