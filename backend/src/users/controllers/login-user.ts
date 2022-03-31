@@ -20,25 +20,19 @@ const loginUser = async (req: Request, res: Response) => {
     const userId = Number(user.id);
     if (isNaN(userId)) throw Error("User not found.");
 
-    bcrypt
-      .compare(password, user.pass_hash)
-      .then(result => {
-        if (result) {
-          const token = jwt.sign(
-            { userId: user.id, username }, // issue new token to user if password checks out
-            envVars.tokenKey,
-            { expiresIn: "2h" }
-          );
-          //save token to db
-          return sql`UPDATE users SET token = ${token} WHERE user_id = ${userId} RETURNING token`;
-        } else {
-          throw Error("Invalid Password.");
-        }
-      })
-      .then(([result]) => {
-        res.cookie("token", result.token); // must set expiration date at some point
-        res.json({ authenticated: true, userId });
-      });
+    const compareResult = await bcrypt.compare(password, user.pass_hash);
+    if (compareResult) {
+      const token = jwt.sign(
+        { userId: user.id, username }, // issue new token to user if password checks out
+        envVars.tokenKey,
+        { expiresIn: "2h" }
+      );
+
+      res.cookie("token", token); // must set expiration date at some point
+      res.json({ authenticated: true, userId });
+    } else {
+      throw Error("Invalid Password.");
+    }
   } catch (error) {
     res.statusCode = 401;
     res.json({

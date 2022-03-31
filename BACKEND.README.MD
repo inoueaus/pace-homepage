@@ -88,7 +88,6 @@ CREATE TABLE users (
 	username varchar(55) UNIQUE,
 	email varchar UNIQUE,
 	pass_hash varchar(255),
-  token varchar,
 	instagram_pass varchar,
 	instagram_user varchar,
 	created_at timestamp DEFAULT NOW()
