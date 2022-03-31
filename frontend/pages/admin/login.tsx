@@ -39,7 +39,9 @@ const Login: NextPage = () => {
 
   return (
     <Card>
-      {loginError && <div>{loginError}</div>}
+      {loginError && (
+        <div style={{ color: "red", textAlign: "center" }}>{loginError}</div>
+      )}
       <form onSubmit={handleSubmit}>
         <FormInput
           config={{ label: "ユーザー名", name: "username", type: "text" }}
