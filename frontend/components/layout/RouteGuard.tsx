@@ -6,13 +6,6 @@ const RouteGuard: React.FC = props => {
   const router = useRouter();
   const context = useContext(AuthContext);
 
-  // const [showContent, setShowContent] = useState(false);
-
-  // useEffect(() => {
-  //   router.events.on("routeChangeStart", () => setShowContent(false));
-  //   router.events.on("routeChangeComplete", () => setShowContent(true));
-  // }, []);
-
   useEffect(() => {
     const splitPath = router.pathname.split("/");
     if (splitPath[2] === "login") return; // do not redirect if login
