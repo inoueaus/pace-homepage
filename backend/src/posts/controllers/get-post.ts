@@ -11,16 +11,18 @@ const getPost = async (req: Request, res: Response) => {
 
     const [post] = await sql<
       PostEntry[]
-    >`SELECT id, title, body, picture, created_at, updated_at
+    >`SELECT id, title, body, img, created_at, updated_at
         FROM posts
+        LEFT JOIN images
+        ON images.post_id = posts.id
         WHERE id = ${postId}`;
 
     res.json({
       id: post.id,
       title: post.title,
       body: post.body,
-      picture: post.picture // convert to base64 if picture stored
-        ? Buffer.from(post.picture, "hex").toString("base64")
+      picture: post.img // convert to base64 if picture stored
+        ? Buffer.from(post.img, "hex").toString("base64")
         : null,
       createdAt: post.created_at,
       updatedAt: post.updated_at,

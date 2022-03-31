@@ -11,7 +11,7 @@ export interface PostEntry {
   id: number;
   title: string;
   body: string;
-  picture: string;
+  img: string;
   created_at: string;
   updated_at: string;
 }

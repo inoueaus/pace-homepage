@@ -16,9 +16,10 @@ const newPost = async (req: Request, res: Response) => {
     if (typeof body !== "string") throw Error("No body provided");
 
     const [result] =
-      await sql`INSERT INTO posts (title, body, picture, created_at, updated_at)
-    VALUES (${title}, ${body}, ${picture}, NOW(), NOW())
+      await sql`INSERT INTO posts (title, body, created_at, updated_at)
+    VALUES (${title}, ${body}, NOW(), NOW())
     RETURNING id;`;
+
 
     res.status(201).json({ id: result.id, created: true });
   } catch (error) {

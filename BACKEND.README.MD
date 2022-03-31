@@ -73,9 +73,21 @@ CREATE TABLE posts (
 	id serial PRIMARY KEY,
 	title varchar(255) NOT NULL,
 	body varchar,
-	picture varchar,
 	created_at timestamp,
 	updated_at timestamp
+);
+```
+
+### images table
+
+```
+CREATE TABLE images
+(
+	img_id serial PRIMARY KEY,
+	img_name varchar(255) NOT NULL,
+	img bytea,
+	post_id int,
+	FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 ```
 
