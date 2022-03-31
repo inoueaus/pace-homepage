@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import sql from "../../db";
 
 export const logoutUser = async (req: Request, res: Response) => {
   const token = req.cookies.token;
@@ -15,8 +14,6 @@ export const logoutUser = async (req: Request, res: Response) => {
     const userId = Number(decodedToken.userId);
 
     if (isNaN(userId)) throw TypeError("User ID not a number in Token");
-
-    await sql`UPDATE users SET token = null WHERE user_id = ${userId}`; // delete token from db
 
     res.clearCookie("token");
     res.status(200).json({ loggedOut: true });
