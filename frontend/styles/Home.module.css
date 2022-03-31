@@ -18,3 +18,15 @@
   color: #de9e48;
 }
 
+.button {
+  color: white;
+  background-color: #372c2e;
+  border: 1px solid #372c2e;
+  border-radius: 8px;
+  width: 80%;
+  margin: 1rem auto;
+  text-align: center;
+  padding: 2rem 0;
+  cursor: pointer;
+  user-select: none;
+}

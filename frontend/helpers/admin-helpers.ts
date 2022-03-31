@@ -11,3 +11,17 @@ export const sendLoginReq = (data: LoginCredentials) =>
       throw Error(`Login failed: ${result.status} ${result.statusText}`);
     return result.json();
   });
+
+export const fetchInquiries = (page: number, limit: number) =>
+  fetch(
+    `${process.env.NEXT_PUBLIC_API_URI}/inquiries?limit=${limit}&page=${page}`,
+    {
+      credentials: "include",
+    }
+  ).then(result => {
+    if (!result.ok)
+      throw Error(
+        `Inquiry Fetch Failed: ${result.status} ${result.statusText}`
+      );
+    return result.json();
+  });

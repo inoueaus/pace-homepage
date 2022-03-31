@@ -6,16 +6,6 @@ import Observer from "../../components/UI/Observer";
 import { AuthContext } from "../../context/auth-context";
 import styles from "../../styles/Admin.module.css";
 
-interface Inquiry {
-  id: number;
-  body: string;
-  phone: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  createdAt: string;
-}
-
 const fetchInquiries = (page: number, limit: number) =>
   fetch(
     `${process.env.NEXT_PUBLIC_API_URI}/inquiries?limit=${limit}&page=${page}`,
@@ -47,13 +37,18 @@ const Admin: NextPage = () => {
   }, [inquiryEndInView]);
 
   useEffect(() => {
-    fetchInquiries(inquiryPage, 5).then(data => {
-      if (!data.length) {
-        setFetchComplete(true);
-      }
-      setInquiries(prev => [...prev, ...data]);
-    });
+    {fetchInquiries(inquiryPage, 5)
+      .then(data => {
+        if (!data.length) {
+          setFetchComplete(true);
+        }
+        setInquiries(prev => [...prev, ...data]);
+      })
+      .catch(error => setInquiryError(error));}
   }, [inquiryPage]);
+
+  const handleInquiryClick = (id: number) =>
+    router.push(`/admin/inquiry/${id}`);
 
   return (
     <>
@@ -63,7 +58,10 @@ const Admin: NextPage = () => {
           <h4>お問合せ一覧</h4>
           <ul className={styles["inquiries-list"]}>
             {inquiries.map(inquiry => (
-              <li key={inquiry.id}>
+              <li
+                onClick={handleInquiryClick.bind(null, inquiry.id)}
+                key={inquiry.id}
+              >
                 <section style={{ flex: "10%" }}>{inquiry.id}</section>
                 <section className={styles.column} style={{ flex: "90%" }}>
                   <small>
