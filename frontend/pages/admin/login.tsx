@@ -1,14 +1,17 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { FormEventHandler, useContext, useRef } from "react";
+import { FormEventHandler, useContext, useRef, useState } from "react";
 import Card from "../../components/UI/Card";
 import FormInput from "../../components/UI/input/FormInput";
 import FormSubmit from "../../components/UI/input/FormSubmit";
 import { AuthContext } from "../../context/auth-context";
+import { sendLoginReq } from "../../helpers/admin-helpers";
 
 const Login: NextPage = () => {
   const router = useRouter();
   const context = useContext(AuthContext);
+
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -19,24 +22,16 @@ const Login: NextPage = () => {
     const password = passwordRef.current!.value.trim();
 
     if (username && password) {
-      const data = { username, password };
-      fetch(`${process.env.NEXT_PUBLIC_API_URI}/users/login`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(data),
-        credentials: "include",
-      })
-        .then(result => {
-          if (!result.ok)
-            throw Error(`Login failed: ${result.status} ${result.statusText}`);
-          return result.json();
-        })
+      sendLoginReq({ username, password })
         .then(data => {
           if (data.authenticated) {
             context.setIsAuth(true);
             router.replace("/admin");
+          }
+        })
+        .catch(error => {
+          if (error instanceof Error) {
+            setLoginError(error.message);
           }
         });
     }
@@ -44,6 +39,7 @@ const Login: NextPage = () => {
 
   return (
     <Card>
+      {loginError && <div>{loginError}</div>}
       <form onSubmit={handleSubmit}>
         <FormInput
           config={{ label: "ユーザー名", name: "username", type: "text" }}
