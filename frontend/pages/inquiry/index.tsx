@@ -5,6 +5,7 @@ import ErrorBox from "../../components/inquiry/ErrorBox";
 import Card from "../../components/UI/Card";
 import FormInput from "../../components/UI/input/FormInput";
 import FormSubmit from "../../components/UI/input/FormSubmit";
+import FormTextArea from "../../components/UI/input/FormTextArea";
 import { sendInquiry } from "../../helpers/inquiry-helpers";
 import styles from "../../styles/Inquiry.module.css";
 
@@ -99,10 +100,10 @@ const Inquiry: NextPage = () => {
             }}
             ref={phoneRef}
           />
-          <div className={styles["form-group"]}>
-            <label htmlFor="body">お問い合わせ内容</label>
-            <textarea name="body" ref={bodyRef} />
-          </div>
+          <FormTextArea
+            config={{ name: "body", label: "お問い合わせ内容" }}
+            ref={bodyRef}
+          />
           <FormSubmit />
         </form>
       </Card>
