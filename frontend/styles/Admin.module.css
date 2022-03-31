@@ -1,0 +1,35 @@
+.title {
+  font-size: 1.5rem;
+  border-bottom: 1px solid black;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.inquiries-list {
+  list-style-type: none;
+  padding: 0;
+  max-height: 60vh;
+  overflow: auto;
+}
+
+.inquiries-list li {
+  height: 100px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.column small {
+  margin-bottom: 0.5rem;
+}
