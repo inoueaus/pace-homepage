@@ -7,6 +7,7 @@ const BlogPost: React.FC<{ post: PostModel; singlePost?: boolean }> = ({
   post,
   singlePost,
 }) => {
+  const fileFormat = post.picture?.charAt(0) === "/" ? "jpeg" : "png";
   return (
     <ListItem id={String(post.id)}>
       <h3 className={styles.title}>{post.title}</h3>
@@ -15,7 +16,7 @@ const BlogPost: React.FC<{ post: PostModel; singlePost?: boolean }> = ({
           {post.picture && (
             <div className={styles["picture"]}>
               <Image
-                src={`data:image/png;base64,${post.picture}`}
+                src={`data:image/${fileFormat};base64,${post.picture}`}
                 layout="responsive"
                 width="100%"
                 height="100%"

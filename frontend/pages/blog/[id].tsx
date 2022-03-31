@@ -1,11 +1,11 @@
 import type { GetServerSideProps, NextPage } from "next";
-import BlogPost from "../../components/blog/BlogPost";
+import SinglePost from "../../components/blog/SinglePost";
 import UnorderedList from "../../components/UnorderedList";
 
 const Post: NextPage<{ post: PostModel }> = ({ post }) => {
   return (
     <UnorderedList>
-      <BlogPost post={post} singlePost={true} />
+      <SinglePost post={post} singlePost={true} />
     </UnorderedList>
   );
 };

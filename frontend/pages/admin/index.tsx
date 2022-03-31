@@ -35,7 +35,10 @@ const convertToB64 = (filesList: FileList) =>
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      resolve(reader.result);
+      const result = reader.result;
+      if (typeof result !== "string")
+        throw TypeError("Did not convert to B64 String");
+      resolve(result.split(",")[1]);
     };
 
     reader.onerror = () => {
@@ -157,7 +160,7 @@ const Admin: NextPage = () => {
               config={{ name: "body", label: "内容" }}
               ref={bodyRef}
             />
-            <input type="file" accept="image/png" ref={pictureRef} />
+            <input type="file" accept="image/png, image/jpeg" ref={pictureRef} />
             <FormSubmit />
           </form>
         </Card>
