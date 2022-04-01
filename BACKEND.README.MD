@@ -159,3 +159,4 @@ Use pgAdmin to restore the dump saved in /database/backup.sql
 1. docker build -t mayeraus/pace-backend:amd64 --platform linux/amd64 .
 2. docker tag mayeraus/pace-backend:amd64 registry.heroku.com/okinawa-pace-backend/web
 3. docker push registry.heroku.com/okinawa-pace-backend/web
+4. heroku container:release web -a okinawa-pace-backend
