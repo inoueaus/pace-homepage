@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import Card from "../../components/UI/Card";
+import FormFile from "../../components/UI/input/FormFile";
 import FormInput from "../../components/UI/input/FormInput";
 import FormSubmit from "../../components/UI/input/FormSubmit";
 import FormTextArea from "../../components/UI/input/FormTextArea";
@@ -167,9 +168,8 @@ const Admin: NextPage = () => {
               config={{ name: "body", label: "内容" }}
               ref={bodyRef}
             />
-            <input
-              type="file"
-              accept="image/png, image/jpeg"
+            <FormFile
+              config={{ label: "写真", name: "picture" }}
               ref={pictureRef}
             />
             <FormSubmit />
