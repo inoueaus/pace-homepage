@@ -1,16 +1,6 @@
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import {
-  FormEventHandler,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
 import Card from "../../components/UI/Card";
-import Observer from "../../components/UI/Observer";
-import { AuthContext } from "../../context/auth-context";
 import styles from "../../styles/Admin.module.css";
 
 const fetchInquiries = (page: number, limit: number) =>
@@ -28,45 +18,6 @@ const fetchInquiries = (page: number, limit: number) =>
   });
 
 const Admin: NextPage = () => {
-  const router = useRouter();
-  const context = useContext(AuthContext);
-
-  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
-  const [inquiryError, setInquiryError] = useState<string | null>(null);
-  const [fetchComplete, setFetchComplete] = useState(false);
-  const [inquiryPage, setInquiryPage] = useState(0);
-  const [inquiryEndInView, setInquiryEndInView] = useState(false);
-
-  useEffect(() => {
-    if (inquiryEndInView && inquiries.length && !fetchComplete) {
-      setInquiryPage(prev => prev + 1);
-    }
-  }, [inquiryEndInView]);
-
-  useEffect(() => {
-    {
-      fetchInquiries(inquiryPage, 5)
-        .then(data => {
-          if (!data.length) {
-            setFetchComplete(true);
-          }
-          setInquiries(prev => [...prev, ...data]);
-        })
-        .catch(error => setInquiryError(error));
-    }
-  }, [inquiryPage]);
-
-  const handleInquiryClick = (id: number) => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URI}/inquiries/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ viewed: true }),
-    });
-    router.push(`/admin/inquiry/${id}`);
-  };
 
   return (
     <>
