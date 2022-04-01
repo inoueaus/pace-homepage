@@ -12,7 +12,6 @@ const newPost = async (req: Request, res: Response) => {
     if (typeof title !== "string") throw Error("No title provided.");
     if (typeof body !== "string") throw Error("No body provided");
 
-    console.log(picture, picture?.toString("base64"));
     const [result] =
       await sql`INSERT INTO posts (title, body, created_at, updated_at)
     VALUES (${title}, ${body}, NOW(), NOW())

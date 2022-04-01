@@ -1,8 +1,19 @@
 import app from "../../src/app";
 import request from "supertest";
 import sql from "../../src/db";
+import { readFile } from "fs";
+import path from "path";
 
 const randomString = () => Math.random().toString(36).slice(4, 8);
+
+const readImage = () =>
+  new Promise<string>((resolve, reject) => {
+    const filePath = path.join(__dirname, "..", "fixtures", "mame.jpeg");
+
+    readFile(filePath, (err, data) =>
+      err ? reject(err) : resolve(data.toString("base64"))
+    );
+  }).catch(error => console.error(error));
 
 describe("Posts Router Tests", () => {
   let cookie: string;
@@ -172,5 +183,32 @@ describe("Posts Router Tests", () => {
         expect(response.body.id).toBe(newPostId);
       }));
 
+  test("Add post with Picture", () => {
+    return readImage().then(image =>
+      request(app)
+        .post("/posts/new")
+        .set("Cookie", cookie)
+        .send({
+          title: `Jest Test ${randomString()}`,
+          body: originalBody,
+          picture: image,
+        })
+        .then(response => {
+          newPostId = response.body.id;
+          expect(response.statusCode).toBe(201);
+          expect(typeof response.body.id).toBe("number");
+          expect(response.body.created).toBe(true);
+        })
+        .then(() =>
+          request(app)
+            .get(`/posts/${newPostId}`)
+            .then(response => {
+              expect(response.statusCode).toBe(200);
+              expect(response.body.id).toBe(newPostId);
+              expect(typeof response.body.picture.slice(0, 2)).toBe("string");
+            })
+        )
+    );
+  });
   afterAll(() => sql.end());
 });
