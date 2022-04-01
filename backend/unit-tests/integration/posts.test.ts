@@ -129,7 +129,7 @@ describe("Posts Router Tests", () => {
       );
   });
 
-  test("Update Post Body", () => {
+  test("Update Post Body and Title", () => {
     const newBody = `new Body ${randomString()}`;
     const newTitle = `Changed Jest Test Title ${randomString()}`;
     return request(app)
