@@ -35,10 +35,7 @@ const convertToB64 = (filesList: FileList) =>
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      const result = reader.result;
-      if (typeof result !== "string")
-        throw TypeError("Did not convert to B64 String");
-      resolve(result.split(",")[1]);
+      resolve(reader.result);
     };
 
     reader.onerror = () => {
@@ -111,7 +108,7 @@ const Admin: NextPage = () => {
         convertToB64(picture).then(b64Pic => {
           console.log(b64Pic);
           if (typeof b64Pic !== "string") throw TypeError("Pic not String");
-          const data = { title, body, picture: b64Pic };
+          const data = { title, body, picture: b64Pic.split(",")[1] };
           return sendPost(data)
             .then(data => router.push(`/blog/${data.id}`))
             .catch(error => console.log(error));
@@ -160,7 +157,11 @@ const Admin: NextPage = () => {
               config={{ name: "body", label: "内容" }}
               ref={bodyRef}
             />
-            <input type="file" accept="image/png, image/jpeg" ref={pictureRef} />
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              ref={pictureRef}
+            />
             <FormSubmit />
           </form>
         </Card>
