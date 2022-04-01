@@ -15,3 +15,14 @@ export interface PostEntry {
   created_at: string;
   updated_at: string;
 }
+
+export interface InquiryDBRecord {
+  id: number;
+  body: string;
+  phone: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  viewed: boolean;
+  created_at: string;
+}

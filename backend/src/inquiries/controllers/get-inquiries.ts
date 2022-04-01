@@ -1,15 +1,6 @@
 import { Request, Response } from "express";
 import sql from "../../db";
-
-interface InquiryDBRecord {
-  id: number;
-  body: string;
-  phone: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  created_at: string;
-}
+import { InquiryDBRecord } from "../../types";
 
 const getInquiries = async (req: Request, res: Response) => {
   const pageNo = req.query.page ? Number(req.query.page) : 0; // default page 1
@@ -21,7 +12,7 @@ const getInquiries = async (req: Request, res: Response) => {
 
     const result = await sql<
       InquiryDBRecord[]
-    >`SELECT inquiry_id AS id, body, email, phone, first_name, last_name, created_at
+    >`SELECT inquiry_id AS id, body, email, phone, first_name, last_name, viewed, created_at
     FROM inquiries
     ORDER BY created_at DESC
     LIMIT ${limit} OFFSET ${limit * pageNo}`;
@@ -35,6 +26,7 @@ const getInquiries = async (req: Request, res: Response) => {
         email: inquiry.email,
         firstName: inquiry.first_name,
         lastName: inquiry.last_name,
+        viewed: inquiry.viewed,
         createdAt: inquiry.created_at,
       }))
     );

@@ -84,6 +84,26 @@ describe("Inquiries Router Tests", () => {
         expect(typeof response.body.firstName).toBe("string");
       }));
 
+  test("Set new Inquiry as Viewed", () =>
+    request(app)
+      .patch(`/inquiries/${newInquiryId}`)
+      .set("Cookie", cookie)
+      .send({ viewed: true })
+      .then(response => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body.id).toBe(newInquiryId);
+      })
+      .then(() =>
+        request(app)
+          .get(`/inquiries/${newInquiryId}`)
+          .set("Cookie", cookie)
+          .then(response => {
+            expect(response.statusCode).toBe(200);
+            expect(response.body.id).toBe(newInquiryId);
+            expect(response.body.viewed).toBe(true);
+          })
+      ));
+
   test("Try to Get one Inquiry without Token", () =>
     request(app)
       .get(`/inquiries/${newInquiryId}`)
