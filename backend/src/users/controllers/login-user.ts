@@ -28,7 +28,12 @@ const loginUser = async (req: Request, res: Response) => {
         { expiresIn: "2h" }
       );
 
-      res.cookie("token", token); // must set expiration date at some point
+      res.cookie("token", token, {
+        httpOnly: true, // must be set to true else cookie will be ignored
+        secure: envVars.mode === "production", // secure cookies on https
+        maxAge: 1000 * 60 * 2,
+        sameSite: "none",
+      });
       res.json({ authenticated: true, userId });
     } else {
       throw Error("Invalid Password.");

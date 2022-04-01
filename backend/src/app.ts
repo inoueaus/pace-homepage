@@ -18,6 +18,7 @@ app.use(
     origin: envVars.nextServerUrl,
     methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
     credentials: true,
+    exposedHeaders: ["set-cookie"],
   })
 );
 app.use(bodyParser.json({ limit: "50mb" }));
