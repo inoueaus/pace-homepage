@@ -32,7 +32,10 @@ const AdminInquiry: NextPage = () => {
           }
           setInquiries(prev => [...prev, ...data]);
         })
-        .catch(error => setInquiryError(error));
+        .catch(error => {
+          setInquiryError(error);
+          context.setIsAuth(false);
+        });
     }
   }, [inquiryPage]);
 

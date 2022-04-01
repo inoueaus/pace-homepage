@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
+ENV NODE_ENV production
+
 COPY . .
 RUN yarn build
 
