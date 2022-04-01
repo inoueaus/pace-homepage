@@ -27,10 +27,12 @@
   user-select: none;
   transition: all 0.2s;
   padding: 1rem;
+  border: 1px solid white;
+  border-radius: 4px;
 }
 
 .inquiries-list li:hover {
-  background-color: #fff0dd;
+  background-color: #fffaf4;
 }
 
 .column {
@@ -40,4 +42,12 @@
 
 .column small {
   margin-bottom: 0.5rem;
+}
+
+.new {
+  background-color: #fff0dd;
+}
+
+.new:hover {
+  background-color: #ffe8ca !important;
 }

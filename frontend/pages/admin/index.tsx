@@ -94,8 +94,17 @@ const Admin: NextPage = () => {
     }
   }, [inquiryPage]);
 
-  const handleInquiryClick = (id: number) =>
+  const handleInquiryClick = (id: number) => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URI}/inquiries/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ viewed: true }),
+    });
     router.push(`/admin/inquiry/${id}`);
+  };
 
   const handlePostSubmit: FormEventHandler = event => {
     event.preventDefault();
@@ -133,6 +142,7 @@ const Admin: NextPage = () => {
               <li
                 onClick={handleInquiryClick.bind(null, inquiry.id)}
                 key={inquiry.id}
+                className={`${!inquiry.viewed && styles.new}`}
               >
                 <section style={{ flex: "10%" }}>{inquiry.id}</section>
                 <section className={styles.column} style={{ flex: "90%" }}>

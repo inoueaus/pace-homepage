@@ -11,4 +11,5 @@ interface Inquiry {
   firstName: string;
   lastName: string;
   createdAt: string;
+  viewed: boolean;
 }
