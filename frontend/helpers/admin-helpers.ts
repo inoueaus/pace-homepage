@@ -46,6 +46,29 @@ export const sendPost = (data: {
     return result.json();
   });
 
+export const updatePost = (
+  id: number,
+  data: {
+    title: string;
+    body: string;
+    picture?: string;
+  }
+) =>
+  fetch(`${process.env.NEXT_PUBLIC_API_URI}/posts/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(data),
+  }).then(result => {
+    if (!result.ok)
+      throw Error(
+        `Inquiry Fetch Failed: ${result.status} ${result.statusText}`
+      );
+    return result.json();
+  });
+
 export const convertToB64 = (filesList: FileList) =>
   new Promise((resolve, reject) => {
     const file = filesList[0];

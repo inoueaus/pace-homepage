@@ -5,7 +5,7 @@ import UnorderedList from "../../components/UnorderedList";
 const Post: NextPage<{ post: PostModel }> = ({ post }) => {
   return (
     <UnorderedList>
-      <SinglePost post={post} singlePost={true} />
+      <SinglePost post={post}/>
     </UnorderedList>
   );
 };

@@ -48,3 +48,16 @@
 .single-picture {
   position: relative;
 }
+
+.link {
+  color: white;
+  background-color: #372c2e;
+  border: 1px solid #372c2e;
+  border-radius: 8px;
+  width: 40%;
+  margin: 2rem auto 2rem auto;
+  text-align: center;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  user-select: none;
+}
