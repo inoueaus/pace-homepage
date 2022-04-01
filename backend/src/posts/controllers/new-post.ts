@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import sql from "../../db";
-import { convertB64StringToHex } from "../helpers";
+import { processProvidedImage } from "../helpers";
 
 const newPost = async (req: Request, res: Response) => {
   const title = req.body.title;
@@ -8,10 +8,7 @@ const newPost = async (req: Request, res: Response) => {
   const pictureProvided = req.body.picture;
 
   try {
-    const picture =
-      typeof pictureProvided === "string"
-        ? Buffer.from(pictureProvided, "base64url") // must do some security work here
-        : null; // convert base64 image to hex binary
+    const picture = processProvidedImage(pictureProvided);
     if (typeof title !== "string") throw Error("No title provided.");
     if (typeof body !== "string") throw Error("No body provided");
 
@@ -25,13 +22,15 @@ const newPost = async (req: Request, res: Response) => {
       throw Error("Id not returned from DB on insert");
 
     if (picture) {
+      const imgName =
+        String(result.id) + "_img_" + String(new Date().getTime());
       const [imgResult] = await sql`INSERT INTO images (img, img_name, post_id)
-      VALUES (${picture}, ${String(result.id) + String(new Date().getTime())}, ${
-        result.id
-      }) RETURNING img_id AS id`;
+      VALUES (${picture}, ${imgName}, ${result.id}) RETURNING img_id AS id`;
+
+      if (!imgResult.id) throw Error("Image not saved to DB");
     }
 
-    res.status(201).json({ id: result.id, created: true, });
+    res.status(201).json({ id: result.id, created: true });
   } catch (error) {
     console.log(error);
     res.statusCode = 400;

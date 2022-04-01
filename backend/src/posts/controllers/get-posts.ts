@@ -25,7 +25,7 @@ const getPosts = async (req: Request, res: Response) => {
         title: post.title,
         body: post.body,
         picture: post.img // convert to base64 if picture stored
-          ? Buffer.from(post.img, "hex").toString("base64")
+          ? Buffer.from(post.img, "binary").toString("base64")
           : null,
         createdAt: post.created_at,
         updatedAt: post.updated_at,
