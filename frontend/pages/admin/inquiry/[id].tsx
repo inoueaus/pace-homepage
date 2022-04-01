@@ -17,7 +17,6 @@ const fetchInquiry = (id: number | string) =>
 
 const ViewInquiry: NextPage = () => {
   const router = useRouter();
-  console.log(router.query.id);
 
   const [inquiry, setInquiry] = useState<Inquiry | null>(null);
 
@@ -25,7 +24,7 @@ const ViewInquiry: NextPage = () => {
     const id = Number(router.query.id);
     if (isNaN(id)) return;
     fetchInquiry(id).then(data => setInquiry(data));
-  }, []);
+  }, [router.query]);
 
   return (
     <>
