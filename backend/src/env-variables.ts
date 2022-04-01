@@ -6,6 +6,7 @@ const apiPort = Number(process.env.PORT);
 const dbPort = Number(process.env.DB_PORT);
 const mode = process.env.MODE as "development" | "production";
 const salt = Number(process.env.SALT);
+const dbUri = process.env.DATABASE_URL as string;
 
 if (!(mode === "development" || mode === "production"))
   throw Error("Mode is incorrect!");
@@ -21,6 +22,7 @@ if (!process.env.RECEIVER_EMAIL) throw Error("RECEIVER_EMAIL is undefined!");
 if (!process.env.MAILGUN_KEY) throw Error("MAILGUN_KEY is undefined!");
 if (!process.env.MAILGUN_DOMAIN) throw Error("MAILGUN_DOMAIN is undefined!");
 if (!process.env.NEXT_SERVER_URL) throw Error("NEXT_SERVER_URL is undefined!");
+if (!dbUri && mode === "production") throw Error("DB URI is undefined!");
 
 export const envVars = {
   mode,
@@ -29,6 +31,7 @@ export const envVars = {
   dbPassword: process.env.DB_PASS,
   dbUsername: process.env.DB_USER,
   dbName: process.env.DB_NAME,
+  dbUri,
   dbPort,
   tokenKey: process.env.TOKEN_KEY,
   salt,
