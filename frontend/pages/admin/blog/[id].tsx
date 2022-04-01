@@ -31,7 +31,7 @@ const AdminPostEdit: NextPage<{ post: PostModel }> = ({ post }) => {
     const picture = pictureRef.current!.files;
 
     if (title && body) {
-      if (picture) {
+      if (picture && picture.length) {
         convertToB64(picture).then(b64Pic => {
           if (typeof b64Pic !== "string") throw TypeError("Pic not String");
           const data = { title, body, picture: b64Pic.split(",")[1] };
