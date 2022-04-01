@@ -41,7 +41,7 @@ const AdminBlog: NextPage = () => {
   };
 
   return (
-    <Card>
+    <Card className="wide">
       <h4>新規投稿</h4>
       <form onSubmit={handlePostSubmit}>
         <FormInput

@@ -50,12 +50,30 @@
   padding: 0 5rem 3rem 5rem;
 }
 
+.card a {
+  color: white;
+  background-color: #372c2e;
+  border: 1px solid #372c2e;
+  border-radius: 8px;
+  width: 80%;
+  margin: 2rem auto 2rem auto;
+  text-align: center;
+  padding: 2rem 0;
+  cursor: pointer;
+  user-select: none;
+}
+
 .full {
   min-height: 90vh;
 }
 
 .half {
   min-height: 40vh;
+}
+
+.wide {
+  width: auto;
+  max-width: 100%;
 }
 
 .flex {

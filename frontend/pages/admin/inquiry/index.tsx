@@ -1,33 +1,13 @@
 import type { NextPage } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  FormEventHandler,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import Card from "../../components/UI/Card";
-import Observer from "../../components/UI/Observer";
-import { AuthContext } from "../../context/auth-context";
-import styles from "../../styles/Admin.module.css";
+import { useContext, useEffect, useState } from "react";
+import Card from "../../../components/UI/Card";
+import Observer from "../../../components/UI/Observer";
+import { AuthContext } from "../../../context/auth-context";
+import { fetchInquiries } from "../../../helpers/admin-helpers";
+import styles from "../../../styles/Admin.module.css";
 
-const fetchInquiries = (page: number, limit: number) =>
-  fetch(
-    `${process.env.NEXT_PUBLIC_API_URI}/inquiries?limit=${limit}&page=${page}`,
-    {
-      credentials: "include",
-    }
-  ).then(result => {
-    if (!result.ok)
-      throw Error(
-        `Inquiry Fetch Failed: ${result.status} ${result.statusText}`
-      );
-    return result.json();
-  });
-
-const Admin: NextPage = () => {
+const AdminInquiry: NextPage = () => {
   const router = useRouter();
   const context = useContext(AuthContext);
 
@@ -69,22 +49,26 @@ const Admin: NextPage = () => {
   };
 
   return (
-    <>
-      <h1 className={styles.title}>管理画面</h1>
-
-      <Card>
-        <Link href="/admin/inquiry">
-          <a>お問合せ一覧</a>
-        </Link>
-      </Card>
-
-      <Card>
-        <Link href="/admin/blog">
-          <a>新規投稿</a>
-        </Link>
-      </Card>
-    </>
+    <Card className="wide">
+      <h4>お問合せ一覧</h4>
+      <ul className={styles["inquiries-list"]}>
+        {inquiries.map(inquiry => (
+          <li
+            onClick={handleInquiryClick.bind(null, inquiry.id)}
+            key={inquiry.id}
+            className={`${!inquiry.viewed && styles.new}`}
+          >
+            <section style={{ flex: "10%" }}>{inquiry.id}</section>
+            <section className={styles.column} style={{ flex: "90%" }}>
+              <small>{new Date(inquiry.createdAt).toLocaleString("ja")}</small>
+              <section>{inquiry.body}</section>
+            </section>
+          </li>
+        ))}
+        <Observer setInView={setInquiryEndInView} />
+      </ul>
+    </Card>
   );
 };
 
-export default Admin;
+export default AdminInquiry;
