@@ -8,10 +8,6 @@ import {
   useState,
 } from "react";
 import Card from "../../components/UI/Card";
-import FormFile from "../../components/UI/input/FormFile";
-import FormInput from "../../components/UI/input/FormInput";
-import FormSubmit from "../../components/UI/input/FormSubmit";
-import FormTextArea from "../../components/UI/input/FormTextArea";
 import Observer from "../../components/UI/Observer";
 import { AuthContext } from "../../context/auth-context";
 import styles from "../../styles/Admin.module.css";
@@ -30,38 +26,6 @@ const fetchInquiries = (page: number, limit: number) =>
     return result.json();
   });
 
-const convertToB64 = (filesList: FileList) =>
-  new Promise((resolve, reject) => {
-    const file = filesList[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      resolve(reader.result);
-    };
-
-    reader.onerror = () => {
-      reject(reader.error);
-    };
-
-    reader.readAsDataURL(file);
-  });
-
-const sendPost = (data: { title: string; body: string; picture?: string }) =>
-  fetch(`${process.env.NEXT_PUBLIC_API_URI}/posts/new`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(data),
-  }).then(result => {
-    if (!result.ok)
-      throw Error(
-        `Inquiry Fetch Failed: ${result.status} ${result.statusText}`
-      );
-    return result.json();
-  });
-
 const Admin: NextPage = () => {
   const router = useRouter();
   const context = useContext(AuthContext);
@@ -71,10 +35,6 @@ const Admin: NextPage = () => {
   const [fetchComplete, setFetchComplete] = useState(false);
   const [inquiryPage, setInquiryPage] = useState(0);
   const [inquiryEndInView, setInquiryEndInView] = useState(false);
-
-  const titleRef = useRef<HTMLInputElement>(null);
-  const bodyRef = useRef<HTMLTextAreaElement>(null);
-  const pictureRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (inquiryEndInView && inquiries.length && !fetchComplete) {
@@ -107,31 +67,6 @@ const Admin: NextPage = () => {
     router.push(`/admin/inquiry/${id}`);
   };
 
-  const handlePostSubmit: FormEventHandler = event => {
-    event.preventDefault();
-    const title = titleRef.current!.value.trim();
-    const body = bodyRef.current!.value.trim();
-    const picture = pictureRef.current!.files;
-
-    if (title && body) {
-      if (picture) {
-        convertToB64(picture).then(b64Pic => {
-          console.log(b64Pic);
-          if (typeof b64Pic !== "string") throw TypeError("Pic not String");
-          const data = { title, body, picture: b64Pic.split(",")[1] };
-          return sendPost(data)
-            .then(data => router.push(`/blog/${data.id}`))
-            .catch(error => console.log(error));
-        });
-      } else {
-        const data = { title, body };
-        sendPost(data)
-          .then(data => router.push(`/blog/${data.id}`))
-          .catch(error => console.log(error));
-      }
-    }
-  };
-
   return (
     <>
       <h1 className={styles.title}>管理画面</h1>
@@ -156,24 +91,6 @@ const Admin: NextPage = () => {
             ))}
             <Observer setInView={setInquiryEndInView} />
           </ul>
-        </Card>
-        <Card className="flex">
-          <h4>新規投稿</h4>
-          <form onSubmit={handlePostSubmit}>
-            <FormInput
-              config={{ type: "text", name: "title", label: "題名" }}
-              ref={titleRef}
-            />
-            <FormTextArea
-              config={{ name: "body", label: "内容" }}
-              ref={bodyRef}
-            />
-            <FormFile
-              config={{ label: "写真", name: "picture" }}
-              ref={pictureRef}
-            />
-            <FormSubmit />
-          </form>
         </Card>
       </div>
     </>

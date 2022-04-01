@@ -25,3 +25,39 @@ export const fetchInquiries = (page: number, limit: number) =>
       );
     return result.json();
   });
+
+export const sendPost = (data: {
+  title: string;
+  body: string;
+  picture?: string;
+}) =>
+  fetch(`${process.env.NEXT_PUBLIC_API_URI}/posts/new`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(data),
+  }).then(result => {
+    if (!result.ok)
+      throw Error(
+        `Inquiry Fetch Failed: ${result.status} ${result.statusText}`
+      );
+    return result.json();
+  });
+
+export const convertToB64 = (filesList: FileList) =>
+  new Promise((resolve, reject) => {
+    const file = filesList[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      resolve(reader.result);
+    };
+
+    reader.onerror = () => {
+      reject(reader.error);
+    };
+
+    reader.readAsDataURL(file);
+  });
