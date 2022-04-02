@@ -61,3 +61,22 @@
   cursor: pointer;
   user-select: none;
 }
+
+.picture-container {
+  position: relative;
+  width: 100%;
+}
+
+.picture-container span {
+  position: relative !important;
+}
+
+.picture-container .image {
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: unset !important;
+
+}
+
+
