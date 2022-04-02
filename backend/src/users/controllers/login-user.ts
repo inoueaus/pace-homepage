@@ -28,10 +28,12 @@ const loginUser = async (req: Request, res: Response) => {
         { expiresIn: "2h" }
       );
 
+      const cookieAge = 1000 * 60 * 60 * 2; // cookie to expire in 2 hours
       res.cookie("token", token, {
         httpOnly: true, // must be set to true else cookie will be ignored
         secure: envVars.mode === "production", // secure cookies on https
-        maxAge: 1000 * 60 * 60 * 2,
+        expires: new Date(new Date().getTime() + cookieAge),
+        maxAge: cookieAge,
         sameSite: envVars.mode === "production" ? "none" : true,
       });
       res.json({ authenticated: true, userId });
