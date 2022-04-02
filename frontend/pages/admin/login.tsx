@@ -1,6 +1,12 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { FormEventHandler, useContext, useRef, useState } from "react";
+import {
+  FormEventHandler,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Card from "../../components/UI/Card";
 import FormInput from "../../components/UI/input/FormInput";
 import FormSubmit from "../../components/UI/input/FormSubmit";
@@ -16,16 +22,20 @@ const Login: NextPage = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    document.requestStorageAccess().then(() => fetch("/api/login"));
+  }, []);
+
   const handleSubmit: FormEventHandler = event => {
     event.preventDefault();
     const username = usernameRef.current!.value.trim();
     const password = passwordRef.current!.value.trim();
 
-    if (username && password) {
+    const sendSubmitRequest = () =>
       sendLoginReq({ username, password })
         .then(data => {
           if (data.authenticated) {
-            context.setIsAuth(true);
+            context.setUserAsLoggedIn();
             router.replace("/admin");
           }
         })
@@ -34,6 +44,15 @@ const Login: NextPage = () => {
             setLoginError(error.message);
           }
         });
+
+    if (username && password) {
+      if (document.requestStorageAccess) {
+        document
+          .requestStorageAccess() // use storage access api for safari if not granted
+          .then(() => sendSubmitRequest());
+      } else {
+        sendSubmitRequest();
+      }
     }
   };
 

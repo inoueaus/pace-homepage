@@ -9,6 +9,7 @@ const FormInput = React.forwardRef<
       name: string;
       label: string;
       placeholder?: string;
+      autoComplete?: string;
     };
   }
 >(({ config }, ref) => {
@@ -19,6 +20,7 @@ const FormInput = React.forwardRef<
         name={config.name}
         type={config.type}
         placeholder={config.placeholder}
+        autoComplete={config.autoComplete}
         ref={ref}
       />
     </div>
