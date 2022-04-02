@@ -32,7 +32,7 @@ const loginUser = async (req: Request, res: Response) => {
         httpOnly: true, // must be set to true else cookie will be ignored
         secure: envVars.mode === "production", // secure cookies on https
         maxAge: 1000 * 60 * 60 * 2,
-        sameSite: "none",
+        sameSite: envVars.mode === "production" ? "none" : true,
       });
       res.json({ authenticated: true, userId });
     } else {
