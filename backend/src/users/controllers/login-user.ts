@@ -31,7 +31,7 @@ const loginUser = async (req: Request, res: Response) => {
       res.cookie("token", token, {
         httpOnly: true, // must be set to true else cookie will be ignored
         secure: envVars.mode === "production", // secure cookies on https
-        maxAge: 1000 * 60 * 2,
+        maxAge: 1000 * 60 * 60 * 2,
         sameSite: "none",
       });
       res.json({ authenticated: true, userId });
