@@ -67,7 +67,7 @@ const Blog: NextPage<{ preLoadedPosts: PostModel[] }> = ({
 
 export default Blog;
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const data = await fetchPosts(0, 5);
 
   if (data) return { props: { preLoadedPosts: data } };

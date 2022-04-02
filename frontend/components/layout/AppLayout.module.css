@@ -58,12 +58,7 @@
   width: 100%;
   max-width: 700px;
   min-height: 90vh;
-  animation: fadeIn 0.2s ease-in 0.3s 1 forwards;
-}
-
-.feed img {
-  animation: fadeIn 0.2s ease-in 0.3s 1 forwards;
-  opacity: 0;
+  animation: fadeIn 0.2s linear forwards;
 }
 
 @keyframes fadeIn {

@@ -80,3 +80,13 @@
   flex: 0 0 49%;
   margin: 2rem 0;
 }
+
+@media screen and (max-width: 500px) {
+  .wide {
+    max-width: 90%;
+  }
+
+  .card span {
+    padding: 0 2rem 1rem 2rem;
+  }
+}
