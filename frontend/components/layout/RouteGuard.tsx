@@ -9,10 +9,7 @@ const RouteGuard: React.FC = props => {
   useEffect(() => {
     const splitPath = router.pathname.split("/");
     if (splitPath[2] === "login") return; // do not redirect if login
-    if (
-      splitPath[1] === "admin" &&
-      !document.cookie.split(";").some(cookie => cookie.includes("token"))
-    ) {
+    if (splitPath[1] === "admin" && !context.isAuth) {
       router.replace("/admin/login"); // redirect to login page
     }
   }, [router, context]);
