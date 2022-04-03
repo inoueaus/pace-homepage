@@ -18,7 +18,13 @@ const Home: NextPage = () => {
 
   return (
     <div className={styles.feed}>
-      <Image src={logo} width="100%" height="100%" layout="responsive" />
+      <Image
+        priority
+        src={logo}
+        width="100%"
+        height="100%"
+        layout="responsive"
+      />
       <div className={styles["main"]}>
         <h1>沖縄県産コーヒー農園、Pace</h1>
         <h3>コーヒーを通してすべての人に、へいあんを。</h3>
