@@ -13,6 +13,7 @@ const Inquiry: NextPage = () => {
   const router = useRouter();
 
   const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [sending, setSending] = useState(false);
 
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
@@ -36,6 +37,7 @@ const Inquiry: NextPage = () => {
     const body = bodyRef.current!.value.trim();
 
     if (firstName && lastName && email && phone && body) {
+      setSending(true);
       sendInquiry({
         firstName,
         lastName,
@@ -51,7 +53,10 @@ const Inquiry: NextPage = () => {
             });
           }
         })
-        .catch(error => console.error(error));
+        .catch(error => {
+          setSending(false);
+          console.error(error);
+        });
     } else {
       const newErrors: string[] = [];
       if (!firstName) newErrors.push("名");
