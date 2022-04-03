@@ -9,9 +9,6 @@ const dbConnectionSettings = {
   database: "",
 };
 
-const sql =
-  envVars.mode === "production"
-    ? postgres(envVars.dbUri, { ssl: { rejectUnauthorized: false } })
-    : postgres(dbConnectionSettings);
+const sql = postgres(dbConnectionSettings);
 
 export default sql;
