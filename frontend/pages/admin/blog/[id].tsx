@@ -6,11 +6,7 @@ import FormFile from "../../../components/UI/input/FormFile";
 import FormInput from "../../../components/UI/input/FormInput";
 import FormSubmit from "../../../components/UI/input/FormSubmit";
 import FormTextArea from "../../../components/UI/input/FormTextArea";
-import {
-  convertToB64,
-  sendPost,
-  updatePost,
-} from "../../../helpers/admin-helpers";
+import { convertToB64, updatePost } from "../../../helpers/admin-helpers";
 
 const AdminPostEdit: NextPage<{ post: PostModel }> = ({ post }) => {
   const router = useRouter();
@@ -39,7 +35,7 @@ const AdminPostEdit: NextPage<{ post: PostModel }> = ({ post }) => {
           convertToB64(picture).then(b64Pic => {
             if (typeof b64Pic !== "string") throw TypeError("Pic not String");
             const data = { title, body, picture: b64Pic.split(",")[1] };
-            return sendPost(data)
+            return updatePost(post.id, data)
               .then(data => router.push(`/blog/${data.id}`))
               .catch(error => console.log(error));
           });
