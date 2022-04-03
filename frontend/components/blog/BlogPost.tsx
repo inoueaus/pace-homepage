@@ -28,7 +28,8 @@ const BlogPost: React.FC<{ post: PostModel; singlePost?: boolean }> = ({
               singlePost && styles["long-body"]
             }`}
           >
-            {post.body}
+            <div className={styles["text-container"]}>{post.body}</div>
+            <div className={styles.fade}></div>
           </section>
         </div>
         <small>{new Date(post.createdAt).toLocaleString()}</small>
