@@ -35,6 +35,10 @@ app.use("/users", usersRouter);
 app.use("/inquiries", inquiriesRouter);
 
 app.get("/", (req, res) => {
+  res.cookie("pace_backend", "visited", {
+    secure: envVars.mode === "production",
+    httpOnly: true,
+  });
   res.send("PACE API");
 });
 
