@@ -38,6 +38,7 @@ app.get("/", (req, res) => {
   res.cookie("pace_backend", "visited", {
     secure: envVars.mode === "production",
     httpOnly: true,
+    sameSite: "none",
   });
   res.send("PACE API");
 });
