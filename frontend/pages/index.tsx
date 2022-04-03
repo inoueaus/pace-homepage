@@ -21,16 +21,24 @@ const Home: NextPage = () => {
       <Image src={logo} width="100%" height="100%" layout="responsive" />
       <div className={styles["main"]}>
         <h1>沖縄県産コーヒー農園、Pace</h1>
-        <h3>コーヒーを通してすべての人に、平安を。</h3>
+        <h3>コーヒーを通してすべての人に、へいあんを。</h3>
       </div>
       <ImageCard image={mame}>
-        沖縄県のやんばるでコーヒーの栽培を行います。
+        沖縄県のやんばるでコーヒーの栽培を行っています。
       </ImageCard>
-      <ImageCard image={coffee}>コーヒー豆の加工・販売を行います。</ImageCard>
+      <ImageCard image={coffee}>
+        コーヒー豆の加工・販売を行っています。
+      </ImageCard>
       <ImageCard image={art}>障がい者の働く場を提供します。</ImageCard>
       <Card>
         <h1>我々の挑戦</h1>
-        <h2>沖縄産コーヒーでCOE取得を目指す</h2>
+        <h2>
+          沖縄産コーヒーで
+          <br />
+          スペシャリティコーヒー
+          <br />
+          を目指します
+        </h2>
         <span>{coeText}</span>
       </Card>
       <LifeCycle />
