@@ -74,7 +74,7 @@ export const convertToB64 = (filesList: FileList) =>
     const file = filesList[0];
     const reader = new FileReader();
 
-    reader.onloadend = () => {
+    reader.onload = () => {
       resolve(reader.result);
     };
 
