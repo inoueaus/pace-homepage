@@ -20,13 +20,14 @@ const SinglePost: React.FC<{ post: PostModel }> = ({ post }) => {
       <h3 className={styles.title}>{post.title}</h3>
       <div className={styles.body}>
         {post.picture && (
-          <Image
-            src={`data:image/${fileFormat};base64,${post.picture}`}
-            layout="responsive"
-            objectFit="contain"
-            width="200px"
-            height="200px"
-          />
+          <div className={styles["picture-container"]}>
+            <Image
+              src={`data:image/${fileFormat};base64,${post.picture}`}
+              layout="fill"
+
+              className={styles.image}
+            />
+          </div>
         )}
         <section className={`${styles["body-text"]} ${styles["long-body"]}`}>
           {post.body}

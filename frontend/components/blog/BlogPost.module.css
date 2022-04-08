@@ -8,12 +8,6 @@
   padding: 0 1rem;
 }
 
-.body section {
-  padding-bottom: 1rem;
-  height: 80px;
-  overflow: hidden;
-}
-
 .body small {
   color: grey;
 }
@@ -36,6 +30,26 @@
 .body-text {
   flex: 0 0 65%;
   padding: 1rem;
+  padding-bottom: 1rem;
+  height: 150px;
+  position: relative;
+  white-space: pre-wrap;
+}
+
+.text-container {
+  height: 100%;
+  overflow: hidden;
+}
+
+.fade {
+  bottom: 0;
+  height: 150px;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  position: absolute;
+  width: 100%;
 }
 
 .long-body {
@@ -60,4 +74,20 @@
   padding: 0.5rem 0;
   cursor: pointer;
   user-select: none;
+}
+
+.picture-container {
+  position: relative;
+  width: 100%;
+}
+
+.picture-container span {
+  position: relative !important;
+}
+
+.picture-container .image {
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: unset !important;
 }

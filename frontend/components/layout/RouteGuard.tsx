@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/auth-context";
 
 const RouteGuard: React.FC = props => {
@@ -11,7 +11,7 @@ const RouteGuard: React.FC = props => {
     if (splitPath[2] === "login") return; // do not redirect if login
     if (
       splitPath[1] === "admin" &&
-      !document.cookie.split(";").some(cookie => cookie.includes("token"))
+      window.localStorage.getItem("authenticated") !== "1"
     ) {
       router.replace("/admin/login"); // redirect to login page
     }

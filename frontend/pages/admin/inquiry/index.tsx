@@ -34,7 +34,7 @@ const AdminInquiry: NextPage = () => {
         })
         .catch(error => {
           setInquiryError(error);
-          context.setIsAuth(false);
+          context.logoutUser();
         });
     }
   }, [inquiryPage]);

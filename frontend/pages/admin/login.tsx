@@ -25,7 +25,7 @@ const Login: NextPage = () => {
       sendLoginReq({ username, password })
         .then(data => {
           if (data.authenticated) {
-            context.setIsAuth(true);
+            context.setUserAsLoggedIn();
             router.replace("/admin");
           }
         })
@@ -44,11 +44,21 @@ const Login: NextPage = () => {
       )}
       <form onSubmit={handleSubmit}>
         <FormInput
-          config={{ label: "ユーザー名", name: "username", type: "text" }}
+          config={{
+            label: "ユーザー名",
+            name: "username",
+            type: "text",
+            autoComplete: "username",
+          }}
           ref={usernameRef}
         />
         <FormInput
-          config={{ label: "パスワード", name: "password", type: "password" }}
+          config={{
+            label: "パスワード",
+            name: "password",
+            type: "password",
+            autoComplete: "current-password",
+          }}
           ref={passwordRef}
         />
         <FormSubmit />

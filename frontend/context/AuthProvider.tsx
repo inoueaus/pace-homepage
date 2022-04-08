@@ -6,9 +6,14 @@ const AuthProvider: React.FC = props => {
 
   useEffect(() => {
     setIsAuth(
-      document.cookie.split(";").some(cookie => cookie.includes("token"))
+      window.localStorage.getItem("authenticated") === "1" ? true : false
     );
   }, []);
+
+  const setUserAsLoggedIn = () => {
+    window.localStorage.setItem("authenticated", "1");
+    setIsAuth(true);
+  };
 
   const logoutUser = () =>
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/users/logout`, {
@@ -17,11 +22,14 @@ const AuthProvider: React.FC = props => {
         "content-type": "application/json",
       },
       credentials: "include",
-    }).finally(() => setIsAuth(false));
+    }).finally(() => {
+      setIsAuth(false);
+      window.localStorage.setItem("authenticated", "0");
+    });
 
   const defaultValue: AuthContextModel = {
     isAuth,
-    setIsAuth,
+    setUserAsLoggedIn,
     logoutUser,
   };
 

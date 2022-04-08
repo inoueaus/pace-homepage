@@ -11,6 +11,4 @@ const dbConnectionSettings = {
 
 const sql = postgres(dbConnectionSettings);
 
-sql
-
 export default sql;

@@ -116,6 +116,47 @@ CREATE TABLE inquiries (
 	);
 ```
 
+### All
+
+```
+CREATE TABLE posts (
+	id serial PRIMARY KEY,
+	title varchar(255) NOT NULL,
+	body varchar,
+	created_at timestamp,
+	updated_at timestamp
+);
+CREATE TABLE images
+(
+	img_id serial PRIMARY KEY,
+	img_name varchar(255) NOT NULL,
+	img bytea,
+	post_id int,
+	FOREIGN KEY (post_id) REFERENCES posts(id)
+);
+CREATE TABLE users (
+	user_id serial PRIMARY KEY,
+	username varchar(55) UNIQUE,
+	email varchar UNIQUE,
+	pass_hash varchar(255),
+	instagram_pass varchar,
+	instagram_user varchar,
+	created_at timestamp DEFAULT NOW()
+);
+CREATE TABLE inquiries (
+	inquiry_id serial PRIMARY KEY, body varchar(1000), email varchar(255) NOT NULL,
+ phone varchar(255), first_name varchar(255) NOT NULL, last_name varchar(255) NOT NULL, viewed boolean NOT NULL DEFAULT FALSE,
+  created_at timestamp DEFAULT NOW() NOT NULL
+	);
+```
+
 ### Loading Default Backup
 
 Use pgAdmin to restore the dump saved in /database/backup.sql
+
+## Heroku Deploy 手順
+
+1. docker build -t mayeraus/pace-backend:amd64 --platform linux/amd64 .
+2. docker tag mayeraus/pace-backend:amd64 registry.heroku.com/okinawa-pace-backend/web
+3. docker push registry.heroku.com/okinawa-pace-backend/web
+4. heroku container:release web -a okinawa-pace-backend

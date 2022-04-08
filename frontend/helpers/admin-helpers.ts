@@ -72,6 +72,8 @@ export const updatePost = (
 export const convertToB64 = (filesList: FileList) =>
   new Promise((resolve, reject) => {
     const file = filesList[0];
+    if (!(file instanceof Blob)) throw TypeError("File Provided not Blob");
+
     const reader = new FileReader();
 
     reader.onload = () => {
