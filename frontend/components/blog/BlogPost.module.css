@@ -33,6 +33,7 @@
   padding-bottom: 1rem;
   height: 150px;
   position: relative;
+  white-space: pre-wrap;
 }
 
 .text-container {
