@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/auth-context";
 import styles from "./AppLayout.module.css";
 import LoadingSpinner from "../UI/LoadingSpinner";
 
-const AppLayout: React.FC = props => {
+const AppLayout: React.FC<{ children: React.ReactNode }> = props => {
   const router = useRouter();
   const context = useContext(AuthContext);
 
@@ -51,7 +51,11 @@ const AppLayout: React.FC = props => {
           )}
         </ul>
       </nav>
-      {loading ? <LoadingSpinner /> : <main className={styles.feed}>{props.children}</main>}
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <main className={styles.feed}>{props.children}</main>
+      )}
       <footer className={styles.footer}>
         <div>Copyright 2022 株式会社Pace（パーチェ）</div>
         <small>〒903-0804 沖縄県那覇市首里石嶺町</small>

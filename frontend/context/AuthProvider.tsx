@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AuthContext, AuthContextModel } from "./auth-context";
 
-const AuthProvider: React.FC = props => {
+const AuthProvider: React.FC<{ children: React.ReactNode }> = props => {
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
