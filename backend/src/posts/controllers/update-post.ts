@@ -3,8 +3,8 @@ import sql from "../../db";
 import { processProvidedImage } from "../helpers";
 
 interface PropertiesToUpdate {
-  title?: string;
-  body?: string;
+  title: string;
+  body: string;
   updated_at: Date;
 }
 
@@ -22,10 +22,9 @@ const updatePost = async (req: Request, res: Response) => {
 
     const propertiesToUpdate: PropertiesToUpdate = {
       updated_at: new Date(), // must use date object with postgres.js dynamic query
+      title,
+      body,
     };
-
-    if (title) propertiesToUpdate.title = title; // only update values provided
-    if (body) propertiesToUpdate.body = body;
 
     const [result] = await sql`UPDATE posts SET ${sql(propertiesToUpdate)}
     WHERE id = ${id} RETURNING id`;
