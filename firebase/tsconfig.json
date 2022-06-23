@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "allowJs": true,
+    "strict": true,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "incremental": true,
+    "outDir": "./dist/",
+    "baseUrl": "./",
+    "paths": {
+      "@web-components/*": ["src/web-components/*"],
+      "@firebase-logic": ["src/firebase.ts"]
+    },
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
