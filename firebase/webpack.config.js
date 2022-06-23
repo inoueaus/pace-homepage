@@ -77,7 +77,6 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       NODE_ENV: "development",
       FRONTEND_URI: `https://localhost:${port}/`,
-      NOTIFICATION_URI: "https://shopping-list-notifications.herokuapp.com/",
     }),
   ],
 };

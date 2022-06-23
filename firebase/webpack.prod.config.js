@@ -80,7 +80,7 @@ module.exports = {
     }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: "production",
-      FRONTEND_URI: "https://shopping-list-app-d0386.web.app/",
+      FRONTEND_URI: "https://pace-coffee.web.app/",
     }),
   ],
 };
