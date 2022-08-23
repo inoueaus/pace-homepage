@@ -8,8 +8,9 @@ import FormSubmit from "../../../components/UI/input/FormSubmit";
 import FormTextArea from "../../../components/UI/input/FormTextArea";
 import { convertToB64, updatePost } from "../../../helpers/admin-helpers";
 
-const AdminPostEdit: NextPage<{ post: PostModel }> = ({ post }) => {
+const AdminPostEdit: NextPage = () => {
   const router = useRouter();
+  const id = Number(router.query);
   const [errors, setErrors] = useState<string | null>(null);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -17,8 +18,15 @@ const AdminPostEdit: NextPage<{ post: PostModel }> = ({ post }) => {
   const pictureRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    titleRef.current!.value = post.title;
-    bodyRef.current!.value = post.body;
+    fetch(`${process.env.API_URI}/posts/${id}`)
+      .then(result => {
+        if (!result.ok) throw Error(`Post Fetch Failed: ${result.statusText}`);
+        return result.json();
+      })
+      .then((data: PostModel) => {
+        titleRef.current!.value = data.title;
+        bodyRef.current!.value = data.body;
+      }); // fetchs first ten posts
   }, [titleRef, bodyRef, pictureRef]);
 
   const handlePostSubmit: FormEventHandler = event => {
@@ -35,14 +43,14 @@ const AdminPostEdit: NextPage<{ post: PostModel }> = ({ post }) => {
           convertToB64(picture).then(b64Pic => {
             if (typeof b64Pic !== "string") throw TypeError("Pic not String");
             const data = { title, body, picture: b64Pic.split(",")[1] };
-            return updatePost(post.id, data)
+            return updatePost(id, data)
               .then(data => router.push(`/blog/${data.id}`))
               .catch(error => console.log(error));
           });
         }
       } else {
         const data = { title, body };
-        updatePost(post.id, data)
+        updatePost(id, data)
           .then(data => router.push(`/blog/${data.id}`))
           .catch(error => console.log(error));
       }
@@ -70,32 +78,3 @@ const AdminPostEdit: NextPage<{ post: PostModel }> = ({ post }) => {
 };
 
 export default AdminPostEdit;
-
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  res,
-}) => {
-  if (isNaN(Number(query.id))) {
-    res.statusCode = 302;
-    res.setHeader("location", "/blog"); // redirect to blog if invalid post id
-    res.end();
-    return { props: {} };
-  }
-
-  try {
-    const result = await fetch(`${process.env.API_URI}/posts/${query.id}`); // fetchs first ten posts
-
-    if (!result.ok) throw Error(`Post Fetch Failed: ${result.statusText}`);
-
-    const data = await result.json();
-
-    return { props: { post: data } }; // only return data on successful fetch
-  } catch (error) {
-    res.statusCode = 302;
-    res.setHeader("location", "/blog");
-    res.end();
-  }
-  return {
-    props: {}, // return no data by default
-  };
-};

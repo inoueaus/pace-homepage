@@ -35,7 +35,7 @@ const Blog: NextPage<{ preLoadedPosts: PostModel[] }> = ({
     setLoading(false); // this stops first fire on page load
     if (!(allLoaded || loading)) {
       setLoading(true);
-      fetchPosts(page + 1, 5)
+      fetchPosts(page, 5)
         .then(data => {
           if (data && data.length) {
             setPage(prev => prev + 1); // load more if not on last page
@@ -66,11 +66,3 @@ const Blog: NextPage<{ preLoadedPosts: PostModel[] }> = ({
 };
 
 export default Blog;
-
-export const getServerSideProps = async () => {
-  const data = await fetchPosts(0, 5);
-
-  if (data) return { props: { preLoadedPosts: data } };
-
-  return { props: { preLoadedPosts: [] } };
-};
