@@ -1,5 +1,3 @@
-import Image from "next/image";
-import React from "react";
 import styles from "./ImageCard.module.css";
 
 const ImageCard = props => {
@@ -7,7 +5,7 @@ const ImageCard = props => {
   return (
     <div className={`${styles.card} ${styles[props.className]}`}>
       <section className={styles["image-section"]}>
-        <Image src={props.image} layout="responsive" />
+        <img src={props.image} />
       </section>
       <section className={styles["text-section"]}>{props.children}</section>
     </div>

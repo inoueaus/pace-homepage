@@ -1,6 +1,6 @@
 {
-  "extends": "next/core-web-vitals",
   "rules": {
+    "extends": ["eslint:recommended"],
     "react/no-unescaped-entities": "off",
     "@next/next/no-page-custom-font": "off",
     "react/display-name": "off" // ignore display name errors
