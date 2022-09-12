@@ -17,8 +17,9 @@ const loginUser = async (req: Request, res: Response) => {
     const [user] =
       await sql`SELECT user_id AS id, pass_hash FROM users WHERE username = ${username};`;
 
+    if (!user) throw Error("User not found.");
+
     const userId = Number(user.id);
-    if (isNaN(userId)) throw Error("User not found.");
 
     const compareResult = await bcrypt.compare(password, user.pass_hash);
     if (compareResult) {

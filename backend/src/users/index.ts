@@ -9,6 +9,8 @@ const usersRouter = express.Router();
 
 usersRouter.get("/", (req, res) => res.send("ping"));
 
+usersRouter.get("/status", requireToken, (req, res) => res.sendStatus(200));
+
 usersRouter.post("/login", loginUser);
 
 usersRouter.patch("/:id/instagram", requireToken, addInstagram);
