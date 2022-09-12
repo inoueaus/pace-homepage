@@ -20,5 +20,5 @@ if (!id) throw Error("Id must be defined.");
 ---
 
 <Layout>
-  <SingleBlogPost client:load id={id} />
+  <SingleBlogPost client:load path={`${process.env.API_URI}/posts/${id}`} />
 </Layout>

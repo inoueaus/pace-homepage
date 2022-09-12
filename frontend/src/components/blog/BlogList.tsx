@@ -4,24 +4,7 @@ import BlogPost from "../../components/blog/BlogPost";
 import UnorderedList from "../../components/UnorderedList";
 import LoadingSpinner from "../UI/LoadingSpinner";
 
-const fetchPosts = async (page: number, limit: number) => {
-  try {
-    const result = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URI}/posts?limit=${limit}&page=${page}`,
-      { credentials: "include" }
-    ); // fetchs first ten posts
-
-    if (!result.ok) throw Error("Post Fetch Failed.");
-
-    const data = (await result.json()) as PostModel[];
-
-    return data;
-  } catch (error) {
-    return [];
-  }
-};
-
-const BlogList: React.FC = () => {
+const BlogList: React.FC<{ path: string }> = ({ path }) => {
   const [page, setPage] = useState(0);
   const [posts, setPosts] = useState<PostModel[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,6 +15,23 @@ const BlogList: React.FC = () => {
     setLoading(false); // this stops first fire on page load
     if (!(allLoaded || loading)) {
       setLoading(true);
+
+      const fetchPosts = async (page: number, limit: number) => {
+        try {
+          const result = await fetch(
+            `${path}?limit=${limit}&page=${page}`,
+            { credentials: "include" }
+          ); // fetchs first ten posts
+
+          if (!result.ok) throw Error("Post Fetch Failed.");
+
+          const data = (await result.json()) as PostModel[];
+
+          return data;
+        } catch (error) {
+          return [];
+        }
+      };
       fetchPosts(page + 1, 5)
         .then(data => {
           if (data.length) {

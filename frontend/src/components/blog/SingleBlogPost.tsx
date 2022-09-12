@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import SinglePost from "../../components/blog/SinglePost";
 import UnorderedList from "../../components/UnorderedList";
 
-const SingleBlogPost: React.FC<{ id: string | number }> = ({ id }) => {
+const SingleBlogPost: React.FC<{ path: string }> = ({ path }) => {
   const [post, setPost] = useState<PostModel>({
     title: "",
     body: "",
@@ -12,7 +12,7 @@ const SingleBlogPost: React.FC<{ id: string | number }> = ({ id }) => {
     picture: null,
   });
   useEffect(() => {
-    fetch(`${process.env.API_URI}/posts/${id}`)
+    fetch(path)
       .then(result => {
         if (!result.ok) throw Error(`Post Fetch Failed: ${result.statusText}`);
         return result.json();
