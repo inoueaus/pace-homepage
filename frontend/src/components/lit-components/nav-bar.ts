@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { state, customElement } from "lit/decorators.js";
+import { globalStyles } from "./styles";
 
 const tagName = "nav-bar";
 
@@ -36,6 +37,7 @@ export class NavBar extends LitElement {
   handleLogoutClick: EventListener = () => {};
 
   static styles = [
+    globalStyles,
     css`
       nav {
         display: flex;
@@ -45,7 +47,7 @@ export class NavBar extends LitElement {
         user-select: none;
       }
 
-      nav section {
+      #home-link {
         flex: 20%;
         color: #ffffff;
         font-size: x-large;
@@ -78,7 +80,7 @@ export class NavBar extends LitElement {
   render() {
     return html`
       <nav>
-        <a href="/">
+        <a id="home-link" href="/">
           <section>Pace</section>
         </a>
         <ul>
@@ -88,10 +90,11 @@ export class NavBar extends LitElement {
                 <a href=${link.link}>${link.title}</a>
               </li>`
           )}
-          ${this.isAuth &&
-          html` <li>
-            <a @click=${this.handleLogoutClick}>ログアウト</a>
-          </li>`}
+          ${this.isAuth
+            ? html` <li>
+                <a @click=${this.handleLogoutClick}>ログアウト</a>
+              </li>`
+            : ""}
         </ul>
       </nav>
     `;
