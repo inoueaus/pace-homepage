@@ -1,7 +1,9 @@
 ---
-import Layout from "src/layouts/Layout.astro";
-import SingleBlogPost from "@components/blog/SingleBlogPost";
+import { AdminNavBar } from "@components/lit-components/admin-nav-bar";
+import { EditPostForm } from "@components/lit-components/edit-post-form";
+import Card from "@components/UI/Card";
 import type { PostServerModel } from "@localTypes/post-model";
+import Layout from "src/layouts/Layout.astro";
 
 export async function getStaticPaths() {
   const data: PostServerModel[] = await fetch(
@@ -21,5 +23,9 @@ if (!id) throw Error("Id must be defined.");
 ---
 
 <Layout>
-  <SingleBlogPost client:load path={`${import.meta.env.API_URI}/posts/${id}`} />
+  <AdminNavBar client:load />
+  <Card className="wide">
+    <h4>新規投稿</h4>
+    <EditPostForm api-path={import.meta.env.NEXT_PUBLIC_API_URI} post-id={id} client:load />
+  </Card>
 </Layout>

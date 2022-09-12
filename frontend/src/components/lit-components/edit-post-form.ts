@@ -1,22 +1,31 @@
-import { css, html, LitElement } from "lit";
+import { css, html } from "lit";
 import { state, customElement, property, query } from "lit/decorators.js";
-import { globalStyles } from "./styles";
-import formStyles from "./styles/form";
+import type { PostServerModel } from "../../../types/post-model";
+import { NewPostForm } from "./new-post-form";
 
-const tagName = "new-post-form";
+const tagName = "edit-post-form";
 
 @customElement(tagName)
-export class NewPostForm extends LitElement {
-  @property({ attribute: "api-path" })
-  protected apiPath = "";
-  @state()
-  protected fileName = "";
-  @state()
-  protected error = "";
-  @state()
-  protected loading = false;
-  @query("img")
-  protected imagePreview!: HTMLImageElement;
+export class EditPostForm extends NewPostForm {
+  @property({ attribute: "post-id" })
+  private postId = 0;
+  @query("input#title")
+  private titleInput!: HTMLInputElement;
+  @query("textarea")
+  private bodyInput!: HTMLTextAreaElement;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    fetch(`${this.apiPath}/posts/${this.postId}`)
+      .then(response => response.json())
+      .then((data: PostServerModel) => {
+        this.titleInput.value = data.title;
+        this.bodyInput.textContent = data.body;
+        const fileFormat = data.picture?.charAt(0) === "/" ? "jpeg" : "png";
+        const formattedImageString = `data:image/${fileFormat};base64,${data.picture}`;
+        this.imagePreview.src = data.picture ? formattedImageString : "";
+      });
+  }
 
   protected handleSubmit: EventListener = async event => {
     event.preventDefault();
@@ -38,17 +47,22 @@ export class NewPostForm extends LitElement {
         return (this.error = "画像サイズは500KBまで");
       payload.image = await this.readImageAsB64(image);
     }
-    const result = await fetch(`${this.apiPath}/posts/new`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(payload),
-    });
-
+    const result = await fetch(
+      `${this.apiPath}/posts/${this.postId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      }
+    );
     if (!result.ok)
-      return (this.error = `Inquiry Fetch Failed: ${result.status} ${result.statusText}`);
+      throw Error(
+        `Inquiry Fetch Failed: ${result.status} ${result.statusText}`
+      );
+
     const data = await result.json();
     this.error = "";
     this.loading = false;
@@ -60,48 +74,8 @@ export class NewPostForm extends LitElement {
     window.location.href = redirectUrl.toString();
   };
 
-  protected readImageAsB64(image: File) {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.addEventListener("error", () => reject(reader.error), {
-        once: true,
-      });
-      reader.addEventListener("load", () => {
-        const result = reader.result;
-        if (typeof result !== "string") throw TypeError();
-        resolve(result);
-      });
-
-      reader.readAsDataURL(image);
-    });
-  }
-
-  protected handleFileSelection: EventListener = event => {
-    const fileInput = event.currentTarget;
-    if (!(fileInput instanceof HTMLInputElement))
-      throw TypeError("Listener must be used with Input");
-    const files = fileInput.files;
-    if (!(files && files.length)) return;
-    const [image] = files;
-    this.fileName = image.name;
-    this.readImageAsB64(image).then(
-      imageString => (this.imagePreview.src = imageString)
-    );
-  };
-
-  static styles = [
-    globalStyles,
-    formStyles,
-    css`
-      img[src] {
-        max-width: 100%;
-        margin: 1rem;
-      }
-    `,
-  ];
-
   render() {
-    return html`${this.error
+    return html` ${this.error
         ? html`<div style="color: red; text-align: center;">${this.error}</div>`
         : ""}
       <form @submit=${this.handleSubmit}>
@@ -142,7 +116,7 @@ export class NewPostForm extends LitElement {
           </label>
         </div>
         <button type="submit">
-          ${this.loading ? html`<loading-spinner></loading-spinner>` : "作成"}
+          ${this.loading ? html`<loading-spinner></loading-spinner>` : "編集"}
         </button>
       </form>`;
   }

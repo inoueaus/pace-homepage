@@ -35,9 +35,9 @@ export class LoginForm extends LitElement {
       credentials: "include",
     })
       .then(result => {
-        console.log(result);
         if (!result.ok)
           throw Error(`Login failed: ${result.status} ${result.statusText}`);
+        window.localStorage.setItem("isAuth", "1");
         const redirectUrl = new URL(window.location.href);
         redirectUrl.pathname = "/admin";
         window.location.href = redirectUrl.toString();

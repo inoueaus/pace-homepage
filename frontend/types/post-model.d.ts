@@ -1,4 +1,4 @@
-interface PostServerModel {
+export type PostServerModel = {
   id: number;
   title: string;
   body: string;

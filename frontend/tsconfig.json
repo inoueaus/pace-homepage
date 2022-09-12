@@ -25,7 +25,8 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/components/*"]
+      "@components/*": ["src/components/*"],
+      "@localTypes/*": ["types/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

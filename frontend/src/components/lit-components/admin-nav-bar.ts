@@ -18,12 +18,10 @@ export class AdminNavBar extends LitElement {
 
       fetch(`${this.apiPath}/users/status`, { credentials: "include" }).then(
         response => {
-          console.log(response);
           resolve(response.status === 200);
         }
       );
     }).then(isAuth => {
-      console.log(isAuth);
       if (!isAuth) this.redirectToLogin();
     });
     window.addEventListener(

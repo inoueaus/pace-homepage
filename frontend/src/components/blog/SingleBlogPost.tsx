@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./BlogPost.module.css";
 import UnorderedList from "../../components/UnorderedList";
 import ListItem from "../ListItem";
+import type { PostModel } from "../../../types/post-model";
 
 const SingleBlogPost: React.FC<{ path: string }> = ({ path }) => {
   const [post, setPost] = useState<PostModel>({
@@ -34,6 +35,11 @@ const SingleBlogPost: React.FC<{ path: string }> = ({ path }) => {
   return (
     <UnorderedList>
       <ListItem id={String(post.id)}>
+        {Boolean(Number(window.localStorage.getItem("isAuth"))) && (
+          <a href={`/admin/blog/${post.id}`}>
+            <button type="button" style={{ width: "100%", height: "50px" }}>編集</button>
+          </a>
+        )}
         <h3 className={styles.title}>{post.title}</h3>
         <div className={styles.body}>
           {post.picture && (
