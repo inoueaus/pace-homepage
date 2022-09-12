@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../styles/Admin.module.css";
-import { fetchInquiries } from "../helpers/admin-helpers";
 import Card from "./UI/Card";
 import Observer from "./UI/Observer";
 
