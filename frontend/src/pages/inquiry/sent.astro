@@ -1,0 +1,17 @@
+---
+import Card from "@components/UI/Card";
+import Layout from "src/layouts/Layout.astro";
+
+const searchParams = new URLSearchParams(window.location.search);
+const id = searchParams.get("inquiry-id");
+---
+
+<Layout>
+  <Card>
+    <h1>お問い合わせありがとうございます。</h1>
+    <h3>
+      お問合せを受け付けました。 <br />
+      整理番号は{id}。
+    </h3>
+  </Card>
+</Layout>
