@@ -1,5 +1,3 @@
-import type { NextPage } from "next";
-import Link from "next/link";
 import Observer from "../../components/UI/Observer";
 import { useEffect, useState } from "react";
 import BlogPost from "../../components/blog/BlogPost";
@@ -22,11 +20,9 @@ const fetchPosts = async (page: number, limit: number) => {
   }
 };
 
-const Blog: NextPage<{ preLoadedPosts: PostModel[] }> = ({
-  preLoadedPosts,
-}) => {
+const BlogList: React.FC = () => {
   const [page, setPage] = useState(0);
-  const [posts, setPosts] = useState(preLoadedPosts);
+  const [posts, setPosts] = useState<PostModel[]>([]);
   const [loading, setLoading] = useState(true);
   const [allLoaded, setAllLoaded] = useState(false);
   const [inView, setInview] = useState(false);
@@ -53,11 +49,9 @@ const Blog: NextPage<{ preLoadedPosts: PostModel[] }> = ({
       <UnorderedList>
         {posts &&
           posts.map(post => (
-            <Link key={post.id} href={`/blog/${post.id}`}>
-              <a>
-                <BlogPost post={post} />
-              </a>
-            </Link>
+            <a key={post.id} href={`/blog/${post.id}`}>
+              <BlogPost post={post} />
+            </a>
           ))}
       </UnorderedList>
       <Observer setInView={setInview} />
@@ -65,12 +59,4 @@ const Blog: NextPage<{ preLoadedPosts: PostModel[] }> = ({
   );
 };
 
-export default Blog;
-
-export const getServerSideProps = async () => {
-  const data = await fetchPosts(0, 5);
-
-  if (data) return { props: { preLoadedPosts: data } };
-
-  return { props: { preLoadedPosts: [] } };
-};
+export default BlogList;

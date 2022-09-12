@@ -18,7 +18,7 @@ export class NavBar extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.isAuth = Boolean(window.localStorage.getItem("auth"));
-    document.addEventListener(
+    window.addEventListener(
       "logout",
       () => {
         this.isAuth = false;
