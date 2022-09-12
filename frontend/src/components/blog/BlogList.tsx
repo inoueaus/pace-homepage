@@ -7,21 +7,18 @@ import LoadingSpinner from "../UI/LoadingSpinner";
 const BlogList: React.FC<{ path: string }> = ({ path }) => {
   const [page, setPage] = useState(0);
   const [posts, setPosts] = useState<PostModel[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [allLoaded, setAllLoaded] = useState(false);
   const [inView, setInview] = useState(false);
 
   useEffect(() => {
-    setLoading(false); // this stops first fire on page load
     if (!(allLoaded || loading)) {
       setLoading(true);
-
       const fetchPosts = async (page: number, limit: number) => {
         try {
-          const result = await fetch(
-            `${path}?limit=${limit}&page=${page}`,
-            { credentials: "include" }
-          ); // fetchs first ten posts
+          const result = await fetch(`${path}?limit=${limit}&page=${page}`, {
+            credentials: "include",
+          }); // fetchs first ten posts
 
           if (!result.ok) throw Error("Post Fetch Failed.");
 
@@ -32,7 +29,7 @@ const BlogList: React.FC<{ path: string }> = ({ path }) => {
           return [];
         }
       };
-      fetchPosts(page + 1, 5)
+      fetchPosts(page, 5)
         .then(data => {
           if (data.length) {
             setPage(prev => prev + 1); // load more if not on last page
@@ -47,7 +44,7 @@ const BlogList: React.FC<{ path: string }> = ({ path }) => {
 
   return (
     <div>
-      {loading ?? <LoadingSpinner></LoadingSpinner>}
+      {loading && !allLoaded && <LoadingSpinner></LoadingSpinner>}
       <UnorderedList>
         {posts &&
           posts.map(post => (

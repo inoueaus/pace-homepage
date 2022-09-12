@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import SinglePost from "../../components/blog/SinglePost";
+import styles from "./BlogPost.module.css";
 import UnorderedList from "../../components/UnorderedList";
+import ListItem from "../ListItem";
 
 const SingleBlogPost: React.FC<{ path: string }> = ({ path }) => {
   const [post, setPost] = useState<PostModel>({
@@ -11,6 +12,7 @@ const SingleBlogPost: React.FC<{ path: string }> = ({ path }) => {
     updatedAt: new Date(),
     picture: null,
   });
+
   useEffect(() => {
     fetch(path)
       .then(result => {
@@ -25,10 +27,31 @@ const SingleBlogPost: React.FC<{ path: string }> = ({ path }) => {
         };
         setPost(formattedPost);
       });
-  });
+  }, []);
+
+  const fileFormat = post.picture?.charAt(0) === "/" ? "jpeg" : "png";
+
   return (
     <UnorderedList>
-      <SinglePost post={post} />
+      <ListItem id={String(post.id)}>
+        <h3 className={styles.title}>{post.title}</h3>
+        <div className={styles.body}>
+          {post.picture && (
+            <div className={styles["picture-container"]}>
+              <img
+                src={`data:image/${fileFormat};base64,${post.picture}`}
+                style={{ maxWidth: "100%" }}
+                className={styles.image}
+              />
+            </div>
+          )}
+          <section className={`${styles["body-text"]} ${styles["long-body"]}`}>
+            {post.body}
+          </section>
+
+          <small>{post.createdAt.toLocaleString()}</small>
+        </div>
+      </ListItem>
     </UnorderedList>
   );
 };
