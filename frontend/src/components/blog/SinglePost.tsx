@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
 import React, { useContext } from "react";
 import { AuthContext } from "../../context/auth-context";
 import ListItem from "../ListItem";
@@ -13,18 +11,17 @@ const SinglePost: React.FC<{ post: PostModel }> = ({ post }) => {
   return (
     <ListItem id={String(post.id)}>
       {context.isAuth && (
-        <Link href={`/admin/blog/${post.id}`}>
-          <a className={styles.link}>編集</a>
-        </Link>
+        <a className={styles.link} href={`/admin/blog/${post.id}`}>
+          編集
+        </a>
       )}
       <h3 className={styles.title}>{post.title}</h3>
       <div className={styles.body}>
         {post.picture && (
           <div className={styles["picture-container"]}>
-            <Image
+            <img
               src={`data:image/${fileFormat};base64,${post.picture}`}
-              layout="fill"
-
+              style={{ maxWidth: "100%" }}
               className={styles.image}
             />
           </div>
