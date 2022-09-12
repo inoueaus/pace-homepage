@@ -5,7 +5,6 @@ import Observer from "./UI/Observer";
 
 const AdminInquiryPage: React.FC<{ path: string }> = ({ path }) => {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
-  const [inquiryError, setInquiryError] = useState<string | null>(null);
   const [fetchComplete, setFetchComplete] = useState(false);
   const [inquiryPage, setInquiryPage] = useState(0);
   const [inquiryEndInView, setInquiryEndInView] = useState(false);
