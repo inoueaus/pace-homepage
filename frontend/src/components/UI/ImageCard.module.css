@@ -11,6 +11,10 @@
   margin: 4rem auto;
 }
 
+.image {
+  max-width: 100%;
+}
+
 .image-section {
   flex: 60%;
   position: relative;
