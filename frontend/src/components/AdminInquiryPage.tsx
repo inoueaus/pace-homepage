@@ -1,21 +1,16 @@
-import type { NextPage } from "next";
-import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import Card from "../../../components/UI/Card";
-import Observer from "../../../components/UI/Observer";
-import { AuthContext } from "../../../context/auth-context";
-import { fetchInquiries } from "../../../helpers/admin-helpers";
-import styles from "../../../styles/Admin.module.css";
+import styles from "../../styles/Admin.module.css";
+import { fetchInquiries } from "../helpers/admin-helpers";
+import Card from "./UI/Card";
+import Observer from "./UI/Observer";
 
-const AdminInquiry: NextPage = () => {
-  const router = useRouter();
-  const context = useContext(AuthContext);
-
+const AdminInquiryPage: React.FC<{ path: string }> = ({ path }) => {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [inquiryError, setInquiryError] = useState<string | null>(null);
   const [fetchComplete, setFetchComplete] = useState(false);
   const [inquiryPage, setInquiryPage] = useState(0);
   const [inquiryEndInView, setInquiryEndInView] = useState(false);
+  const [inquiry, setInquiry] = useState<Inquiry>();
 
   useEffect(() => {
     if (inquiryEndInView && inquiries.length && !fetchComplete) {
@@ -25,22 +20,27 @@ const AdminInquiry: NextPage = () => {
 
   useEffect(() => {
     {
-      fetchInquiries(inquiryPage, 5)
+      fetch(`${path}/inquiries?limit=${5}&page=${inquiryPage}`, {
+        credentials: "include",
+      })
+        .then(result => {
+          if (!result.ok)
+            throw Error(
+              `Inquiry Fetch Failed: ${result.status} ${result.statusText}`
+            );
+          return result.json();
+        })
         .then(data => {
           if (!data.length) {
             setFetchComplete(true);
           }
           setInquiries(prev => [...prev, ...data]);
-        })
-        .catch(error => {
-          setInquiryError(error);
-          context.logoutUser();
         });
     }
   }, [inquiryPage]);
 
   const handleInquiryClick = (id: number) => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URI}/inquiries/${id}`, {
+    fetch(`${path}/inquiries/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -48,12 +48,45 @@ const AdminInquiry: NextPage = () => {
       credentials: "include",
       body: JSON.stringify({ viewed: true }),
     });
-    router.push(`/admin/inquiry/${id}`);
+    fetch(`${path}/inquiries/${id}`, {
+      credentials: "include",
+    })
+      .then(result => result.json())
+      .then((data: Inquiry) => setInquiry(data));
   };
 
   return (
     <Card className="wide">
       <h4>お問合せ一覧</h4>
+      {inquiry && (
+        <Card>
+          <h4>整理番号: {inquiry.id}</h4>
+          <table>
+            <tbody>
+              <tr>
+                <td>氏名:</td>
+                <td>{`${inquiry.lastName} ${inquiry.firstName}`}</td>
+              </tr>
+              <tr>
+                <td>お問合せ日時:</td>
+                <td>{new Date(inquiry.createdAt).toLocaleDateString("ja")}</td>
+              </tr>
+              <tr>
+                <td>電話番号:</td>
+                <td>{inquiry.phone}</td>
+              </tr>
+              <tr>
+                <td>メール:</td>
+                <td>{inquiry.email}</td>
+              </tr>
+              <tr>
+                <td>お問合せ内容</td>
+                <td>{inquiry.body}</td>
+              </tr>
+            </tbody>
+          </table>
+        </Card>
+      )}
       <ul className={styles["inquiries-list"]}>
         {inquiries.map(inquiry => (
           <li
@@ -74,4 +107,4 @@ const AdminInquiry: NextPage = () => {
   );
 };
 
-export default AdminInquiry;
+export default AdminInquiryPage;

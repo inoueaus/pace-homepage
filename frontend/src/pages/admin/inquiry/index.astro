@@ -1,0 +1,10 @@
+---
+import { AdminNavBar } from "@components/lit-components/admin-nav-bar";
+import Layout from "src/layouts/Layout.astro";
+import AdminInquiryPage from "@components/AdminInquiryPage";
+---
+
+<Layout>
+  <AdminNavBar client:load />
+  <AdminInquiryPage client:load path={import.meta.env.NEXT_PUBLIC_API_URI} />
+</Layout>
