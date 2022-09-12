@@ -22,7 +22,11 @@
     "strict": true,
     // Error when a value import is only used as a type.
     "importsNotUsedAsValues": "error",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
