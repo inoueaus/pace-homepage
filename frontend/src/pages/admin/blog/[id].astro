@@ -23,9 +23,13 @@ if (!id) throw Error("Id must be defined.");
 ---
 
 <Layout>
-  <AdminNavBar client:load />
+  <AdminNavBar api-path={import.meta.env.NEXT_PUBLIC_API_URI} client:load />
   <Card className="wide">
     <h4>新規投稿</h4>
-    <EditPostForm api-path={import.meta.env.NEXT_PUBLIC_API_URI} post-id={id} client:load />
+    <EditPostForm
+      api-path={import.meta.env.NEXT_PUBLIC_API_URI}
+      post-id={id}
+      client:load
+    />
   </Card>
 </Layout>

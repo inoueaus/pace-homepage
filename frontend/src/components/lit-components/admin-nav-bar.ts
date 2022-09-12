@@ -13,11 +13,14 @@ export class AdminNavBar extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     new Promise<boolean>((resolve, reject) => {
-      const isAuthLocalStorage = Boolean(window.localStorage.getItem("auth"));
+      const isAuthLocalStorage = Boolean(
+        Number(window.localStorage.getItem("isAuth"))
+      );
       if (isAuthLocalStorage) resolve(true);
 
       fetch(`${this.apiPath}/users/status`, { credentials: "include" }).then(
         response => {
+          console.log(response);
           resolve(response.status === 200);
         }
       );
@@ -27,7 +30,7 @@ export class AdminNavBar extends LitElement {
     window.addEventListener(
       "logout",
       () => {
-        fetch(`${this.apiPath}/users/logout`);
+        fetch(`${this.apiPath}/users/logout`, { method: "POST", credentials: "include" });
         window.localStorage.clear();
         this.redirectToLogin();
       },
@@ -52,9 +55,9 @@ export class AdminNavBar extends LitElement {
   static styles = [
     globalStyles,
     css`
-    :host {
-      --theme-color:  #141313;
-    }
+      :host {
+        --theme-color: #141313;
+      }
       nav {
         background-color: var(--theme-color);
         border: 1px solid var(--theme-color);

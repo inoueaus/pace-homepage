@@ -6,7 +6,7 @@ import Layout from "src/layouts/Layout.astro";
 ---
 
 <Layout>
-  <AdminNavBar client:load />
+  <AdminNavBar api-path={import.meta.env.NEXT_PUBLIC_API_URI} client:load />
   <Card className="wide">
     <h4>新規投稿</h4>
     <NewPostForm api-path={import.meta.env.NEXT_PUBLIC_API_URI} client:load />
