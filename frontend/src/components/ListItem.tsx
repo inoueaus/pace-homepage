@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./ListItem.module.css";
 
 const ListItem: React.FC<{ id?: string, children: React.ReactNode }> = props => {

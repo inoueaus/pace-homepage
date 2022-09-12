@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./UnorderedList.module.css";
 
 const UnorderedList: React.FC<{ children: React.ReactNode }> = props => {

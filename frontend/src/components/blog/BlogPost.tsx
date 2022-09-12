@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import type { PostModel } from "../../../types/post-model";
 import ListItem from "../ListItem";
 import styles from "./BlogPost.module.css";
 

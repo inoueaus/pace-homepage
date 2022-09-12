@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import BlogPost from "../../components/blog/BlogPost";
 import UnorderedList from "../../components/UnorderedList";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import type { PostModel } from "../../../types/post-model";
 
 const BlogList: React.FC<{ path: string }> = ({ path }) => {
   const [page, setPage] = useState(0);
