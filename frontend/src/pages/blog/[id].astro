@@ -1,0 +1,24 @@
+---
+import Layout from "src/layouts/Layout.astro";
+import SingleBlogPost from "@components/blog/SingleBlogPost";
+
+export async function getStaticPaths() {
+  const data: PostServerModel[] = await fetch(
+    `${import.meta.env.API_URI}/posts`
+  ).then(response => response.json());
+
+  return data.map(post => {
+    return {
+      params: { id: post.id },
+      props: { post },
+    };
+  });
+}
+
+const { id } = Astro.params;
+if (!id) throw Error("Id must be defined.");
+---
+
+<Layout>
+  <SingleBlogPost client:load id={id} />
+</Layout>

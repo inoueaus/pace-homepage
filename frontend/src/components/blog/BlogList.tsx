@@ -2,6 +2,7 @@ import Observer from "../../components/UI/Observer";
 import { useEffect, useState } from "react";
 import BlogPost from "../../components/blog/BlogPost";
 import UnorderedList from "../../components/UnorderedList";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 const fetchPosts = async (page: number, limit: number) => {
   try {
@@ -16,7 +17,7 @@ const fetchPosts = async (page: number, limit: number) => {
 
     return data;
   } catch (error) {
-    return false;
+    return [];
   }
 };
 
@@ -33,7 +34,7 @@ const BlogList: React.FC = () => {
       setLoading(true);
       fetchPosts(page + 1, 5)
         .then(data => {
-          if (data && data.length) {
+          if (data.length) {
             setPage(prev => prev + 1); // load more if not on last page
             setPosts(prev => [...prev, ...data]);
           } else {
@@ -46,6 +47,7 @@ const BlogList: React.FC = () => {
 
   return (
     <div>
+      {loading ?? <LoadingSpinner></LoadingSpinner>}
       <UnorderedList>
         {posts &&
           posts.map(post => (
