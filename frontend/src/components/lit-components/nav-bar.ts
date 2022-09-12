@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import { state, customElement } from "lit/decorators.js";
+import { customElement } from "lit/decorators.js";
 import { globalStyles } from "./styles";
 
 const tagName = "nav-bar";
@@ -11,29 +11,6 @@ export class NavBar extends LitElement {
     { title: "ブログ", link: "/blog" },
     { title: "お問い合わせ", link: "/inquiry" },
   ];
-  @state()
-  private isAuth = false;
-  controller = new AbortController();
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.isAuth = Boolean(window.localStorage.getItem("auth"));
-    window.addEventListener(
-      "logout",
-      () => {
-        this.isAuth = false;
-        window.localStorage.clear();
-      },
-      { signal: this.controller.signal }
-    );
-  }
-
-  disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.controller.abort();
-  }
-
-  handleLogoutClick: EventListener = () => {};
 
   static styles = [
     globalStyles,
@@ -89,11 +66,6 @@ export class NavBar extends LitElement {
                 <a href=${link.link}>${link.title}</a>
               </li>`
           )}
-          ${this.isAuth
-            ? html` <li>
-                <a @click=${this.handleLogoutClick}>ログアウト</a>
-              </li>`
-            : ""}
         </ul>
       </nav>
     `;
