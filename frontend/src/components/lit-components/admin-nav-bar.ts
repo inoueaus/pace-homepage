@@ -13,24 +13,25 @@ export class AdminNavBar extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     new Promise<boolean>((resolve, reject) => {
-      const isAuthLocalStorage = Boolean(
-        Number(window.localStorage.getItem("isAuth"))
-      );
-      if (isAuthLocalStorage) resolve(true);
-
       fetch(`${this.apiPath}/users/status`, { credentials: "include" }).then(
         response => {
-          console.log(response);
           resolve(response.status === 200);
         }
       );
     }).then(isAuth => {
-      if (!isAuth) this.redirectToLogin();
+      if (!isAuth) {
+        window.localStorage.clear();
+        return this.redirectToLogin();
+      }
+      window.localStorage.setItem("isAuth", "1");
     });
     window.addEventListener(
       "logout",
       () => {
-        fetch(`${this.apiPath}/users/logout`, { method: "POST", credentials: "include" });
+        fetch(`${this.apiPath}/users/logout`, {
+          method: "POST",
+          credentials: "include",
+        });
         window.localStorage.clear();
         this.redirectToLogin();
       },
