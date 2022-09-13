@@ -69,7 +69,6 @@ export class LoginForm extends LitElement {
             maxlength="255"
             minlength="2"
             required
-            placeholder="username"
           />
         </div>
         <div>
@@ -82,7 +81,6 @@ export class LoginForm extends LitElement {
             maxlength="255"
             minlength="2"
             required
-            placeholder="password"
           />
         </div>
         <button className="{styles.submit}" type="submit">
