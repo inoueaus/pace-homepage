@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import sql from "../../db";
-import { processProvidedImage } from "../helpers";
+import { checkIfHasImage, processProvidedImage } from "../helpers";
 
 interface PropertiesToUpdate {
   title: string;
@@ -33,9 +33,7 @@ const updatePost = async (req: Request, res: Response) => {
       throw Error("Database did not return post ID");
 
     if (newImage) {
-      const [hasImageResult] =
-        await sql`SELECT img_id FROM images WHERE post_id = ${result.id}`;
-      const hasImage = Boolean(hasImageResult);
+      const hasImage = await checkIfHasImage(result.id);
       if (hasImage) {
         const [imgResult] = await sql`UPDATE images SET img = ${newImage}
           WHERE post_id = ${result.id} RETURNING img_id AS id;`;

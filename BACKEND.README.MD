@@ -132,7 +132,7 @@ CREATE TABLE images
 	img_name varchar(255) NOT NULL,
 	img bytea,
 	post_id int,
-	FOREIGN KEY (post_id) REFERENCES posts(id)
+	FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
 );
 CREATE TABLE users (
 	user_id serial PRIMARY KEY,
@@ -160,3 +160,14 @@ Use pgAdmin to restore the dump saved in /database/backup.sql
 2. docker tag mayeraus/pace-backend:amd64 registry.heroku.com/okinawa-pace-backend/web
 3. docker push registry.heroku.com/okinawa-pace-backend/web
 4. heroku container:release web -a okinawa-pace-backend
+
+### Fix delete post problem
+
+```sql
+ALTER TABLE images
+DROP CONSTRAINT images_post_id_fkey,
+ADD CONSTRAINT images_post_id_fkey
+	FOREIGN KEY (post_id)
+	REFERENCES posts(id)
+	ON DELETE CASCADE;
+```
