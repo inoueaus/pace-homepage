@@ -1,7 +1,8 @@
-import { html } from "lit";
+import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import type { PostServerModel } from "../../../types/post-model";
 import GenericPostForm, { Payload } from "./generic-post-form";
+import { BaseModal, tagName as baseModalTagName } from "./base-modal";
 
 const tagName = "edit-post-form";
 
@@ -13,6 +14,15 @@ export class EditPostForm extends GenericPostForm {
   private titleInput!: HTMLInputElement;
   @query("textarea")
   private bodyInput!: HTMLTextAreaElement;
+  @query("base-modal")
+  private baseModal!: BaseModal;
+
+  constructor() {
+    super();
+    if (!window.customElements.get(baseModalTagName)) {
+      window.customElements.define(baseModalTagName, BaseModal);
+    }
+  }
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -27,7 +37,7 @@ export class EditPostForm extends GenericPostForm {
       });
   }
 
-  protected handleSubmit: EventListener = async event => {
+  private handleSubmit: EventListener = async event => {
     event.preventDefault();
     const form = event.currentTarget;
     if (!(form instanceof HTMLFormElement))
@@ -48,7 +58,6 @@ export class EditPostForm extends GenericPostForm {
       const imageDataString = await this.readImageAsB64(image);
       payload.picture = imageDataString.split(",")[1];
     }
-    console.log(payload);
     const result = await fetch(`${this.apiPath}/posts/${this.postId}`, {
       method: "PATCH",
       headers: {
@@ -73,10 +82,47 @@ export class EditPostForm extends GenericPostForm {
     window.location.href = redirectUrl.toString();
   };
 
+  private handleDeleteClick: EventListener = () => {
+    this.baseModal.toggleAttribute("show", true);
+  };
+
+  private handleDeleteConfirmClick: EventListener = () => {
+    fetch(`${this.apiPath}/posts/${this.postId}`, {
+      method: "DELETE",
+      credentials: "include",
+    }).then(() => {
+      const redirectUrl = new URL(window.location.href);
+      redirectUrl.pathname = "/blog";
+      redirectUrl.searchParams.set("admin", "1");
+      window.location.href = redirectUrl.toString();
+    });
+  };
+
+  static styles = [
+    ...GenericPostForm.styles,
+    css`
+      .delete {
+        --warning: #ff5454;
+        background-color: var(--warning);
+        border-color: var(--warning);
+      }
+    `,
+  ];
+
   render() {
     return html` ${this.error
         ? html`<div style="color: red; text-align: center;">${this.error}</div>`
         : ""}
+      <base-modal modal-title="本当にこの投稿を削除しますか？">
+        <button
+          id="delete-confirm"
+          class="delete"
+          type="button"
+          @click=${this.handleDeleteConfirmClick}
+        >
+          削除
+        </button></base-modal
+      >
       <form @submit=${this.handleSubmit}>
         <div>
           <label htmlFor="username">タイトル</label>
@@ -116,6 +162,9 @@ export class EditPostForm extends GenericPostForm {
         </div>
         <button type="submit">
           ${this.loading ? html`<loading-spinner></loading-spinner>` : "編集"}
+        </button>
+        <button class="delete" type="button" @click=${this.handleDeleteClick}>
+          削除
         </button>
       </form>`;
   }

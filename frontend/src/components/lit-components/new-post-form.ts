@@ -6,7 +6,7 @@ const tagName = "new-post-form";
 
 @customElement(tagName)
 export class NewPostForm extends GenericPostForm {
-  protected handleSubmit: EventListener = async event => {
+  private handleSubmit: EventListener = async event => {
     event.preventDefault();
     const form = event.currentTarget;
     if (!(form instanceof HTMLFormElement))
