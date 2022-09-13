@@ -1,5 +1,5 @@
 ---
-import ImageCard from "@components/UI/ImageCard";
+import { ImageCard } from "@components/lit-components/image-card";
 import Card from "@components/UI/Card";
 import LifeCycle from "@components/index/LifeCycle";
 import InquiryFooter from "@components/index/InquiryFooter";
@@ -12,7 +12,6 @@ import coffee from "/images/coffee.jpg";
 import art from "/images/art.jpg";
 import Layout from "../layouts/Layout.astro";
 
-
 const coeText =
   "カップ・オブ・エクセレンス（英語：Cup of Excellence、略称：CoE）はコーヒーの品質審査制度。カップ・オブ・エクセレンスはコーヒー界のアカデミー賞（オスカー）とも例えられる。コーヒーの審査は少なくとも毎回5回行われ、最終的な勝者は「カップ・オブ・エクセレンス」を冠される。";
 ---
@@ -24,11 +23,15 @@ const coeText =
       <h1>沖縄県産コーヒー農園、Pace</h1>
       <h3>コーヒーを通してすべての人に、へいあんを。</h3>
     </div>
-    <ImageCard image={mame}>
+    <ImageCard client:visible data-src={mame}>
       沖縄県のやんばるでコーヒーの栽培を行っています。
     </ImageCard>
-    <ImageCard image={coffee}>コーヒー豆の加工・販売を行っています。</ImageCard>
-    <ImageCard image={art}>障がい者の働く場を提供します。</ImageCard>
+    <ImageCard client:visible data-src={coffee}
+      >コーヒー豆の加工・販売を行っています。</ImageCard
+    >
+    <ImageCard client:visible data-src={art}
+      >障がい者の働く場を提供します。</ImageCard
+    >
     <Card>
       <h1>我々の挑戦</h1>
       <h2>
@@ -44,3 +47,25 @@ const coeText =
     <InquiryFooter />
   </div>
 </Layout>
+
+<script>
+  const observer = new IntersectionObserver(
+    entries =>
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const imageCard = entry.target;
+        if (!(imageCard instanceof HTMLElement))
+          throw TypeError("Observer Entries must be HTML Elements");
+        const src = imageCard.dataset.src;
+        if (!src) throw TypeError("No data-src was provided");
+        imageCard.setAttribute("src", src);
+      }),
+    {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0,
+    }
+  );
+  const imageCards = document.querySelectorAll("image-card");
+  imageCards.forEach(imageCard => observer.observe(imageCard));
+</script>
