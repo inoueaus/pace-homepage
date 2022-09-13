@@ -12,6 +12,7 @@ import nae from "../../public/images/nae.jpg";
 import flower from "../../public/images/flower.jpg";
 import plant from "../../public/images/plant.jpg";
 import Layout from "../layouts/Layout.astro";
+import { InquiryFooter } from "@components/lit-components/inquiry-footer";
 
 const coeText =
   "カップ・オブ・エクセレンス（英語：Cup of Excellence、略称：CoE）はコーヒーの品質審査制度。カップ・オブ・エクセレンスはコーヒー界のアカデミー賞（オスカー）とも例えられる。コーヒーの審査は少なくとも毎回5回行われ、最終的な勝者は「カップ・オブ・エクセレンス」を冠される。";
@@ -70,13 +71,7 @@ const coeText =
         </div>
       </div>
     </div>
-    <div class={styles["inquiry"]}>
-      <h1>お問い合わせ</h1>
-
-      <a href="/inquiry" style={{ color: "white", backgroundColor: "#372c2e" }}>
-        お問い合せはこちら
-      </a>
-    </div>
+    <InquiryFooter></InquiryFooter>
   </div>
 </Layout>
 
