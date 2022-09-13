@@ -154,6 +154,12 @@ CREATE TABLE inquiries (
 
 Use pgAdmin to restore the dump saved in /database/backup.sql
 
+## Deploy to EC2
+
+### Docker Command
+
+docker run -p 9000:8080 -d --rm --env-file backend.env mayeraus/pace-backend:amd64
+
 ## Heroku Deploy 手順
 
 1. docker build -t mayeraus/pace-backend:amd64 --platform linux/amd64 .
