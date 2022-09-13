@@ -1,23 +1,11 @@
-import { css, html, LitElement } from "lit";
-import { state, customElement, property, query } from "lit/decorators.js";
-import { globalStyles } from "./styles";
-import formStyles from "./styles/form";
+import { html } from "lit";
+import { customElement } from "lit/decorators.js";
+import GenericPostForm, { Payload } from "./generic-post-form";
 
 const tagName = "new-post-form";
 
 @customElement(tagName)
-export class NewPostForm extends LitElement {
-  @property({ attribute: "api-path" })
-  protected apiPath = "";
-  @state()
-  protected fileName = "";
-  @state()
-  protected error = "";
-  @state()
-  protected loading = false;
-  @query("img")
-  protected imagePreview!: HTMLImageElement;
-
+export class NewPostForm extends GenericPostForm {
   protected handleSubmit: EventListener = async event => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -28,7 +16,7 @@ export class NewPostForm extends LitElement {
     const formData = new FormData(form);
     const title = formData.get("title")!.toString().trim();
     const body = formData.get("body")!.toString().trim();
-    const payload: { title: string; body: string; image?: string } = {
+    const payload: Payload = {
       title,
       body,
     };
@@ -36,7 +24,8 @@ export class NewPostForm extends LitElement {
     if (image instanceof File) {
       if (image.size > 1024 * 500)
         return (this.error = "画像サイズは500KBまで");
-      payload.image = await this.readImageAsB64(image);
+      const imageDataString = await this.readImageAsB64(image);
+      payload.picture = imageDataString.split(",")[1];
     }
     const result = await fetch(`${this.apiPath}/posts/new`, {
       method: "POST",
@@ -59,46 +48,6 @@ export class NewPostForm extends LitElement {
     redirectUrl.searchParams.set("admin", "1");
     window.location.href = redirectUrl.toString();
   };
-
-  protected readImageAsB64(image: File) {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.addEventListener("error", () => reject(reader.error), {
-        once: true,
-      });
-      reader.addEventListener("load", () => {
-        const result = reader.result;
-        if (typeof result !== "string") throw TypeError();
-        resolve(result);
-      });
-
-      reader.readAsDataURL(image);
-    });
-  }
-
-  protected handleFileSelection: EventListener = event => {
-    const fileInput = event.currentTarget;
-    if (!(fileInput instanceof HTMLInputElement))
-      throw TypeError("Listener must be used with Input");
-    const files = fileInput.files;
-    if (!(files && files.length)) return;
-    const [image] = files;
-    this.fileName = image.name;
-    this.readImageAsB64(image).then(
-      imageString => (this.imagePreview.src = imageString)
-    );
-  };
-
-  static styles = [
-    globalStyles,
-    formStyles,
-    css`
-      img[src] {
-        max-width: 100%;
-        margin: 1rem;
-      }
-    `,
-  ];
 
   render() {
     return html`${this.error

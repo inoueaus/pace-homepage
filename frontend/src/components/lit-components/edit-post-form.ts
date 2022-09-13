@@ -1,12 +1,12 @@
-import { css, html } from "lit";
-import { state, customElement, property, query } from "lit/decorators.js";
+import { html } from "lit";
+import { customElement, property, query } from "lit/decorators.js";
 import type { PostServerModel } from "../../../types/post-model";
-import { NewPostForm } from "./new-post-form";
+import GenericPostForm, { Payload } from "./generic-post-form";
 
 const tagName = "edit-post-form";
 
 @customElement(tagName)
-export class EditPostForm extends NewPostForm {
+export class EditPostForm extends GenericPostForm {
   @property({ attribute: "post-id" })
   private postId = 0;
   @query("input#title")
@@ -37,7 +37,7 @@ export class EditPostForm extends NewPostForm {
     const formData = new FormData(form);
     const title = formData.get("title")!.toString().trim();
     const body = formData.get("body")!.toString().trim();
-    const payload: { title: string; body: string; image?: string } = {
+    const payload: Payload = {
       title,
       body,
     };
@@ -45,19 +45,18 @@ export class EditPostForm extends NewPostForm {
     if (image instanceof File) {
       if (image.size > 1024 * 500)
         return (this.error = "画像サイズは500KBまで");
-      payload.image = await this.readImageAsB64(image);
+      const imageDataString = await this.readImageAsB64(image);
+      payload.picture = imageDataString.split(",")[1];
     }
-    const result = await fetch(
-      `${this.apiPath}/posts/${this.postId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(payload),
-      }
-    );
+    console.log(payload);
+    const result = await fetch(`${this.apiPath}/posts/${this.postId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(payload),
+    });
     if (!result.ok)
       throw Error(
         `Inquiry Fetch Failed: ${result.status} ${result.statusText}`
