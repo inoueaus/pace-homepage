@@ -6,17 +6,6 @@ import type { PostModel } from "../../../types/post-model";
 import styles from "./BlogPost.module.css";
 import { SingleBlogPost, tagName } from "../lit-components/single-blog-post";
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      "single-blog-post": React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement>,
-        HTMLElement
-      >;
-    }
-  }
-}
-
 if (!window.customElements.get(tagName)) {
   window.customElements.define(tagName, SingleBlogPost);
 }

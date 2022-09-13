@@ -2,7 +2,7 @@ import { LitElement, html, css } from "lit";
 import { customElement } from "lit/decorators.js";
 import { globalStyles } from "./styles";
 
-const tagName = "loading-icon";
+export const tagName = "loading-icon";
 
 @customElement(tagName)
 export class LoadingIcon extends LitElement {
