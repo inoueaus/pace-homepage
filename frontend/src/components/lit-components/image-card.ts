@@ -8,7 +8,7 @@ const tagName = "image-card";
 export class ImageCard extends LitElement {
   @property({ attribute: "src" })
   private src = "";
-  @property({ attribute: "class" })
+  @property({ attribute: "class-name" })
   private class = "";
 
   static styles = [
