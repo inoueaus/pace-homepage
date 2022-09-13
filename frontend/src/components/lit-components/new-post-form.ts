@@ -38,13 +38,10 @@ export class NewPostForm extends GenericPostForm {
 
     if (!result.ok)
       return (this.error = `Inquiry Fetch Failed: ${result.status} ${result.statusText}`);
-    const data = await result.json();
     this.error = "";
     this.loading = false;
-
-    const id: string = data.id;
     const redirectUrl = new URL(window.location.href);
-    redirectUrl.pathname = `/blog/${id}`;
+    redirectUrl.pathname = "/blog";
     redirectUrl.searchParams.set("admin", "1");
     window.location.href = redirectUrl.toString();
   };

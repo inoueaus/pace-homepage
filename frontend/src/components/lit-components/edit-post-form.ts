@@ -1,5 +1,5 @@
 import { css, html } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, query, state } from "lit/decorators.js";
 import type { PostServerModel } from "../../../types/post-model";
 import GenericPostForm, { Payload } from "./generic-post-form";
 import { BaseModal, tagName as baseModalTagName } from "./base-modal";
@@ -8,7 +8,6 @@ const tagName = "edit-post-form";
 
 @customElement(tagName)
 export class EditPostForm extends GenericPostForm {
-  @property({ attribute: "post-id" })
   private postId = 0;
   @query("input#title")
   private titleInput!: HTMLInputElement;
@@ -26,6 +25,8 @@ export class EditPostForm extends GenericPostForm {
 
   connectedCallback(): void {
     super.connectedCallback();
+    const { searchParams } = new URL(window.location.href);
+    this.postId = Number(searchParams.get("post-id"));
     fetch(`${this.apiPath}/posts/${this.postId}`)
       .then(response => response.json())
       .then((data: PostServerModel) => {
@@ -70,14 +71,11 @@ export class EditPostForm extends GenericPostForm {
       throw Error(
         `Inquiry Fetch Failed: ${result.status} ${result.statusText}`
       );
-
-    const data = await result.json();
     this.error = "";
     this.loading = false;
 
-    const id: string = data.id;
     const redirectUrl = new URL(window.location.href);
-    redirectUrl.pathname = `/blog/${id}`;
+    redirectUrl.pathname = "/blog";
     redirectUrl.searchParams.set("admin", "1");
     window.location.href = redirectUrl.toString();
   };

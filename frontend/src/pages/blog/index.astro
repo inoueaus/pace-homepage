@@ -5,6 +5,6 @@ import Layout from "src/layouts/Layout.astro";
 ---
 
 <Layout>
-  <BlogList client:load path={`${import.meta.env.NEXT_PUBLIC_API_URI}/posts`} />
+  <BlogList client:load path={import.meta.env.NEXT_PUBLIC_API_URI} />
   <InquiryFooter></InquiryFooter>
 </Layout>
