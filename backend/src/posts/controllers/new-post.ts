@@ -26,7 +26,7 @@ const newPost = async (req: Request, res: Response) => {
       const [imgResult] = await sql`INSERT INTO images (img, img_name, post_id)
       VALUES (${picture}, ${imgName}, ${result.id}) RETURNING img_id AS id`;
 
-      if (!imgResult.id) throw Error("Image not saved to DB");
+      if (!(imgResult && imgResult.id)) throw Error("Image not saved to DB");
     }
 
     res.status(201).json({ id: result.id, created: true });
