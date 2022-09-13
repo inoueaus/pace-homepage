@@ -91,3 +91,32 @@
   position: relative !important;
   height: unset !important;
 }
+
+.spinner-container {
+  position: relative;
+  display: block;
+  height: 90vh;
+}
+
+.spinner {
+  position: absolute;
+  width: 100%;
+  max-width: 100px;
+  margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  animation: spin 2s linear infinite;
+}
+
+.spacer {
+  margin-bottom: 100vh;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
