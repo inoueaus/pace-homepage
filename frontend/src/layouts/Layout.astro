@@ -1,0 +1,41 @@
+---
+import styles from "./AppLayout.module.css";
+import { NavBar } from "../components/lit-components/nav-bar";
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <title>沖縄コーヒー農園 Pace</title>
+  </head>
+  <body>
+    <NavBar />
+    <main class={styles.feed}>
+      <slot />
+    </main>
+    <footer class={styles.footer}>
+      <div>Copyright 2022 株式会社Pace（パーチェ）</div>
+      <small>〒903-0804 沖縄県那覇市首里石嶺町</small>
+    </footer>
+    <style is:global>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+    </style>
+  </body>
+</html>

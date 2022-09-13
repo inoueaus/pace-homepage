@@ -1,0 +1,14 @@
+---
+import { AdminNavBar } from "@components/lit-components/admin-nav-bar";
+import { NewPostForm } from "@components/lit-components/new-post-form";
+import Card from "@components/UI/Card";
+import Layout from "src/layouts/Layout.astro";
+---
+
+<Layout>
+  <AdminNavBar api-path={import.meta.env.NEXT_PUBLIC_API_URI} client:load />
+  <Card className="wide">
+    <h4>新規投稿</h4>
+    <NewPostForm api-path={import.meta.env.NEXT_PUBLIC_API_URI} client:load />
+  </Card>
+</Layout>

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import sql from "../../db";
-import { processProvidedImage } from "../helpers";
+import { checkIfHasImage, processProvidedImage } from "../helpers";
 
 interface PropertiesToUpdate {
   title: string;
@@ -29,17 +29,29 @@ const updatePost = async (req: Request, res: Response) => {
     const [result] = await sql`UPDATE posts SET ${sql(propertiesToUpdate)}
     WHERE id = ${id} RETURNING id`;
 
-    if (typeof result.id !== "number")
+    if (!(result && typeof result.id === "number"))
       throw Error("Database did not return post ID");
 
     if (newImage) {
-      const [imgResult] = await sql`UPDATE images SET img = ${newImage}
-      WHERE post_id = ${result.id} RETURNING img_id AS id`;
-      if (typeof imgResult.id !== "number") throw Error("Image not Updated");
+      const hasImage = await checkIfHasImage(result.id);
+      if (hasImage) {
+        const [imgResult] = await sql`UPDATE images SET img = ${newImage}
+          WHERE post_id = ${result.id} RETURNING img_id AS id;`;
+        if (!(imgResult && typeof imgResult.id === "number"))
+          throw Error("Image not Updated");
+      } else {
+        const imgName =
+          String(result.id) + "_img_" + String(new Date().getTime());
+        const [imgResult] =
+          await sql`INSERT INTO images (img, img_name, post_id)
+            VALUES (${newImage}, ${imgName}, ${result.id}) RETURNING img_id AS id`;
+        if (!(imgResult && imgResult.id)) throw Error("Image not saved to DB");
+      }
     }
 
     res.status(200).json({ id: result.id, updated: true });
   } catch (error) {
+    console.error(error);
     res.status(400).json({
       message: error instanceof Error ? error.message : "Invalid request.",
       updated: false,

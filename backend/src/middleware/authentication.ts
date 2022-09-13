@@ -10,7 +10,7 @@ const requireToken = async (
   const token = req.cookies.token;
 
   if (!token) {
-    return res.status(403).json({ auth: false });
+    return res.status(401).json({ auth: false });
   }
   try {
     if (typeof token !== "string")

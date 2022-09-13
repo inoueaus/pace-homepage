@@ -1,0 +1,10 @@
+---
+import BlogList from "@components/blog/BlogList";
+import { InquiryFooter } from "@components/lit-components/inquiry-footer";
+import Layout from "src/layouts/Layout.astro";
+---
+
+<Layout>
+  <BlogList client:load path={import.meta.env.NEXT_PUBLIC_API_URI} />
+  <InquiryFooter></InquiryFooter>
+</Layout>
