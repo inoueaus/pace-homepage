@@ -1,18 +1,28 @@
 import { html, LitElement } from "lit";
 import { state, customElement, property } from "lit/decorators.js";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { globalStyles } from "./styles";
+import { tagName as loadingIconTagName, LoadingIcon } from "./loading-icon";
 import formStyles from "./styles/form";
+import { app } from "@firebase/index";
 
 const tagName = "login-form";
 
 @customElement(tagName)
 export class LoginForm extends LitElement {
-  @property({ attribute: "api-path" })
-  private apiPath = "";
   @state()
   private loginError = "";
   @state()
   private loading = false;
+  private auth: ReturnType<typeof getAuth>;
+
+  constructor() {
+    super();
+    this.auth = getAuth(app);
+    if (!window.customElements.get(loadingIconTagName)) {
+      window.customElements.define(loadingIconTagName, LoadingIcon);
+    }
+  }
 
   private handleSubmit: EventListener = event => {
     event.preventDefault();
@@ -22,30 +32,21 @@ export class LoginForm extends LitElement {
     this.loginError = "";
     this.loading = true;
     const formData = new FormData(form);
-    const username = formData.get("username")!.toString().trim();
+    const email = formData.get("email")!.toString().trim();
     const password = formData.get("password")!.toString().trim();
 
-    if (!(username && password)) return;
-    fetch(`${this.apiPath}/users/login`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ username, password }),
-      credentials: "include",
-    })
-      .then(result => {
-        if (!result.ok)
-          throw Error(`Login failed: ${result.status} ${result.statusText}`);
-        window.localStorage.setItem("isAuth", "1");
+    if (!(email && password)) return;
+    this.loading = true;
+    this.loginError = "";
+    signInWithEmailAndPassword(this.auth, email, password)
+      .then(() => {
         const redirectUrl = new URL(window.location.href);
         redirectUrl.pathname = "/admin";
         window.location.href = redirectUrl.toString();
       })
       .catch(error => {
-        if (error instanceof Error) {
-          this.loginError = error.message;
-        }
+        if (!(error instanceof Error)) return;
+        this.loginError = error.message;
       })
       .finally(() => (this.loading = false));
   };
@@ -60,12 +61,12 @@ export class LoginForm extends LitElement {
         : ""}
       <form @submit=${this.handleSubmit}>
         <div>
-          <label htmlFor="username">ユーザー名</label>
+          <label htmlFor="email">メールアドレス</label>
           <input
-            id="username"
-            name="username"
-            autocomplete="username"
-            type="text"
+            id="email"
+            name="email"
+            autocomplete="email"
+            type="email"
             maxlength="255"
             minlength="2"
             required
@@ -84,7 +85,7 @@ export class LoginForm extends LitElement {
           />
         </div>
         <button className="{styles.submit}" type="submit">
-          ${this.loading ? html`<loading-spinner></loading-spinner>` : "送信"}
+          ${this.loading ? html`<loading-icon small></loading-icon>` : "送信"}
         </button>
       </form>`;
   }
