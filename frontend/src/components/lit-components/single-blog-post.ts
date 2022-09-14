@@ -1,24 +1,23 @@
-import { LitElement, html, css } from "lit";
+import { get, ref } from "firebase/database";
+import { html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import type { PostModel } from "../../../types/post-model";
+import type { PostServerModel } from "../../../types/post-model";
+import FirebaseDbElement from "./firebase-db-element";
 import { globalStyles } from "./styles";
 
 export const tagName = "single-blog-post";
 
 @customElement(tagName)
-export class SingleBlogPost extends LitElement {
-  @property({ attribute: "api-path" })
-  private apiPath = "";
+export class SingleBlogPost extends FirebaseDbElement {
   @property({ attribute: "post-id" })
   private postId = 0;
   @state()
-  private post: PostModel = {
+  private post: PostServerModel = {
     title: "",
     body: "",
-    id: 999,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    picture: null,
+    createdAt: 0,
+    updatedAt: 0,
+    picture: "",
   };
 
   attributeChangedCallback(
@@ -28,19 +27,9 @@ export class SingleBlogPost extends LitElement {
   ): void {
     super.attributeChangedCallback(name, _old, value);
     if (name === "post-id") {
-      fetch(`${this.apiPath}/posts/${this.postId}`)
-        .then(result => {
-          if (!result.ok)
-            throw Error(`Post Fetch Failed: ${result.statusText}`);
-          return result.json();
-        })
-        .then(data => {
-          this.post = {
-            ...data,
-            createdAt: new Date(data.createdAt),
-            updatedAt: new Date(data.updatedAt),
-          };
-        });
+      get(ref(this.db, `/posts/${this.postId}`)).then(snapshot => {
+        this.post = snapshot.val();
+      })
     }
   }
 
@@ -148,7 +137,7 @@ export class SingleBlogPost extends LitElement {
     return html`
       <article class="card">
         ${isAuth ? html` <a href=${editUrl.toString()}>編集</a>` : ""}
-        <h3>${this.post.title}</h3>
+        <h3>${this.post?.title ?? ""}</h3>
         <div class="body">
           ${this.post.picture
             ? html`<div class="picture-container">
@@ -156,7 +145,7 @@ export class SingleBlogPost extends LitElement {
               </div>`
             : ""}
           <p class="body-text long-body">${this.post.body}</p>
-          <small>${this.post.createdAt.toLocaleDateString()}</small>
+          <small>${new Date(this.post.createdAt).toLocaleDateString()}</small>
         </div>
       </article>
     `;
