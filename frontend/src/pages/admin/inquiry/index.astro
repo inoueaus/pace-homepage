@@ -5,6 +5,6 @@ import AdminInquiryPage from "@components/AdminInquiryPage";
 ---
 
 <Layout>
-  <AdminNavBar api-path={import.meta.env.NEXT_PUBLIC_API_URI} client:load />
+  <AdminNavBar client:load />
   <AdminInquiryPage client:load path={import.meta.env.NEXT_PUBLIC_API_URI} />
 </Layout>
