@@ -1,9 +1,14 @@
+import { app } from "@firebase/index";
+import { getDatabase, push, ref } from "firebase/database";
 import { FormEventHandler, useEffect, useRef, useState } from "react";
 import ErrorBox from "../../components/inquiry/ErrorBox";
 import Card from "../../components/UI/Card";
 import FormInput from "../../components/UI/input/FormInput";
 import FormSubmit from "../../components/UI/input/FormSubmit";
 import FormTextArea from "../../components/UI/input/FormTextArea";
+
+const db = getDatabase(app);
+const inquriesRef = ref(db, "/inquiries");
 
 const InquiryPage: React.FC<{ path: string }> = ({ path }) => {
   const [formErrors, setFormErrors] = useState<string[]>([]);
@@ -32,30 +37,31 @@ const InquiryPage: React.FC<{ path: string }> = ({ path }) => {
 
     if (firstName && lastName && email && phone && body) {
       setSending(true);
-      fetch(path, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      console.log(
+        JSON.stringify({
           firstName,
           lastName,
           email,
           phone,
           body,
-        }),
+          createdAt: Date.now(),
+          viewed: false,
+        })
+      );
+      push(inquriesRef, {
+        firstName,
+        lastName,
+        email,
+        phone,
+        body,
+        createdAt: Date.now(),
+        viewed: false,
       })
         .then(result => {
-          if (!result.ok) throw Error(`Request Failed: ${result.status}`);
-          return result.json();
-        })
-        .then(data => {
-          if (data.created && data.id) {
-            const newUrl = new URL(window.location.href);
-            newUrl.pathname = "/inquiry/sent";
-            newUrl.searchParams.set("inquiry-id", data.id);
-            window.location.href = newUrl.toString();
-          }
+          const newUrl = new URL(window.location.href);
+          newUrl.pathname = "/inquiry/sent";
+          newUrl.searchParams.set("inquiry-id", String(result.key));
+          window.location.href = newUrl.toString();
         })
         .catch(error => {
           setSending(false);
