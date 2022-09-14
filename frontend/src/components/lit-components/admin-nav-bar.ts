@@ -1,4 +1,5 @@
-import { app, checkAuthStatus } from "@firebase/index";
+import { checkAuthStatus } from "@firebase/helpers";
+import { app } from "@firebase/index";
 import { signOut, getAuth } from "firebase/auth";
 import { css, html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
