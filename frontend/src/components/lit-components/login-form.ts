@@ -40,6 +40,7 @@ export class LoginForm extends LitElement {
     this.loginError = "";
     signInWithEmailAndPassword(this.auth, email, password)
       .then(() => {
+        window.localStorage.setItem("isAuth", "1");
         const redirectUrl = new URL(window.location.href);
         redirectUrl.pathname = "/admin";
         window.location.href = redirectUrl.toString();

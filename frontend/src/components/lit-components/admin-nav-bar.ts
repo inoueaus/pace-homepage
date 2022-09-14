@@ -1,24 +1,18 @@
+import { app, checkAuthStatus } from "@firebase/index";
+import { signOut, getAuth } from "firebase/auth";
 import { css, html, LitElement } from "lit";
-import { state, customElement, property } from "lit/decorators.js";
+import { customElement } from "lit/decorators.js";
 import { globalStyles } from "./styles";
 
 const tagName = "admin-nav-bar";
 
 @customElement(tagName)
 export class AdminNavBar extends LitElement {
-  @property({ attribute: "api-path" })
-  private apiPath = "";
   private controller = new AbortController();
 
   connectedCallback() {
     super.connectedCallback();
-    new Promise<boolean>((resolve, reject) => {
-      fetch(`${this.apiPath}/users/status`, { credentials: "include" }).then(
-        response => {
-          resolve(response.status === 200);
-        }
-      );
-    }).then(isAuth => {
+    checkAuthStatus().then(isAuth => {
       if (!isAuth) {
         window.localStorage.clear();
         return this.redirectToLogin();
@@ -28,10 +22,8 @@ export class AdminNavBar extends LitElement {
     window.addEventListener(
       "logout",
       () => {
-        fetch(`${this.apiPath}/users/logout`, {
-          method: "POST",
-          credentials: "include",
-        });
+        const auth = getAuth(app);
+        signOut(auth);
         window.localStorage.clear();
         this.redirectToLogin();
       },
