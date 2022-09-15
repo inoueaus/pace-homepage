@@ -12,13 +12,7 @@ export class SingleBlogPost extends FirebaseDbElement {
   @property({ attribute: "post-id" })
   private postId = 0;
   @state()
-  private post: PostServerModel = {
-    title: "",
-    body: "",
-    createdAt: 0,
-    updatedAt: 0,
-    picture: "",
-  };
+  private post: PostServerModel | null = null;
 
   attributeChangedCallback(
     name: string,
@@ -29,13 +23,17 @@ export class SingleBlogPost extends FirebaseDbElement {
     if (name === "post-id") {
       get(ref(this.db, `/posts/${this.postId}`)).then(snapshot => {
         this.post = snapshot.val();
-      })
+      });
     }
   }
 
   static styles = [
     globalStyles,
     css`
+      :host([hide]) {
+        display: none;
+      }
+
       .card {
         width: 90%;
         max-width: 500px;
@@ -127,6 +125,8 @@ export class SingleBlogPost extends FirebaseDbElement {
   ];
 
   render() {
+    if (!this.post) return;
+
     const fileFormat = this.post.picture?.charAt(0) === "/" ? "jpeg" : "png";
     const src = `data:image/${fileFormat};base64,${this.post.picture}`;
     const isAuth = Boolean(Number(window.localStorage.getItem("isAuth")));

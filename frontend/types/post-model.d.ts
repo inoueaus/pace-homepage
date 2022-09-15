@@ -1,19 +1,18 @@
 export type PostServerModel = {
-  id: number;
   title: string;
   body: string;
-  picture: string | null;
-  createdAt: string;
-  updatedAt: string;
+  picture: string;
+  createdAt: number;
+  updatedAt: number;
 };
 
 interface PostModel {
-  id: number;
+  id: string;
   title: string;
   body: string;
   picture: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: number;
+  updatedAt: number;
 }
 export const dummyPost = {
   title: "",
