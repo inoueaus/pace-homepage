@@ -3,7 +3,9 @@ import { html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { PostServerModel } from "../../../types/post-model";
 import FirebaseDbElement from "./firebase-db-element";
+import { loadComponent } from "./helpers";
 import { globalStyles } from "./styles";
+import { tagName as loadingIconTagName, LoadingIcon } from "./loading-icon";
 
 export const tagName = "single-blog-post";
 
@@ -13,6 +15,13 @@ export class SingleBlogPost extends FirebaseDbElement {
   private postId = 0;
   @state()
   private post: PostServerModel | null = null;
+  @state()
+  private loading = true;
+
+  constructor() {
+    super();
+    loadComponent(loadingIconTagName, LoadingIcon);
+  }
 
   attributeChangedCallback(
     name: string,
@@ -21,9 +30,13 @@ export class SingleBlogPost extends FirebaseDbElement {
   ): void {
     super.attributeChangedCallback(name, _old, value);
     if (name === "post-id") {
-      get(ref(this.db, `/posts/${this.postId}`)).then(snapshot => {
-        this.post = snapshot.val();
-      });
+      get(ref(this.db, `/posts/${this.postId}`))
+        .then(snapshot => {
+          this.post = snapshot.val();
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 
@@ -136,6 +149,7 @@ export class SingleBlogPost extends FirebaseDbElement {
 
     return html`
       <article class="card">
+        ${this.loading ? html`<loading-icon></loading-icon>` : ""}
         ${isAuth ? html` <a href=${editUrl.toString()}>編集</a>` : ""}
         <h3>${this.post?.title ?? ""}</h3>
         <div class="body">
