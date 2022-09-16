@@ -2,7 +2,7 @@ import { css, html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import type { PostServerModel } from "../../../types/post-model";
 import GenericPostForm, { Payload } from "./generic-post-form";
-import { get, ref, set } from "firebase/database";
+import { get, ref, set, remove } from "firebase/database";
 import type { BaseModal } from "./base-modal";
 
 const tagName = "edit-post-form";
@@ -93,10 +93,7 @@ export class EditPostForm extends GenericPostForm {
   };
 
   private handleDeleteConfirmClick: EventListener = () => {
-    fetch(`${this.apiPath}/posts/${this.postId}`, {
-      method: "DELETE",
-      credentials: "include",
-    }).then(() => {
+    remove(this.postRef).then(() => {
       const redirectUrl = new URL(window.location.href);
       redirectUrl.pathname = "/blog";
       redirectUrl.searchParams.set("admin", "1");
