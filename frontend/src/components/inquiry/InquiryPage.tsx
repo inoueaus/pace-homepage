@@ -37,17 +37,6 @@ const InquiryPage: React.FC<{ path: string }> = ({ path }) => {
 
     if (firstName && lastName && email && phone && body) {
       setSending(true);
-      console.log(
-        JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          phone,
-          body,
-          createdAt: Date.now(),
-          viewed: false,
-        })
-      );
       push(inquriesRef, {
         firstName,
         lastName,
