@@ -49,14 +49,17 @@ export const postCss = css`
     flex: 0 0 65%;
     padding: 1rem;
     padding-bottom: 1rem;
-    height: 150px;
+    max-height: 150px;
+    margin: auto 0;
+    display: flex;
     position: relative;
     white-space: pre-wrap;
   }
 
   .text-container {
-    height: 100%;
+    max-height: fit-content;
     overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .picture-container {
@@ -77,7 +80,7 @@ export const postCss = css`
 
   .fade {
     bottom: 0;
-    height: 150px;
+    height: 50%;
     background: linear-gradient(
       rgba(255, 255, 255, 0) 0%,
       rgba(255, 255, 255, 1) 100%
