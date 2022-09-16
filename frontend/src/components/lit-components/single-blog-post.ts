@@ -1,16 +1,20 @@
-import { get, ref } from "firebase/database";
+import { get, ref as databaseRef } from "firebase/database";
 import { html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { PostServerModel } from "../../../types/post-model";
-import FirebaseDbElement from "./firebase-db-element";
+import FirebaseElement from "./firebase-element";
 import { loadComponent } from "./helpers";
 import { globalStyles } from "./styles";
 import { tagName as loadingIconTagName, LoadingIcon } from "./loading-icon";
+import {
+  tagName as firebasePictureTagName,
+  FirebasePicture,
+} from "./firebase-picture";
 
 export const tagName = "single-blog-post";
 
 @customElement(tagName)
-export class SingleBlogPost extends FirebaseDbElement {
+export class SingleBlogPost extends FirebaseElement {
   @property({ attribute: "post-id" })
   private postId = 0;
   @state()
@@ -21,6 +25,7 @@ export class SingleBlogPost extends FirebaseDbElement {
   constructor() {
     super();
     loadComponent(loadingIconTagName, LoadingIcon);
+    loadComponent(firebasePictureTagName, FirebasePicture);
   }
 
   attributeChangedCallback(
@@ -30,7 +35,7 @@ export class SingleBlogPost extends FirebaseDbElement {
   ): void {
     super.attributeChangedCallback(name, _old, value);
     if (name === "post-id") {
-      get(ref(this.db, `/posts/${this.postId}`))
+      get(databaseRef(this.db, `/posts/${this.postId}`))
         .then(snapshot => {
           this.post = snapshot.val();
         })
@@ -109,22 +114,6 @@ export class SingleBlogPost extends FirebaseDbElement {
         overflow: hidden;
       }
 
-      .picture-container {
-        position: relative;
-        width: 100%;
-      }
-
-      .picture-container span {
-        position: relative !important;
-      }
-
-      .picture-container img {
-        object-fit: contain;
-        width: 100% !important;
-        position: relative !important;
-        height: unset !important;
-      }
-
       img {
         max-width: 100%;
         border-radius: 4px;
@@ -141,7 +130,6 @@ export class SingleBlogPost extends FirebaseDbElement {
     if (!this.post) return;
 
     const fileFormat = this.post.picture?.charAt(0) === "/" ? "jpeg" : "png";
-    const src = `data:image/${fileFormat};base64,${this.post.picture}`;
     const isAuth = Boolean(Number(window.localStorage.getItem("isAuth")));
     const editUrl = new URL(window.location.href);
     editUrl.pathname = "/admin/blog/edit";
@@ -154,9 +142,7 @@ export class SingleBlogPost extends FirebaseDbElement {
         <h3>${this.post?.title ?? ""}</h3>
         <div class="body">
           ${this.post.picture
-            ? html`<div class="picture-container">
-                <img src=${src} />
-              </div>`
+            ? html`<firebase-picture image-name=${this.post.picture}></firebase-picture>`
             : ""}
           <p class="body-text long-body">${this.post.body}</p>
           <small>${new Date(this.post.createdAt).toLocaleDateString()}</small>

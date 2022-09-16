@@ -3,6 +3,12 @@ import { customElement, query, state } from "lit/decorators.js";
 import type { PostServerModel } from "../../../types/post-model";
 import GenericPostForm, { Payload } from "./generic-post-form";
 import { get, ref, set, remove } from "firebase/database";
+import {
+  ref as storageRef,
+  uploadBytes,
+  deleteObject,
+  getDownloadURL,
+} from "firebase/storage";
 import type { BaseModal } from "./base-modal";
 
 const tagName = "edit-post-form";
@@ -39,10 +45,16 @@ export class EditPostForm extends GenericPostForm {
         this.post = snapshot.val();
         this.titleInput.value = this.post.title;
         this.bodyInput.textContent = this.post.body;
-        const fileFormat = this.post.picture.charAt(0) === "/" ? "jpeg" : "png";
-        this.imagePreview.src = this.post.picture
-          ? `data:image/${fileFormat};base64,${this.post.picture}`
-          : "";
+
+        return new Promise(resolve => {
+          if (!this.post.picture) return resolve(true);
+          getDownloadURL(
+            storageRef(this.storage, `images/${this.post.picture}`)
+          ).then(url => {
+            this.imagePreview.src = url;
+            resolve(true);
+          });
+        });
       })
       .finally(() => (this.loadingData = false));
   }
@@ -65,13 +77,32 @@ export class EditPostForm extends GenericPostForm {
       picture: this.post.picture,
     };
     const image = formData.get("image");
-    if (image instanceof File && image.size) {
-      if (image.size > 1024 * 500)
-        return (this.error = "画像サイズは500KBまで");
-      const imageDataString = await this.readImageAsB64(image);
-      payload.picture = imageDataString.split(",")[1];
-    }
-    set(this.postRef, payload)
+    if (!(image instanceof File)) return;
+    if (image.size > 1024 * 500) return (this.error = "画像サイズは500KBまで");
+    const hasImage = Boolean(image.size);
+    payload.picture = hasImage ? String(Date.now()) + image.name : "";
+    Promise.all([
+      set(this.postRef, payload),
+      new Promise((resolve, reject) => {
+        if (!hasImage) return resolve(true);
+        uploadBytes(
+          storageRef(this.storage, `images/${payload.picture}`),
+          image
+        ).then(
+          () => resolve(true),
+          error => reject(error)
+        );
+      }),
+      new Promise((resolve, reject) => {
+        if (!this.post.picture) return resolve(true);
+        deleteObject(
+          storageRef(this.storage, `images/${this.post.picture}`)
+        ).then(
+          () => resolve(true),
+          error => reject(error)
+        );
+      }),
+    ])
       .then(() => {
         this.error = "";
         const redirectUrl = new URL(window.location.href);
@@ -92,14 +123,16 @@ export class EditPostForm extends GenericPostForm {
     this.baseModal.toggleAttribute("show", true);
   };
 
-  private handleDeleteConfirmClick: EventListener = () => {
-    remove(this.postRef).then(() => {
-      const redirectUrl = new URL(window.location.href);
-      redirectUrl.pathname = "/blog";
-      redirectUrl.searchParams.set("admin", "1");
-      window.location.href = redirectUrl.toString();
-    });
-  };
+  private handleDeleteConfirmClick: EventListener = () =>
+    Promise.all([
+      remove(this.postRef).then(() => {
+        const redirectUrl = new URL(window.location.href);
+        redirectUrl.pathname = "/blog";
+        redirectUrl.searchParams.set("admin", "1");
+        window.location.href = redirectUrl.toString();
+      }),
+      deleteObject(storageRef(this.storage, `images/${this.post.picture}`)),
+    ]);
 
   static styles = [
     ...GenericPostForm.styles,

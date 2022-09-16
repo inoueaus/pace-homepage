@@ -1,4 +1,5 @@
-import { push, ref } from "firebase/database";
+import { push, ref as databaseRef } from "firebase/database";
+import { ref as storageRef, uploadBytes } from "firebase/storage";
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";
 import GenericPostForm, { Payload } from "./generic-post-form";
@@ -25,13 +26,20 @@ export class NewPostForm extends GenericPostForm {
       updatedAt: Date.now(),
     };
     const image = formData.get("image");
-    if (image instanceof File && image.size) {
-      if (image.size > 1024 * 500)
-        return (this.error = "画像サイズは500KBまで");
-      const imageDataString = await this.readImageAsB64(image);
-      payload.picture = imageDataString.split(",")[1];
-    }
-    push(ref(this.db, "/posts"), payload)
+    if (!(image instanceof File)) return;
+    if (image.size > 1024 * 500) return (this.error = "画像サイズは500KBまで");
+    const hasImage = Boolean(image.size);
+    payload.picture = hasImage ? String(Date.now()) + image.name : "";
+    Promise.all([
+      push(databaseRef(this.db, "/posts"), payload),
+      new Promise(resolve => {
+        if (!hasImage) return resolve(true);
+        uploadBytes(
+          storageRef(this.storage, `images/${payload.picture}`),
+          image
+        ).then(result => resolve(result));
+      }),
+    ])
       .then(() => {
         this.error = "";
         this.loading = false;
@@ -88,7 +96,7 @@ export class NewPostForm extends GenericPostForm {
           </label>
         </div>
         <button type="submit">
-          ${this.loading ? html`<loading-icon></loading-icon>` : "作成"}
+          ${this.loading ? html`<loading-icon small></loading-icon>` : "作成"}
         </button>
       </form>`;
   }

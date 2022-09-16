@@ -1,6 +1,6 @@
 import { css } from "lit";
 import { state, property, query } from "lit/decorators.js";
-import FirebaseDbElement from "./firebase-db-element";
+import FirebaseElement from "./firebase-element";
 import { globalStyles } from "./styles";
 import formStyles from "./styles/form";
 import { BaseModal, tagName as baseModalTagName } from "./base-modal";
@@ -15,7 +15,7 @@ export type Payload = {
   updatedAt: number;
 };
 
-class GenericPostForm extends FirebaseDbElement {
+class GenericPostForm extends FirebaseElement {
   @property({ attribute: "api-path" })
   protected apiPath = "";
   @state()
