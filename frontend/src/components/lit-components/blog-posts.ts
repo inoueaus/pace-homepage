@@ -9,7 +9,11 @@ import {
 import { html, css, PropertyValueMap } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { tagName as loadingIconTagName, LoadingIcon } from "./loading-icon";
-import FirebaseDbElement from "./firebase-db-element";
+import {
+  tagName as firebasePictureTagName,
+  FirebasePicture,
+} from "./firebase-picture";
+import FirebaseElement from "./firebase-element";
 import { globalStyles } from "./styles";
 import { postCss } from "./styles/post";
 import type { PostModel, PostServerModel } from "@localTypes/post-model";
@@ -18,7 +22,7 @@ import { loadComponent } from "./helpers";
 export const tagName = "blog-posts";
 
 @customElement(tagName)
-export class BlogPosts extends FirebaseDbElement {
+export class BlogPosts extends FirebaseElement {
   @state()
   private posts: PostModel[] = [];
   @state()
@@ -32,6 +36,7 @@ export class BlogPosts extends FirebaseDbElement {
   constructor() {
     super();
     loadComponent(loadingIconTagName, LoadingIcon);
+    loadComponent(firebasePictureTagName, FirebasePicture);
     this.observer = new IntersectionObserver(this.observerCallback, {
       root: null,
       threshold: 1.0,
@@ -126,16 +131,9 @@ export class BlogPosts extends FirebaseDbElement {
             <div class="styles.body">
               <div class="text-picture-container">
                 ${post.picture
-                  ? html` <div class="picture">
-                      <img
-                        src=${`data:image/${
-                          post.picture.charAt(0) === "/" ? "jpeg" : "png"
-                        };base64,${post.picture}`}
-                        width="100%"
-                        height="100%"
-                        style="max-width: 100%;"
-                      />
-                    </div>`
+                  ? html`<firebase-picture
+                      image-name=${post.picture}
+                    ></firebase-picture>`
                   : ""}
                 <section class="body-text">
                   <div class="text-container">${post.body}</div>
