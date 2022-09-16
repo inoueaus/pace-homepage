@@ -3,13 +3,13 @@ interface LoginCredentials {
   password: string;
 }
 
-interface Inquiry {
-  id: number;
+export type Inquiry = {
+  id: string;
   body: string;
   phone: string;
   email: string;
   firstName: string;
   lastName: string;
-  createdAt: string;
+  createdAt: number;
   viewed: boolean;
 }

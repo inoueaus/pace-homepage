@@ -1,3 +1,5 @@
+import { push, ref as databaseRef } from "firebase/database";
+import { ref as storageRef, uploadBytes } from "firebase/storage";
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";
 import GenericPostForm, { Payload } from "./generic-post-form";
@@ -19,31 +21,37 @@ export class NewPostForm extends GenericPostForm {
     const payload: Payload = {
       title,
       body,
+      picture: "",
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     };
     const image = formData.get("image");
-    if (image instanceof File) {
-      if (image.size > 1024 * 500)
-        return (this.error = "画像サイズは500KBまで");
-      const imageDataString = await this.readImageAsB64(image);
-      payload.picture = imageDataString.split(",")[1];
-    }
-    const result = await fetch(`${this.apiPath}/posts/new`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(payload),
-    });
-
-    if (!result.ok)
-      return (this.error = `Inquiry Fetch Failed: ${result.status} ${result.statusText}`);
-    this.error = "";
-    this.loading = false;
-    const redirectUrl = new URL(window.location.href);
-    redirectUrl.pathname = "/blog";
-    redirectUrl.searchParams.set("admin", "1");
-    window.location.href = redirectUrl.toString();
+    if (!(image instanceof File)) return;
+    if (image.size > 1024 * 500) return (this.error = "画像サイズは500KBまで");
+    const hasImage = Boolean(image.size);
+    payload.picture = hasImage ? String(Date.now()) + image.name : "";
+    Promise.all([
+      push(databaseRef(this.db, "/posts"), payload),
+      new Promise(resolve => {
+        if (!hasImage) return resolve(true);
+        uploadBytes(
+          storageRef(this.storage, `images/${payload.picture}`),
+          image
+        ).then(result => resolve(result));
+      }),
+    ])
+      .then(() => {
+        this.error = "";
+        this.loading = false;
+        const redirectUrl = new URL(window.location.href);
+        redirectUrl.pathname = "/blog";
+        redirectUrl.searchParams.set("admin", "1");
+        window.location.href = redirectUrl.toString();
+      })
+      .catch(error => {
+        if (!(error instanceof Error)) return;
+        this.error = error.message;
+      });
   };
 
   render() {
@@ -88,7 +96,7 @@ export class NewPostForm extends GenericPostForm {
           </label>
         </div>
         <button type="submit">
-          ${this.loading ? html`<loading-spinner></loading-spinner>` : "作成"}
+          ${this.loading ? html`<loading-icon small></loading-icon>` : "作成"}
         </button>
       </form>`;
   }

@@ -1,11 +1,21 @@
-import { css, LitElement } from "lit";
+import { css } from "lit";
 import { state, property, query } from "lit/decorators.js";
+import FirebaseElement from "./firebase-element";
 import { globalStyles } from "./styles";
 import formStyles from "./styles/form";
+import { BaseModal, tagName as baseModalTagName } from "./base-modal";
+import { loadComponent } from "./helpers";
+import { tagName as loadingIconTagName, LoadingIcon } from "./loading-icon";
 
-export type Payload = { title: string; body: string; picture?: string };
+export type Payload = {
+  title: string;
+  body: string;
+  picture: string;
+  createdAt: number;
+  updatedAt: number;
+};
 
-class GenericPostForm extends LitElement {
+class GenericPostForm extends FirebaseElement {
   @property({ attribute: "api-path" })
   protected apiPath = "";
   @state()
@@ -16,6 +26,12 @@ class GenericPostForm extends LitElement {
   protected loading = false;
   @query("img")
   protected imagePreview!: HTMLImageElement;
+
+  constructor() {
+    super();
+    loadComponent(baseModalTagName, BaseModal);
+    loadComponent(loadingIconTagName, LoadingIcon);
+  }
 
   protected readImageAsB64(image: File) {
     return new Promise<string>((resolve, reject) => {

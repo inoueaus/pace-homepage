@@ -2,40 +2,61 @@ import { css, html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import type { PostServerModel } from "../../../types/post-model";
 import GenericPostForm, { Payload } from "./generic-post-form";
-import { BaseModal, tagName as baseModalTagName } from "./base-modal";
+import { get, ref, set, remove } from "firebase/database";
+import {
+  ref as storageRef,
+  uploadBytes,
+  deleteObject,
+  getDownloadURL,
+} from "firebase/storage";
+import type { BaseModal } from "./base-modal";
 
 const tagName = "edit-post-form";
 
 @customElement(tagName)
 export class EditPostForm extends GenericPostForm {
-  private postId = 0;
+  private postId = "";
+  private postRef!: ReturnType<typeof ref>;
   @query("input#title")
   private titleInput!: HTMLInputElement;
   @query("textarea")
   private bodyInput!: HTMLTextAreaElement;
   @query("base-modal")
   private baseModal!: BaseModal;
-
-  constructor() {
-    super();
-    if (!window.customElements.get(baseModalTagName)) {
-      window.customElements.define(baseModalTagName, BaseModal);
-    }
-  }
+  @state()
+  private loadingData = true;
+  @state()
+  private post: PostServerModel = {
+    title: "",
+    body: "",
+    createdAt: 0,
+    updatedAt: 0,
+    picture: "",
+  };
 
   connectedCallback(): void {
     super.connectedCallback();
     const { searchParams } = new URL(window.location.href);
-    this.postId = Number(searchParams.get("post-id"));
-    fetch(`${this.apiPath}/posts/${this.postId}`)
-      .then(response => response.json())
-      .then((data: PostServerModel) => {
-        this.titleInput.value = data.title;
-        this.bodyInput.textContent = data.body;
-        const fileFormat = data.picture?.charAt(0) === "/" ? "jpeg" : "png";
-        const formattedImageString = `data:image/${fileFormat};base64,${data.picture}`;
-        this.imagePreview.src = data.picture ? formattedImageString : "";
-      });
+    this.postId = searchParams.get("post-id") ?? "";
+    if (!this.postId) throw Error("Post ID not provided");
+    this.postRef = ref(this.db, `/posts/${this.postId}`);
+    get(this.postRef)
+      .then(snapshot => {
+        this.post = snapshot.val();
+        this.titleInput.value = this.post.title;
+        this.bodyInput.textContent = this.post.body;
+
+        return new Promise(resolve => {
+          if (!this.post.picture) return resolve(true);
+          getDownloadURL(
+            storageRef(this.storage, `images/${this.post.picture}`)
+          ).then(url => {
+            this.imagePreview.src = url;
+            resolve(true);
+          });
+        });
+      })
+      .finally(() => (this.loadingData = false));
   }
 
   private handleSubmit: EventListener = async event => {
@@ -51,50 +72,67 @@ export class EditPostForm extends GenericPostForm {
     const payload: Payload = {
       title,
       body,
+      updatedAt: Date.now(),
+      createdAt: this.post.createdAt,
+      picture: this.post.picture,
     };
     const image = formData.get("image");
-    if (image instanceof File) {
-      if (image.size > 1024 * 500)
-        return (this.error = "画像サイズは500KBまで");
-      const imageDataString = await this.readImageAsB64(image);
-      payload.picture = imageDataString.split(",")[1];
-    }
-    const result = await fetch(`${this.apiPath}/posts/${this.postId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(payload),
-    });
-    if (!result.ok)
-      throw Error(
-        `Inquiry Fetch Failed: ${result.status} ${result.statusText}`
-      );
-    this.error = "";
-    this.loading = false;
-
-    const redirectUrl = new URL(window.location.href);
-    redirectUrl.pathname = "/blog";
-    redirectUrl.searchParams.set("admin", "1");
-    window.location.href = redirectUrl.toString();
+    if (!(image instanceof File)) return;
+    if (image.size > 1024 * 500) return (this.error = "画像サイズは500KBまで");
+    const hasImage = Boolean(image.size);
+    payload.picture = hasImage ? String(Date.now()) + image.name : "";
+    Promise.all([
+      set(this.postRef, payload),
+      new Promise((resolve, reject) => {
+        if (!hasImage) return resolve(true);
+        uploadBytes(
+          storageRef(this.storage, `images/${payload.picture}`),
+          image
+        ).then(
+          () => resolve(true),
+          error => reject(error)
+        );
+      }),
+      new Promise((resolve, reject) => {
+        if (!this.post.picture) return resolve(true);
+        deleteObject(
+          storageRef(this.storage, `images/${this.post.picture}`)
+        ).then(
+          () => resolve(true),
+          error => reject(error)
+        );
+      }),
+    ])
+      .then(() => {
+        this.error = "";
+        const redirectUrl = new URL(window.location.href);
+        redirectUrl.pathname = "/blog";
+        redirectUrl.searchParams.set("admin", "1");
+        window.location.href = redirectUrl.toString();
+      })
+      .catch(error => {
+        if (!(error instanceof Error)) return;
+        this.error = error.message;
+      })
+      .finally(() => {
+        this.loading = false;
+      });
   };
 
   private handleDeleteClick: EventListener = () => {
     this.baseModal.toggleAttribute("show", true);
   };
 
-  private handleDeleteConfirmClick: EventListener = () => {
-    fetch(`${this.apiPath}/posts/${this.postId}`, {
-      method: "DELETE",
-      credentials: "include",
-    }).then(() => {
-      const redirectUrl = new URL(window.location.href);
-      redirectUrl.pathname = "/blog";
-      redirectUrl.searchParams.set("admin", "1");
-      window.location.href = redirectUrl.toString();
-    });
-  };
+  private handleDeleteConfirmClick: EventListener = () =>
+    Promise.all([
+      remove(this.postRef).then(() => {
+        const redirectUrl = new URL(window.location.href);
+        redirectUrl.pathname = "/blog";
+        redirectUrl.searchParams.set("admin", "1");
+        window.location.href = redirectUrl.toString();
+      }),
+      deleteObject(storageRef(this.storage, `images/${this.post.picture}`)),
+    ]);
 
   static styles = [
     ...GenericPostForm.styles,
@@ -121,6 +159,7 @@ export class EditPostForm extends GenericPostForm {
           削除
         </button></base-modal
       >
+      ${this.loadingData ? html`<loading-icon></loading-icon>` : ""}
       <form @submit=${this.handleSubmit}>
         <div>
           <label htmlFor="username">タイトル</label>
@@ -129,6 +168,7 @@ export class EditPostForm extends GenericPostForm {
             name="title"
             autocomplete="off"
             type="text"
+            .value=${this.post.title}
             maxlength="255"
             minlength="2"
             required
@@ -159,7 +199,7 @@ export class EditPostForm extends GenericPostForm {
           </label>
         </div>
         <button type="submit">
-          ${this.loading ? html`<loading-spinner></loading-spinner>` : "編集"}
+          ${this.loading ? html`<loading-icon small></loading-icon>` : "編集"}
         </button>
         <button class="delete" type="button" @click=${this.handleDeleteClick}>
           削除
