@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "lint": "eslint ./src",
     "format": "prettier --write .",
-    "prettier": "prettier ."
+    "prettier": "prettier --check ."
   },
   "dependencies": {
     "astro": "^1.2.4",
