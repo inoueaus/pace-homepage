@@ -1,0 +1,10 @@
+---
+import { BlogPostController } from "@components/lit-components/blog-post-controller";
+import { InquiryFooter } from "@components/lit-components/inquiry-footer";
+import Layout from "src/layouts/Layout.astro";
+---
+
+<Layout>
+  <BlogPostController client:load />
+  <InquiryFooter />
+</Layout>

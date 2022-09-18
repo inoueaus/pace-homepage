@@ -1,8 +1,0 @@
----
-import Layout from "src/layouts/Layout.astro";
-import InquiryPage from "@components/inquiry/InquiryPage";
----
-
-<Layout>
-  <InquiryPage client:load path={`${import.meta.env.NEXT_PUBLIC_API_URI}/inquiries/new`} />
-</Layout>

@@ -1,0 +1,98 @@
+---
+import { ImageCard } from "@components/lit-components/image-card";
+import Card from "@components/UI/Card";
+
+import styles from "../../styles/Home.module.css";
+
+import logo from "/images/original.jpg";
+import mame from "/images/mame.jpg";
+import coffee from "/images/coffee.jpg";
+import art from "/images/art.jpg";
+import nae from "../../public/images/nae.jpg";
+import flower from "../../public/images/flower.jpg";
+import plant from "../../public/images/plant.jpg";
+import Layout from "../layouts/Layout.astro";
+import { InquiryFooter } from "@components/lit-components/inquiry-footer";
+
+const coeText =
+  "カップ・オブ・エクセレンス（英語：Cup of Excellence、略称：CoE）はコーヒーの品質審査制度。カップ・オブ・エクセレンスはコーヒー界のアカデミー賞（オスカー）とも例えられる。コーヒーの審査は少なくとも毎回5回行われ、最終的な勝者は「カップ・オブ・エクセレンス」を冠される。";
+---
+
+<Layout>
+  <div class={styles.feed}>
+    <img src={logo} width="100%" height="100%" />
+    <div class={styles["main"]}>
+      <h1>沖縄県産コーヒー農園、Pace</h1>
+      <h3>コーヒーを通してすべての人に、へいあんを。</h3>
+    </div>
+    <ImageCard client:load data-src={mame}>
+      沖縄県のやんばるでコーヒーの栽培を行っています。
+    </ImageCard>
+    <ImageCard client:load data-src={coffee}
+      >コーヒー豆の加工・販売を行っています。</ImageCard
+    >
+    <ImageCard client:load data-src={art}
+      >障がい者の働く場を提供します。</ImageCard
+    >
+    <Card>
+      <h1>我々の挑戦</h1>
+      <h2>
+        沖縄産コーヒーで
+        <br />
+        スペシャリティコーヒー
+        <br />
+        を目指します
+      </h2>
+      <span>{coeText}</span>
+    </Card>
+    <div class={styles["life-cycle"]}>
+      <h1>コーヒーの木の成長過程</h1>
+      <div class={styles["row-wrap"]}>
+        <div class={styles["wrap-child"]}>
+          <ImageCard client:load data-src={nae} class-name="small">
+            コーヒーはパーチメント付きのコーヒーの種子を発芽用のポットに植えます。種植えしてから約２ヶ月で発芽します。本葉が出てきたら植え替えをします。
+          </ImageCard>
+        </div>
+        <div class={styles["wrap-child"]}>
+          <ImageCard client:load data-src={flower} class-name="small">
+            植付けから最初の開花まで、早いところでは18ヶ月、遅くても30ヶ月かかります。最初の花は、幼木なので、数も僅かです。
+            開花は、一斉に起こるわけでなく、約4ヶ月の間に5〜7回に分けて開花します。
+          </ImageCard>
+        </div>
+        <div class={styles["wrap-child"]}>
+          <ImageCard client:load data-src={plant} class-name="small">
+            コーヒーの苗は、1年ほどポットで栽培し、その後、路地植えをします。成木になるには、沖縄では、約3〜5年かかります。
+          </ImageCard>
+        </div>
+        <div class={styles["wrap-child"]}>
+          <ImageCard client:load data-src={mame} class-name="small">
+            開花した花の約8割が結実します。結実すると花弁が落ち、小さな胡椒の実のような実が茎の先に見られるようになります。気象条件などで変わりますが、開花から約8ヶ月かけて徐々に大きくなり、完熟豆に成長します。
+          </ImageCard>
+        </div>
+      </div>
+    </div>
+    <InquiryFooter />
+  </div>
+</Layout>
+
+<script>
+  const observer = new IntersectionObserver(
+    entries =>
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const imageCard = entry.target;
+        if (!(imageCard instanceof HTMLElement))
+          throw TypeError("Observer Entries must be HTML Elements");
+        const src = imageCard.dataset.src;
+        if (!src) throw TypeError("No data-src was provided");
+        imageCard.setAttribute("src", src);
+      }),
+    {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0,
+    }
+  );
+  const imageCards = document.querySelectorAll("image-card");
+  imageCards.forEach(imageCard => observer.observe(imageCard));
+</script>
