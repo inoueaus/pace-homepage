@@ -9,15 +9,15 @@ import { initializeApp } from "firebase/app";
 const firebaseConfig = {
   apiKey: "AIzaSyCHMYyRwQui69VWsN-yLCu-whMI7bWIcRE",
   authDomain: "pace-coffee.firebaseapp.com",
-  databaseURL: "https://pace-coffee-default-rtdb.asia-southeast1.firebasedatabase.app",
+  databaseURL:
+    "https://pace-coffee-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "pace-coffee",
   storageBucket: "pace-coffee.appspot.com",
   messagingSenderId: "339852200267",
   appId: "1:339852200267:web:dbfdff9845c75a8bef40ce",
-  measurementId: "G-6JLMLP5W14"
+  measurementId: "G-6JLMLP5W14",
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 // export const analytics = getAnalytics(app);
-

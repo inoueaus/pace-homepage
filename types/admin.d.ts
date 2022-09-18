@@ -12,4 +12,4 @@ export type Inquiry = {
   lastName: string;
   createdAt: number;
   viewed: boolean;
-}
+};

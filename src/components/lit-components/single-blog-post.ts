@@ -141,7 +141,9 @@ export class SingleBlogPost extends FirebaseElement {
         <h3>${this.post?.title ?? ""}</h3>
         <div class="body">
           ${this.post.picture
-            ? html`<firebase-picture image-name=${this.post.picture}></firebase-picture>`
+            ? html`<firebase-picture
+                image-name=${this.post.picture}
+              ></firebase-picture>`
             : ""}
           <p class="body-text long-body">${this.post.body}</p>
           <small>${new Date(this.post.createdAt).toLocaleDateString()}</small>

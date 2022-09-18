@@ -5,7 +5,7 @@ import { LitElement } from "lit";
 
 class FirebaseElement extends LitElement {
   protected db: ReturnType<typeof getDatabase>;
-  protected storage: ReturnType<typeof getStorage>
+  protected storage: ReturnType<typeof getStorage>;
 
   constructor() {
     super();

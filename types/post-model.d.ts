@@ -23,4 +23,4 @@ export const dummyPost = {
   picture: null,
 };
 
-export type PostModel = typeof dummyPost & { picture: string | null; };
+export type PostModel = typeof dummyPost & { picture: string | null };
