@@ -2,6 +2,7 @@ name: Check for Code Format Errors
 on:
   pull_request:
     types: [opened, reopened, ready_for_review]
+  workflow_dispatch:
 jobs:
   Check-for-Code-Format-Errors:
     runs-on: ubuntu-latest
@@ -13,3 +14,5 @@ jobs:
         run: yarn install
       - name: Run prettier
         run: yarn prettier
+      - name: Run ESLint
+        run: yarn lint
