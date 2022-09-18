@@ -129,7 +129,6 @@ export class SingleBlogPost extends FirebaseElement {
   render() {
     if (!this.post) return;
 
-    const fileFormat = this.post.picture?.charAt(0) === "/" ? "jpeg" : "png";
     const isAuth = Boolean(Number(window.localStorage.getItem("isAuth")));
     const editUrl = new URL(window.location.href);
     editUrl.pathname = "/admin/blog/edit";

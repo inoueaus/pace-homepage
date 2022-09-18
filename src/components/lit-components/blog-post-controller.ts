@@ -39,12 +39,14 @@ export class BlogPostController extends LitElement {
   }
 
   render() {
+    const hasPost = Boolean(this.postId);
+
     return html`<blog-posts
         @open-post=${this.handleOpenPost}
-        ?hide=${Boolean(this.postId)}
+        ?hide=${hasPost}
       ></blog-posts>
       <single-blog-post
-        ?hide=${!Boolean(this.postId)}
+        ?hide=${!hasPost}
         post-id=${this.postId}
       ></single-blog-post>`;
   }

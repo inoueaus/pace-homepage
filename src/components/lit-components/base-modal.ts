@@ -7,9 +7,9 @@ export const tagName = "base-modal";
 @customElement(tagName)
 export class BaseModal extends LitElement {
   @property({ attribute: "modal-title" })
-  title: string = "";
+  title = "";
   @property({ attribute: true, reflect: true, type: Boolean })
-  show: boolean = false;
+  show = false;
 
   static styles = [
     globalStyles,

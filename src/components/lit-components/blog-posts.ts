@@ -54,7 +54,7 @@ export class BlogPosts extends FirebaseElement {
   }
 
   protected firstUpdated(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValueMap<unknown> | Map<PropertyKey, unknown>
   ): void {
     super.firstUpdated(_changedProperties);
     this.observer.observe(this.endDiv);

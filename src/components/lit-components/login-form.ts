@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import { state, customElement, property } from "lit/decorators.js";
+import { state, customElement } from "lit/decorators.js";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { globalStyles } from "./styles";
 import { tagName as loadingIconTagName, LoadingIcon } from "./loading-icon";
