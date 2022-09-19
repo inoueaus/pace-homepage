@@ -1,13 +1,28 @@
 import { push, ref as databaseRef } from "firebase/database";
 import { ref as storageRef, uploadBytes } from "firebase/storage";
-import { html } from "lit";
-import { customElement } from "lit/decorators.js";
+import { html, PropertyValueMap } from "lit";
+import { customElement, query, state } from "lit/decorators.js";
 import GenericPostForm, { Payload } from "./generic-post-form";
+import { loadComponent } from "./helpers";
+import { resolveMarkdown } from "./directives/markdown-renderer";
 
 const tagName = "new-post-form";
 
 @customElement(tagName)
 export class NewPostForm extends GenericPostForm {
+  @state()
+  private raw = "";
+  private timer = setTimeout(() => {});
+  @query("textarea")
+  private textarea!: HTMLTextAreaElement;
+
+  firstUpdated(
+    _changedProps: PropertyValueMap<any> | Map<PropertyKey, unknown>
+  ) {
+    super.firstUpdated(_changedProps);
+    this.textarea.addEventListener("input", this.handleTextareaInput);
+  }
+
   private handleSubmit: EventListener = async event => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -54,6 +69,16 @@ export class NewPostForm extends GenericPostForm {
       });
   };
 
+  private handleTextareaInput: EventListener = event => {
+    clearTimeout(this.timer);
+    const textarea = event.currentTarget;
+    if (!(textarea instanceof HTMLTextAreaElement)) throw TypeError();
+    const raw = textarea.value.trim();
+    this.timer = setTimeout(() => {
+      this.raw = raw;
+    }, 1000);
+  };
+
   render() {
     return html`${this.error
         ? html`<div style="color: red; text-align: center;">${this.error}</div>`
@@ -70,6 +95,12 @@ export class NewPostForm extends GenericPostForm {
             minlength="2"
             required
           />
+        </div>
+        <div>
+          <h3>プレビュー</h3>
+          <article id="preview">
+            ${this.isConnected && resolveMarkdown(this.raw)}
+          </article>
         </div>
         <div>
           <label for="body">内容</label>
