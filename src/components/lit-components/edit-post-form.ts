@@ -20,7 +20,7 @@ export class EditPostForm extends GenericPostForm {
   private postRef!: ReturnType<typeof ref>;
   @query("input#title")
   private titleInput!: HTMLInputElement;
-  @query("markdown-textarea")
+  @query("firebase-markdown-textarea")
   private bodyInput!: HTMLTextAreaElement;
   @query("base-modal")
   private baseModal!: BaseModal;
@@ -185,12 +185,12 @@ export class EditPostForm extends GenericPostForm {
         </div>
         <div>
           <label id="body-label" for="body">内容</label>
-          <markdown-textarea
+          <firebase-markdown-textarea
             id="body"
             aria-describedby="body-label"
             name="body"
             required
-          ></markdown-textarea>
+          ></firebase-markdown-textarea>
           ${this.raw
             ? html` <h3>プレビュー</h3>
                 <article id="preview">

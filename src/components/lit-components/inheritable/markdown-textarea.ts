@@ -16,7 +16,7 @@ export class MarkdownTextarea extends LitElement {
   @property({ attribute: "required", type: Boolean })
   public required = false;
   @query("textarea")
-  private textarea!: HTMLTextAreaElement;
+  protected textarea!: HTMLTextAreaElement;
 
   get value() {
     return this.textarea.value;
@@ -54,7 +54,7 @@ export class MarkdownTextarea extends LitElement {
     this.renderToLightDom();
   }
 
-  private handleHeaderClick: EventListener = event => {
+  protected handleHeaderClick: EventListener = event => {
     const target = event.currentTarget;
     if (!(target instanceof HTMLElement)) throw TypeError();
     const id = target.id;
@@ -71,7 +71,7 @@ export class MarkdownTextarea extends LitElement {
     this.triggerInputEvent();
   };
 
-  private handleModifierClick: EventListener = event => {
+  protected handleModifierClick: EventListener = event => {
     const target = event.currentTarget;
     if (!(target instanceof HTMLElement)) throw TypeError();
     const id = target.id;
@@ -89,7 +89,7 @@ export class MarkdownTextarea extends LitElement {
     this.triggerInputEvent();
   };
 
-  private handleTemplateClick: EventListener = event => {
+  protected handleTemplateClick: EventListener = event => {
     const target = event.currentTarget;
     if (!(target instanceof HTMLElement)) throw TypeError();
     const id = target.id;
@@ -104,7 +104,7 @@ export class MarkdownTextarea extends LitElement {
     this.triggerInputEvent();
   };
 
-  private triggerInputEvent() {
+  protected triggerInputEvent() {
     this.dispatchEvent(new Event("input", { composed: true }));
   }
 

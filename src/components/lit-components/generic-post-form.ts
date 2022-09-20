@@ -8,8 +8,9 @@ import { loadComponent } from "./helpers";
 import { tagName as loadingIconTagName, LoadingIcon } from "./loading-icon";
 import {
   tagName as markdownTextareaTag,
-  MarkdownTextarea,
-} from "./inheritable/markdown-textarea";
+  FirebaseMarkdownTextarea,
+} from "./firebase-markdown-textarea";
+import { MarkdownTextarea } from "./inheritable/markdown-textarea";
 
 export type Payload = {
   title: string;
@@ -38,7 +39,7 @@ class GenericPostForm extends FirebaseElement {
     super();
     loadComponent(baseModalTagName, BaseModal);
     loadComponent(loadingIconTagName, LoadingIcon);
-    loadComponent(markdownTextareaTag, MarkdownTextarea);
+    loadComponent(markdownTextareaTag, FirebaseMarkdownTextarea);
   }
 
   protected readImageAsB64(image: File) {
@@ -76,7 +77,8 @@ class GenericPostForm extends FirebaseElement {
     if (
       !(
         textarea instanceof MarkdownTextarea ||
-        textarea instanceof HTMLTextAreaElement
+        textarea instanceof HTMLTextAreaElement ||
+        textarea instanceof FirebaseMarkdownTextarea
       )
     )
       throw TypeError();
