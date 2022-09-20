@@ -46,6 +46,7 @@ export class EditPostForm extends GenericPostForm {
         this.post = snapshot.val();
         this.titleInput.value = this.post.title;
         this.bodyInput.textContent = this.post.body;
+        this.bodyInput.dispatchEvent(new Event("input")); // Trigger input event to render preview
 
         return new Promise(resolve => {
           if (!this.post.picture) return resolve(true);
@@ -193,7 +194,7 @@ export class EditPostForm extends GenericPostForm {
           ></textarea>
           <h3>プレビュー</h3>
           <article id="preview">
-            ${this.isConnected && resolveMarkdown(this.raw)}
+            ${this.isConnected ? resolveMarkdown(this.raw) : this.raw}
           </article>
         </div>
         <div>

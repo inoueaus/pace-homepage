@@ -93,7 +93,7 @@ export class NewPostForm extends GenericPostForm {
           ></textarea>
           <h3>プレビュー</h3>
           <article id="preview">
-            ${this.isConnected && resolveMarkdown(this.raw)}
+            ${this.isConnected ? resolveMarkdown(this.raw) : this.raw}
           </article>
         </div>
         <div>
