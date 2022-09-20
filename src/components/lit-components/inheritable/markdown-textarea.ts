@@ -1,10 +1,10 @@
 import { css, html, LitElement, render } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { loadComponent } from "./helpers";
-import { globalStyles } from "./styles";
-import formStyles from "./styles/form";
-import { tagName as tableIconTag, TableIcon } from "./icons/table-icon";
-import { tagName as linkIconTag, LinkIcon } from "./icons/link-icon";
+import { loadComponent } from "../helpers";
+import { globalStyles } from "../styles";
+import formStyles from "../styles/form";
+import { tagName as tableIconTag, TableIcon } from "../icons/table-icon";
+import { tagName as linkIconTag, LinkIcon } from "../icons/link-icon";
 
 export const tagName = "markdown-textarea";
 

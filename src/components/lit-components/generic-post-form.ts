@@ -9,7 +9,7 @@ import { tagName as loadingIconTagName, LoadingIcon } from "./loading-icon";
 import {
   tagName as markdownTextareaTag,
   MarkdownTextarea,
-} from "./markdown-textarea";
+} from "./inheritable/markdown-textarea";
 
 export type Payload = {
   title: string;
