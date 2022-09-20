@@ -1,7 +1,10 @@
 import { css, html, LitElement, render } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { loadComponent } from "./helpers";
 import { globalStyles } from "./styles";
 import formStyles from "./styles/form";
+import { tagName as tableIconTag, TableIcon } from "./icons/table-icon";
+import { tagName as linkIconTag, LinkIcon } from "./icons/link-icon";
 
 export const tagName = "markdown-textarea";
 
@@ -34,7 +37,11 @@ export class MarkdownTextarea extends LitElement {
       ["h5", "#####"],
       ["i", "_"],
       ["b", "**"],
+      ["table", "| A | B |" + "\n" + "| --- | --- |" + "\n" + "| a | b |"],
+      ["link", `[Pace]("https://www.pace-coffee.com")`],
     ]);
+    loadComponent(tableIconTag, TableIcon);
+    loadComponent(linkIconTag, LinkIcon);
   }
 
   connectedCallback(): void {
@@ -82,6 +89,21 @@ export class MarkdownTextarea extends LitElement {
     this.triggerInputEvent();
   };
 
+  private handleTemplateClick: EventListener = event => {
+    const target = event.currentTarget;
+    if (!(target instanceof HTMLElement)) throw TypeError();
+    const id = target.id;
+    const markdownSymbol = this.#markdownMap.get(id) ?? "";
+    const { selectionStart, value } = this.textarea;
+    const newValue =
+      value.substring(0, selectionStart) +
+      markdownSymbol +
+      value.substring(selectionStart);
+    this.textarea.value = newValue;
+    this.textarea.focus();
+    this.triggerInputEvent();
+  };
+
   private triggerInputEvent() {
     this.dispatchEvent(new Event("input", { composed: true }));
   }
@@ -118,6 +140,9 @@ export class MarkdownTextarea extends LitElement {
         margin: 0;
         cursor: pointer;
         border-radius: var(--radius);
+        max-height: 35px;
+        max-width: 38px;
+        display: flex;
       }
       li:hover {
         background-color: var(--secondary-color-hover);
@@ -157,6 +182,12 @@ export class MarkdownTextarea extends LitElement {
           <li @click=${this.handleHeaderClick} id="h5">H5</li>
           <li @click=${this.handleModifierClick} id="i"><em>i</em></li>
           <li @click=${this.handleModifierClick} id="b"><strong>B</strong></li>
+          <li @click=${this.handleTemplateClick} id="table">
+            <table-icon></table-icon>
+          </li>
+          <li @click=${this.handleTemplateClick} id="link">
+            <link-icon></link-icon>
+          </li>
         </ul>
       </nav>
       <textarea
