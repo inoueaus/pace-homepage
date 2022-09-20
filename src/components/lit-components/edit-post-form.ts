@@ -89,7 +89,7 @@ export class EditPostForm extends GenericPostForm {
     if (!(image instanceof File)) return;
     if (image.size > 1024 * 500) return (this.error = "画像サイズは500KBまで");
     const hasImage = Boolean(image.size);
-    payload.picture = hasImage ? String(Date.now()) + image.name : "";
+    if (hasImage) payload.picture = String(Date.now()) + image.name;
     Promise.all([
       set(this.postRef, payload),
       new Promise((resolve, reject) => {
@@ -103,7 +103,7 @@ export class EditPostForm extends GenericPostForm {
         );
       }),
       new Promise((resolve, reject) => {
-        if (!this.post.picture) return resolve(true);
+        if (!hasImage || !this.post.picture) return resolve(true);
         deleteObject(
           storageRef(this.storage, `images/${this.post.picture}`)
         ).then(
