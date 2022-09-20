@@ -20,7 +20,7 @@ export class EditPostForm extends GenericPostForm {
   private postRef!: ReturnType<typeof ref>;
   @query("input#title")
   private titleInput!: HTMLInputElement;
-  @query("textarea")
+  @query("markdown-textarea")
   private bodyInput!: HTMLTextAreaElement;
   @query("base-modal")
   private baseModal!: BaseModal;
@@ -45,7 +45,7 @@ export class EditPostForm extends GenericPostForm {
       .then(snapshot => {
         this.post = snapshot.val();
         this.titleInput.value = this.post.title;
-        this.bodyInput.textContent = this.post.body;
+        this.bodyInput.value = this.post.body;
         this.bodyInput.dispatchEvent(new Event("input")); // Trigger input event to render preview
 
         return new Promise(resolve => {
@@ -184,18 +184,19 @@ export class EditPostForm extends GenericPostForm {
           />
         </div>
         <div>
-          <label for="body">内容</label>
-          <textarea
+          <label id="body-label" for="body">内容</label>
+          <markdown-textarea
             id="body"
+            aria-describedby="body-label"
             name="body"
-            autocomplete="off"
             required
-            maxlength="5000"
-          ></textarea>
-          <h3>プレビュー</h3>
-          <article id="preview">
-            ${this.isConnected ? resolveMarkdown(this.raw) : this.raw}
-          </article>
+          ></markdown-textarea>
+          ${this.raw
+            ? html` <h3>プレビュー</h3>
+                <article id="preview">
+                  ${this.isConnected ? resolveMarkdown(this.raw) : this.raw}
+                </article>`
+            : ""}
         </div>
         <div>
           <label id="image-label" for="image">画像</label>
