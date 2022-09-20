@@ -24,8 +24,11 @@ class GenericPostForm extends FirebaseElement {
   protected error = "";
   @state()
   protected loading = false;
+  @state()
+  protected raw = "";
   @query("img")
   protected imagePreview!: HTMLImageElement;
+  private timer = setTimeout(() => 0);
 
   constructor() {
     super();
@@ -60,6 +63,16 @@ class GenericPostForm extends FirebaseElement {
     this.readImageAsB64(image).then(
       imageString => (this.imagePreview.src = imageString)
     );
+  };
+
+  protected handleTextareaInput: EventListener = event => {
+    clearTimeout(this.timer);
+    const textarea = event.currentTarget;
+    if (!(textarea instanceof HTMLTextAreaElement)) throw TypeError();
+    const raw = textarea.value.trim();
+    this.timer = setTimeout(() => {
+      this.raw = raw;
+    }, 2000);
   };
 
   static styles = [

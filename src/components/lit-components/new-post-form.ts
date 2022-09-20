@@ -1,7 +1,7 @@
 import { push, ref as databaseRef } from "firebase/database";
 import { ref as storageRef, uploadBytes } from "firebase/storage";
 import { html, PropertyValueMap } from "lit";
-import { customElement, query, state } from "lit/decorators.js";
+import { customElement, query } from "lit/decorators.js";
 import GenericPostForm, { Payload } from "./generic-post-form";
 import { resolveMarkdown } from "./directives/markdown-renderer";
 
@@ -9,9 +9,6 @@ const tagName = "new-post-form";
 
 @customElement(tagName)
 export class NewPostForm extends GenericPostForm {
-  @state()
-  private raw = "";
-  private timer = setTimeout(() => 0);
   @query("textarea")
   private textarea!: HTMLTextAreaElement;
 
@@ -66,16 +63,6 @@ export class NewPostForm extends GenericPostForm {
         if (!(error instanceof Error)) return;
         this.error = error.message;
       });
-  };
-
-  private handleTextareaInput: EventListener = event => {
-    clearTimeout(this.timer);
-    const textarea = event.currentTarget;
-    if (!(textarea instanceof HTMLTextAreaElement)) throw TypeError();
-    const raw = textarea.value.trim();
-    this.timer = setTimeout(() => {
-      this.raw = raw;
-    }, 1000);
   };
 
   render() {
