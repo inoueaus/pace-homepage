@@ -1,13 +1,24 @@
 import { push, ref as databaseRef } from "firebase/database";
 import { ref as storageRef, uploadBytes } from "firebase/storage";
-import { html } from "lit";
-import { customElement } from "lit/decorators.js";
+import { html, PropertyValueMap } from "lit";
+import { customElement, query } from "lit/decorators.js";
 import GenericPostForm, { Payload } from "./generic-post-form";
+import { resolveMarkdown } from "./directives/markdown-renderer";
 
 const tagName = "new-post-form";
 
 @customElement(tagName)
 export class NewPostForm extends GenericPostForm {
+  @query("markdown-textarea")
+  private textarea!: HTMLTextAreaElement;
+
+  firstUpdated(
+    _changedProps: PropertyValueMap<unknown> | Map<PropertyKey, unknown>
+  ) {
+    super.firstUpdated(_changedProps);
+    this.textarea.addEventListener("input", this.handleTextareaInput);
+  }
+
   private handleSubmit: EventListener = async event => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -72,14 +83,19 @@ export class NewPostForm extends GenericPostForm {
           />
         </div>
         <div>
-          <label for="body">内容</label>
-          <textarea
+          <label id="body-label" for="body">内容</label>
+          <markdown-textarea
             id="body"
+            aria-describedby="body-label"
             name="body"
-            autocomplete="off"
             required
-            maxlength="5000"
-          ></textarea>
+          ></markdown-textarea>
+          ${this.raw
+            ? html` <h3>プレビュー</h3>
+                <article id="preview">
+                  ${this.isConnected ? resolveMarkdown(this.raw) : this.raw}
+                </article>`
+            : ""}
         </div>
         <div>
           <label id="image-label" for="image">画像</label>

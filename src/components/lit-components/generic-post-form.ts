@@ -6,6 +6,10 @@ import formStyles from "./styles/form";
 import { BaseModal, tagName as baseModalTagName } from "./base-modal";
 import { loadComponent } from "./helpers";
 import { tagName as loadingIconTagName, LoadingIcon } from "./loading-icon";
+import {
+  tagName as markdownTextareaTag,
+  MarkdownTextarea,
+} from "./markdown-textarea";
 
 export type Payload = {
   title: string;
@@ -24,13 +28,17 @@ class GenericPostForm extends FirebaseElement {
   protected error = "";
   @state()
   protected loading = false;
+  @state()
+  protected raw = "";
   @query("img")
   protected imagePreview!: HTMLImageElement;
+  private timer = setTimeout(() => 0);
 
   constructor() {
     super();
     loadComponent(baseModalTagName, BaseModal);
     loadComponent(loadingIconTagName, LoadingIcon);
+    loadComponent(markdownTextareaTag, MarkdownTextarea);
   }
 
   protected readImageAsB64(image: File) {
@@ -62,6 +70,22 @@ class GenericPostForm extends FirebaseElement {
     );
   };
 
+  protected handleTextareaInput: EventListener = event => {
+    clearTimeout(this.timer);
+    const textarea = event.currentTarget;
+    if (
+      !(
+        textarea instanceof MarkdownTextarea ||
+        textarea instanceof HTMLTextAreaElement
+      )
+    )
+      throw TypeError();
+    const raw = textarea.value.trim();
+    this.timer = setTimeout(() => {
+      this.raw = raw;
+    }, 2000);
+  };
+
   static styles = [
     globalStyles,
     formStyles,
@@ -69,6 +93,11 @@ class GenericPostForm extends FirebaseElement {
       img[src] {
         max-width: 100%;
         margin: 1rem;
+      }
+
+      h3,
+      article {
+        border-bottom: 1px solid var(--secondary-color);
       }
     `,
   ];

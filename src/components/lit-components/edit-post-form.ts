@@ -1,4 +1,4 @@
-import { css, html } from "lit";
+import { css, html, PropertyValueMap } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import type { PostServerModel } from "../../../types/post-model";
 import GenericPostForm, { Payload } from "./generic-post-form";
@@ -10,6 +10,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import type { BaseModal } from "./base-modal";
+import { resolveMarkdown } from "./directives/markdown-renderer";
 
 const tagName = "edit-post-form";
 
@@ -19,7 +20,7 @@ export class EditPostForm extends GenericPostForm {
   private postRef!: ReturnType<typeof ref>;
   @query("input#title")
   private titleInput!: HTMLInputElement;
-  @query("textarea")
+  @query("markdown-textarea")
   private bodyInput!: HTMLTextAreaElement;
   @query("base-modal")
   private baseModal!: BaseModal;
@@ -44,7 +45,8 @@ export class EditPostForm extends GenericPostForm {
       .then(snapshot => {
         this.post = snapshot.val();
         this.titleInput.value = this.post.title;
-        this.bodyInput.textContent = this.post.body;
+        this.bodyInput.value = this.post.body;
+        this.bodyInput.dispatchEvent(new Event("input")); // Trigger input event to render preview
 
         return new Promise(resolve => {
           if (!this.post.picture) return resolve(true);
@@ -57,6 +59,13 @@ export class EditPostForm extends GenericPostForm {
         });
       })
       .finally(() => (this.loadingData = false));
+  }
+
+  firstUpdated(
+    _changedProps: PropertyValueMap<unknown> | Map<PropertyKey, unknown>
+  ) {
+    super.firstUpdated(_changedProps);
+    this.bodyInput.addEventListener("input", this.handleTextareaInput);
   }
 
   private handleSubmit: EventListener = async event => {
@@ -80,7 +89,7 @@ export class EditPostForm extends GenericPostForm {
     if (!(image instanceof File)) return;
     if (image.size > 1024 * 500) return (this.error = "画像サイズは500KBまで");
     const hasImage = Boolean(image.size);
-    payload.picture = hasImage ? String(Date.now()) + image.name : "";
+    if (hasImage) payload.picture = String(Date.now()) + image.name;
     Promise.all([
       set(this.postRef, payload),
       new Promise((resolve, reject) => {
@@ -94,7 +103,7 @@ export class EditPostForm extends GenericPostForm {
         );
       }),
       new Promise((resolve, reject) => {
-        if (!this.post.picture) return resolve(true);
+        if (!hasImage || !this.post.picture) return resolve(true);
         deleteObject(
           storageRef(this.storage, `images/${this.post.picture}`)
         ).then(
@@ -175,14 +184,19 @@ export class EditPostForm extends GenericPostForm {
           />
         </div>
         <div>
-          <label for="body">内容</label>
-          <textarea
+          <label id="body-label" for="body">内容</label>
+          <markdown-textarea
             id="body"
+            aria-describedby="body-label"
             name="body"
-            autocomplete="off"
             required
-            maxlength="5000"
-          ></textarea>
+          ></markdown-textarea>
+          ${this.raw
+            ? html` <h3>プレビュー</h3>
+                <article id="preview">
+                  ${this.isConnected ? resolveMarkdown(this.raw) : this.raw}
+                </article>`
+            : ""}
         </div>
         <div>
           <label id="image-label" for="image">画像</label>
