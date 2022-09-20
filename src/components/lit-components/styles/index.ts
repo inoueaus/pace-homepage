@@ -16,6 +16,7 @@ export const globalStyles = css`
 
   * {
     box-sizing: border-box;
+    --secondary-color: rgb(214, 214, 214);
   }
 `;
 

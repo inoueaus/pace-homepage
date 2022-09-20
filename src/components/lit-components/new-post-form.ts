@@ -83,12 +83,6 @@ export class NewPostForm extends GenericPostForm {
           />
         </div>
         <div>
-          <h3>プレビュー</h3>
-          <article id="preview">
-            ${this.isConnected && resolveMarkdown(this.raw)}
-          </article>
-        </div>
-        <div>
           <label for="body">内容</label>
           <textarea
             id="body"
@@ -97,6 +91,10 @@ export class NewPostForm extends GenericPostForm {
             required
             maxlength="5000"
           ></textarea>
+          <h3>プレビュー</h3>
+          <article id="preview">
+            ${this.isConnected && resolveMarkdown(this.raw)}
+          </article>
         </div>
         <div>
           <label id="image-label" for="image">画像</label>

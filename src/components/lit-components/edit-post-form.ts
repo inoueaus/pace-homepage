@@ -1,4 +1,4 @@
-import { css, html } from "lit";
+import { css, html, PropertyValueMap } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import type { PostServerModel } from "../../../types/post-model";
 import GenericPostForm, { Payload } from "./generic-post-form";
@@ -10,6 +10,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import type { BaseModal } from "./base-modal";
+import { resolveMarkdown } from "./directives/markdown-renderer";
 
 const tagName = "edit-post-form";
 
@@ -57,6 +58,13 @@ export class EditPostForm extends GenericPostForm {
         });
       })
       .finally(() => (this.loadingData = false));
+  }
+
+  firstUpdated(
+    _changedProps: PropertyValueMap<unknown> | Map<PropertyKey, unknown>
+  ) {
+    super.firstUpdated(_changedProps);
+    this.bodyInput.addEventListener("input", this.handleTextareaInput);
   }
 
   private handleSubmit: EventListener = async event => {
@@ -183,6 +191,10 @@ export class EditPostForm extends GenericPostForm {
             required
             maxlength="5000"
           ></textarea>
+          <h3>プレビュー</h3>
+          <article id="preview">
+            ${this.isConnected && resolveMarkdown(this.raw)}
+          </article>
         </div>
         <div>
           <label id="image-label" for="image">画像</label>
