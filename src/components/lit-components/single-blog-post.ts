@@ -10,6 +10,7 @@ import {
   tagName as firebasePictureTagName,
   FirebasePicture,
 } from "./firebase-picture";
+import { resolveMarkdown } from "./directives/markdown-renderer";
 
 export const tagName = "single-blog-post";
 
@@ -145,7 +146,9 @@ export class SingleBlogPost extends FirebaseElement {
                 image-name=${this.post.picture}
               ></firebase-picture>`
             : ""}
-          <p class="body-text long-body">${this.post.body}</p>
+          <div class="body-text long-body">
+            ${this.isConnected ? resolveMarkdown(this.post.body) : ""}
+          </div>
           <small>${new Date(this.post.createdAt).toLocaleDateString()}</small>
         </div>
       </article>

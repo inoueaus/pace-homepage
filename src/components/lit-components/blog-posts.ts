@@ -18,6 +18,7 @@ import { globalStyles } from "./styles";
 import { postCss } from "./styles/post";
 import type { PostModel, PostServerModel } from "@localTypes/post-model";
 import { loadComponent } from "./helpers";
+import { resolveMarkdown } from "./directives/markdown-renderer";
 
 export const tagName = "blog-posts";
 
@@ -136,7 +137,9 @@ export class BlogPosts extends FirebaseElement {
                     ></firebase-picture>`
                   : ""}
                 <section class="body-text">
-                  <div class="text-container">${post.body}</div>
+                  <div class="text-container">
+                    ${this.isConnected ? resolveMarkdown(post.body) : ""}
+                  </div>
                   <div class="fade"></div>
                 </section>
               </div>

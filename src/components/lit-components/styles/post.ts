@@ -53,13 +53,14 @@ export const postCss = css`
     margin: auto 0;
     display: flex;
     position: relative;
-    white-space: pre-wrap;
   }
 
   .text-container {
     max-height: fit-content;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: flex;
+    flex-direction: column;
   }
 
   .picture-container {
