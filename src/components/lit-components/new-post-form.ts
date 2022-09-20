@@ -3,7 +3,6 @@ import { ref as storageRef, uploadBytes } from "firebase/storage";
 import { html, PropertyValueMap } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import GenericPostForm, { Payload } from "./generic-post-form";
-import { loadComponent } from "./helpers";
 import { resolveMarkdown } from "./directives/markdown-renderer";
 
 const tagName = "new-post-form";
@@ -12,12 +11,12 @@ const tagName = "new-post-form";
 export class NewPostForm extends GenericPostForm {
   @state()
   private raw = "";
-  private timer = setTimeout(() => {});
+  private timer = setTimeout(() => 0);
   @query("textarea")
   private textarea!: HTMLTextAreaElement;
 
   firstUpdated(
-    _changedProps: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProps: PropertyValueMap<unknown> | Map<PropertyKey, unknown>
   ) {
     super.firstUpdated(_changedProps);
     this.textarea.addEventListener("input", this.handleTextareaInput);
