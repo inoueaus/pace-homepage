@@ -11,6 +11,7 @@ import {
   FirebaseMarkdownTextarea,
 } from "./firebase-markdown-textarea";
 import { MarkdownTextarea } from "./inheritable/markdown-textarea";
+import { markdownStyles } from "./styles/markdown";
 
 export type Payload = {
   title: string;
@@ -91,10 +92,10 @@ class GenericPostForm extends FirebaseElement {
   static styles = [
     globalStyles,
     formStyles,
+    markdownStyles,
     css`
-      img[src] {
-        max-width: 100%;
-        margin: 1rem;
+      img#icon-preview {
+        margin-bottom: 1rem;
       }
 
       h3,
