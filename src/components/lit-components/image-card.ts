@@ -63,7 +63,13 @@ export class ImageCard extends LitElement {
   render() {
     return html` <div class=${this.class}>
       <section class="image-section">
-        <img src=${this.src} />
+        <img
+          height=${this.getAttribute("height") ?? ""}
+          width=${this.getAttribute("width") ?? ""}
+          alt=${this.getAttribute("alt") ?? ""}
+          src=${this.src}
+          loading="lazy"
+        />
       </section>
       <section class="text-section"><slot></slot></section>
     </div>`;

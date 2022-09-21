@@ -199,8 +199,8 @@ export class EditPostForm extends GenericPostForm {
             required
           ></firebase-markdown-textarea>
           ${this.raw
-            ? html` <h3>プレビュー</h3>
-                <article id="preview">
+            ? html` <h3 class="bottom-border">プレビュー</h3>
+                <article id="preview" class="bottom-border">
                   ${this.isConnected ? resolveMarkdown(this.raw) : this.raw}
                 </article>`
             : ""}

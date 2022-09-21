@@ -98,8 +98,7 @@ class GenericPostForm extends FirebaseElement {
         margin-bottom: 1rem;
       }
 
-      h3,
-      article {
+      .bottom-border {
         border-bottom: 1px solid var(--secondary-color);
       }
     `,

@@ -95,12 +95,16 @@ export class MarkdownTextarea extends LitElement {
     const id = target.id;
     const markdownSymbol = this.#markdownMap.get(id) ?? "";
     const { selectionStart, value } = this.textarea;
+    const newLine = "\n";
     const newValue =
       value.substring(0, selectionStart) +
+      newLine +
       markdownSymbol +
+      newLine +
       value.substring(selectionStart);
     this.textarea.value = newValue;
     this.textarea.focus();
+    this.textarea.setSelectionRange(selectionStart, selectionStart);
     this.triggerInputEvent();
   };
 
@@ -151,10 +155,13 @@ export class MarkdownTextarea extends LitElement {
 
       textarea {
         border: 1px solid var(--secondary-color);
+        border-radius: 0px;
         border-bottom-left-radius: var(--radius);
         border-bottom-right-radius: var(--radius);
         min-height: 30vh;
         padding: 0.5rem;
+        max-width: 100%;
+        min-width: 100%;
       }
     `,
   ];
