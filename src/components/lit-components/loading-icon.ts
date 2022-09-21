@@ -11,6 +11,7 @@ export class LoadingIcon extends LitElement {
     css`
       :host([small]) {
         height: 20px;
+        min-width: 20px;
         display: block;
         position: relative;
       }
@@ -18,6 +19,10 @@ export class LoadingIcon extends LitElement {
       :host([small]) svg {
         fill: white;
         max-height: 200%;
+      }
+
+      :host([black]) svg {
+        fill: black;
       }
 
       svg {

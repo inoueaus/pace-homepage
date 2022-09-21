@@ -20,7 +20,7 @@ export class EditPostForm extends GenericPostForm {
   private postRef!: ReturnType<typeof ref>;
   @query("input#title")
   private titleInput!: HTMLInputElement;
-  @query("markdown-textarea")
+  @query("firebase-markdown-textarea")
   private bodyInput!: HTMLTextAreaElement;
   @query("base-modal")
   private baseModal!: BaseModal;
@@ -132,16 +132,23 @@ export class EditPostForm extends GenericPostForm {
     this.baseModal.toggleAttribute("show", true);
   };
 
-  private handleDeleteConfirmClick: EventListener = () =>
-    Promise.all([
-      remove(this.postRef).then(() => {
-        const redirectUrl = new URL(window.location.href);
-        redirectUrl.pathname = "/blog";
-        redirectUrl.searchParams.set("admin", "1");
-        window.location.href = redirectUrl.toString();
-      }),
+  private handleDeleteConfirmClick: EventListener = () => {
+    const imageKeysInDocument = Array.from(
+      this.post.body.matchAll(/!\[.*\]\(.* "(.*)"\)/g)
+    ).map(match => match[1]);
+    Promise.allSettled([
+      remove(this.postRef),
       deleteObject(storageRef(this.storage, `images/${this.post.picture}`)),
-    ]);
+      ...imageKeysInDocument.map(key =>
+        deleteObject(storageRef(this.storage, `images/${key}`))
+      ),
+    ]).finally(() => {
+      const redirectUrl = new URL(window.location.href);
+      redirectUrl.pathname = "/blog";
+      redirectUrl.searchParams.set("admin", "1");
+      window.location.href = redirectUrl.toString();
+    });
+  };
 
   static styles = [
     ...GenericPostForm.styles,
@@ -185,12 +192,12 @@ export class EditPostForm extends GenericPostForm {
         </div>
         <div>
           <label id="body-label" for="body">内容</label>
-          <markdown-textarea
+          <firebase-markdown-textarea
             id="body"
             aria-describedby="body-label"
             name="body"
             required
-          ></markdown-textarea>
+          ></firebase-markdown-textarea>
           ${this.raw
             ? html` <h3>プレビュー</h3>
                 <article id="preview">
@@ -199,8 +206,8 @@ export class EditPostForm extends GenericPostForm {
             : ""}
         </div>
         <div>
-          <label id="image-label" for="image">画像</label>
-          <img aria-describedby="image-label" />
+          <label id="image-label" for="image">アイコン画像</label>
+          <img id="icon-preview" aria-describedby="image-label" />
           <label class="file-label">
             ${this.fileName ? this.fileName : "ファイルを選択"}
             <input
