@@ -10,3 +10,6 @@ export const loadComponent = <T extends CustomElementConstructor>(
   if (window.customElements.get(tagName)) return;
   customElements.define(tagName, elementDefinition);
 };
+
+export const generateRandomText = () =>
+  Math.random().toString(24).substring(4, 10);

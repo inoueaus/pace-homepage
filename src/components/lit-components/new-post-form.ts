@@ -29,18 +29,17 @@ export class NewPostForm extends GenericPostForm {
     const formData = new FormData(form);
     const title = formData.get("title")!.toString().trim();
     const body = formData.get("body")!.toString().trim();
-    const payload: Payload = {
-      title,
-      body,
-      picture: "",
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    };
     const image = formData.get("image");
     if (!(image instanceof File)) return;
     if (image.size > 1024 * 500) return (this.error = "画像サイズは500KBまで");
     const hasImage = Boolean(image.size);
-    payload.picture = hasImage ? String(Date.now()) + image.name : "";
+    const payload: Payload = {
+      title,
+      body,
+      picture: hasImage ? String(Date.now()) + image.name : "",
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    };
     Promise.all([
       push(databaseRef(this.db, "/posts"), payload),
       new Promise(resolve => {
@@ -98,8 +97,8 @@ export class NewPostForm extends GenericPostForm {
             : ""}
         </div>
         <div>
-          <label id="image-label" for="image">画像</label>
-          <img aria-describedby="image-label" />
+          <label id="image-label" for="image">アイコン画像</label>
+          <img id="icon-preview" aria-describedby="image-label" />
           <label class="file-label">
             ${this.fileName ? this.fileName : "ファイルを選択"}
             <input

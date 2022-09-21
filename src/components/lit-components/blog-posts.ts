@@ -138,7 +138,9 @@ export class BlogPosts extends FirebaseElement {
                   : ""}
                 <section class="body-text">
                   <div class="text-container">
-                    ${this.isConnected ? resolveMarkdown(post.body) : ""}
+                    ${this.isConnected
+                      ? resolveMarkdown(post.body, { removeImages: true })
+                      : ""}
                   </div>
                   <div class="fade"></div>
                 </section>

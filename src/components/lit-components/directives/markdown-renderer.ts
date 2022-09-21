@@ -3,12 +3,13 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { AsyncDirective } from "lit/async-directive.js";
 import { marked } from "marked";
 
-export const tagName = "markdown-renderer";
-
 class MarkdownDirective extends AsyncDirective {
-  render(raw = "") {
+  render(raw = "", settings = { removeImages: false }) {
+    const markdownToRender = settings.removeImages
+      ? raw.replaceAll(/!\[.*\](.*)/g, "")
+      : raw;
     new Promise<string>((resolve, reject) => {
-      marked.parse(raw, (error, result) => {
+      marked.parse(markdownToRender, (error, result) => {
         if (error) return reject(error);
         resolve(result);
       });

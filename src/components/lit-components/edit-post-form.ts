@@ -199,8 +199,8 @@ export class EditPostForm extends GenericPostForm {
             : ""}
         </div>
         <div>
-          <label id="image-label" for="image">画像</label>
-          <img aria-describedby="image-label" />
+          <label id="image-label" for="image">アイコン画像</label>
+          <img id="icon-preview" aria-describedby="image-label" />
           <label class="file-label">
             ${this.fileName ? this.fileName : "ファイルを選択"}
             <input
