@@ -1,6 +1,7 @@
 ---
 import styles from "./AppLayout.module.css";
 import { NavBar } from "../components/lit-components/nav-bar";
+import { FirebaseAppCheck } from "@components/lit-components/firebase-app-check";
 ---
 
 <!DOCTYPE html>
@@ -19,6 +20,7 @@ import { NavBar } from "../components/lit-components/nav-bar";
       <div>Copyright 2022 株式会社Pace（パーチェ）</div>
       <small>〒903-0804 沖縄県那覇市首里石嶺町</small>
     </footer>
+    <FirebaseAppCheck client:load data-mode={import.meta.env.MODE} />
     <style is:global>
       html,
       body {
