@@ -25,6 +25,12 @@ export class BlogPostController extends LitElement {
     window.addEventListener("popstate", this.handlePopState);
   }
 
+  protected firstUpdated(_changedProperties: Map<PropertyKey, unknown>): void {
+    super.firstUpdated(_changedProperties);
+    const { searchParams } = new URL(window.location.href);
+    this.postId = searchParams.get("post-id") ?? "";
+  }
+
   private handlePopState = (event: PopStateEvent) => {
     const state = event.state;
     if (!(state && "postId" in state)) return (this.postId = "");
