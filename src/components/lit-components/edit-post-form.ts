@@ -132,16 +132,23 @@ export class EditPostForm extends GenericPostForm {
     this.baseModal.toggleAttribute("show", true);
   };
 
-  private handleDeleteConfirmClick: EventListener = () =>
-    Promise.all([
-      remove(this.postRef).then(() => {
-        const redirectUrl = new URL(window.location.href);
-        redirectUrl.pathname = "/blog";
-        redirectUrl.searchParams.set("admin", "1");
-        window.location.href = redirectUrl.toString();
-      }),
+  private handleDeleteConfirmClick: EventListener = () => {
+    const imageKeysInDocument = Array.from(
+      this.post.body.matchAll(/!\[.*\]\(.* "(.*)"\)/g)
+    ).map(match => match[1]);
+    Promise.allSettled([
+      remove(this.postRef),
       deleteObject(storageRef(this.storage, `images/${this.post.picture}`)),
-    ]);
+      ...imageKeysInDocument.map(key =>
+        deleteObject(storageRef(this.storage, `images/${key}`))
+      ),
+    ]).finally(() => {
+      const redirectUrl = new URL(window.location.href);
+      redirectUrl.pathname = "/blog";
+      redirectUrl.searchParams.set("admin", "1");
+      window.location.href = redirectUrl.toString();
+    });
+  };
 
   static styles = [
     ...GenericPostForm.styles,

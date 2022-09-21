@@ -57,6 +57,7 @@ export class FirebaseMarkdownTextarea extends MarkdownTextarea {
           textAfterSelectionEnd +
           newLine;
         this.triggerInputEvent();
+        this.renderToLightDom();
       })
       .finally(() => {
         this.loading = false;
