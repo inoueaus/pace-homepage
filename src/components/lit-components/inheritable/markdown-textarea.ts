@@ -68,6 +68,8 @@ export class MarkdownTextarea extends LitElement {
     }${markdownSymbol} ${value.substring(selectionStart)}`;
     this.textarea.value = newValue;
     this.textarea.focus();
+    const newSelectionStart = selectionStart + markdownSymbol.length + 2;
+    this.textarea.setSelectionRange(newSelectionStart, newSelectionStart);
     this.triggerInputEvent();
   };
 
@@ -86,6 +88,8 @@ export class MarkdownTextarea extends LitElement {
     )}${markdownSymbol} ${value.substring(selectionEnd)}`;
     this.textarea.value = newValue;
     this.textarea.focus();
+    const newSelectionStart = selectionStart + markdownSymbol.length;
+    this.textarea.setSelectionRange(newSelectionStart, newSelectionStart);
     this.triggerInputEvent();
   };
 
