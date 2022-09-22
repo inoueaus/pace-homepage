@@ -41,7 +41,6 @@ export class NavBar extends LitElement {
         width: 100%;
         margin: 0;
         padding: 1rem;
-        overflow-x: scroll;
         flex: 80%;
       }
 

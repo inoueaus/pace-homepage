@@ -127,7 +127,8 @@ export class MarkdownTextarea extends LitElement {
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
-        overflow: scroll;
+        overflow-x: auto;
+        overflow-y: hidden;
         margin: 0;
         padding: 0 4px;
         width: 100%;
@@ -162,6 +163,7 @@ export class MarkdownTextarea extends LitElement {
         padding: 0.5rem;
         max-width: 100%;
         min-width: 100%;
+        margin: 0;
       }
     `,
   ];
