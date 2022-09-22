@@ -1,0 +1,8 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["cypress", "@typescript-eslint"],
+  "ignorePatterns": ["cypress.config.js"],
+  "env": {
+    "es6": true
+  }
+}

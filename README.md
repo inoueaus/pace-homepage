@@ -30,3 +30,9 @@ yarn start
 firebase login
 firebase deploy
 ```
+
+# Cypress
+
+Cypress requires a cypress.env.json file with a email and password value.
+
+App check also must be registered for cypress browser
