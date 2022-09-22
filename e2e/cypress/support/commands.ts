@@ -11,10 +11,7 @@
 //
 //
 // -- This is a parent command --
-Cypress.Commands.add("login", (email = Cypress.env("email"), password = Cypress.env("password")) => {
-  if (typeof email !== "string") throw TypeError();
-  if (typeof password !== "string") throw TypeError();
-
+Cypress.Commands.add("login", (email = "admin@admin.jp", password = "password") => {
   cy.visit("/admin/login");
   cy.get("login-form").should("be.visible");
   cy.get("login-form").shadow().as("login-form-shadow");
