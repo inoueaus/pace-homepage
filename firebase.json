@@ -1,7 +1,11 @@
 {
   "hosting": {
     "public": "dist",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
   },
   "emulators": {
     "auth": {
@@ -9,7 +13,7 @@
     },
     "database": {
       "port": 9000,
-      "rules": "database.rules.json"
+      "rules": "./database.rules.json"
     },
     "hosting": {
       "port": 5001
@@ -23,5 +27,8 @@
   },
   "storage": {
     "rules": "storage.rules"
+  },
+  "database": {
+    "rules": "database.rules.json"
   }
 }
