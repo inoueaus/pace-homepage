@@ -9,60 +9,7 @@
     },
     "database": {
       "port": 9000,
-      "rules": {
-        "rules": {
-          "posts": {
-            ".read": true,
-            ".indexOn": ["createdAt"],
-            "$postId": {
-              ".write": "auth !== null",
-              "body": {
-                ".validate": "newData.isString()"
-              },
-              "title": {
-                ".validate": "newData.isString() && newData.val().length < 255"
-              },
-              "picture": {
-                ".validate": "newData.isString()"
-              },
-              "createdAt": {
-                ".validate": "newData.isNumber() && newData.val() >= 0"
-              },
-              "updatedAt": {
-                ".validate": "newData.isNumber() && newData.val() >= 0"
-              }
-            }
-          },
-          "inquiries": {
-            ".read": "auth !== null",
-            ".indexOn": ["createdAt"],
-            "$inquiryId": {
-              ".write": true,
-              "body": {
-                ".validate": "newData.isString() && newData.val().length < 2000"
-              },
-              "phone": {
-                ".validate": "newData.isString() && newData.val().length < 255"
-              },
-              "email": {
-                ".validate": "newData.isString() && newData.val().length < 255"
-              },
-              "firstName": {
-                ".validate": "newData.isString() && newData.val().length < 255"
-              },
-              "lastName": {
-                ".validate": "newData.isString() && newData.val().length < 255"
-              },
-              "createdAt": {
-                ".validate": "newData.isNumber() && newData.val() >= 0"
-              },
-              "viewed": {
-                ".validate": "newData.isBoolean()"
-              }
-            }
-          }
-        }
-      }
+      "rules": "database.rules.json"
     },
     "hosting": {
       "port": 5001
