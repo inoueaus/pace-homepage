@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "lint": "eslint ./src",
     "format": "prettier --write .",
-    "prettier": "prettier --check ."
+    "prettier": "prettier --check .",
+    "emulate": "firebase emulators:start"
   },
   "dependencies": {
     "astro": "^1.2.8",

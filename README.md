@@ -19,7 +19,12 @@ App Check debug token: d20ef0.........9836. You will need to add it to your app'
 
 ## Dev Server
 
+This application is set up to use the [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite/connect_and_prototype).
+
+You must install [Java](https://www.oracle.com/java/technologies/downloads/) to use it.
+
 ```
+yarn emulate
 yarn install
 yarn start
 ```

@@ -2,6 +2,7 @@
 import styles from "./AppLayout.module.css";
 import { NavBar } from "../components/lit-components/nav-bar";
 import { FirebaseAppCheck } from "@components/lit-components/firebase-app-check";
+import { FirebaseDev } from "@components/lit-components/firebase-dev";
 ---
 
 <!DOCTYPE html>
@@ -21,6 +22,7 @@ import { FirebaseAppCheck } from "@components/lit-components/firebase-app-check"
       <small>〒903-0804 沖縄県那覇市首里石嶺町</small>
     </footer>
     <FirebaseAppCheck client:load data-mode={import.meta.env.MODE} />
+    {import.meta.env.MODE === "development" ? <FirebaseDev client:load /> : "not dev"}
     <style is:global>
       html,
       body {
