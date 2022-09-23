@@ -21,8 +21,13 @@ import { FirebaseDev } from "@components/lit-components/firebase-dev";
       <div>Copyright 2022 株式会社Pace（パーチェ）</div>
       <small>〒903-0804 沖縄県那覇市首里石嶺町</small>
     </footer>
-    <FirebaseAppCheck client:load data-mode={import.meta.env.MODE} />
-    {import.meta.env.MODE === "development" ? <FirebaseDev client:load /> : "not dev"}
+    {
+      import.meta.env.MODE === "development" ? (
+        <FirebaseDev client:load />
+      ) : (
+        <FirebaseAppCheck client:load />
+      )
+    }
     <style is:global>
       html,
       body {
