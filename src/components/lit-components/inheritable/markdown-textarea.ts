@@ -25,6 +25,7 @@ export class MarkdownTextarea extends LitElement {
     if (typeof value !== "string") throw TypeError("Value must be string.");
     if (!this.textarea) return;
     this.textarea.value = value;
+    this.renderToLightDom();
   }
 
   constructor() {
@@ -46,12 +47,11 @@ export class MarkdownTextarea extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback();
-    this.textarea.value = this.textContent ?? "";
+    this.value = this.textContent ?? "";
     this.textarea.addEventListener("input", () => {
       this.triggerInputEvent();
       this.renderToLightDom();
     });
-    this.renderToLightDom();
   }
 
   protected handleHeaderClick: EventListener = event => {
@@ -178,7 +178,7 @@ export class MarkdownTextarea extends LitElement {
         slot="input"
         name=${this.name}
         hidden
-        .value=${this.textarea.value}
+        .value=${this.value}
         ?required=${this.required}
       ></textarea>`,
       this
