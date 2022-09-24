@@ -10,7 +10,7 @@
     "lint": "eslint ./src",
     "format": "prettier --write .",
     "prettier": "prettier --check .",
-    "emulate": "firebase emulators:start"
+    "emulate": "firebase emulators:start --import=./dump"
   },
   "dependencies": {
     "astro": "^1.2.8",
