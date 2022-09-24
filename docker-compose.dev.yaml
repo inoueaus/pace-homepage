@@ -1,0 +1,20 @@
+services:
+  emulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+      - "9099:9099"
+      - "5001:5001"
+      - "9199:9199"
+      - "4000:4000"
+    tty: true
+  astro:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
