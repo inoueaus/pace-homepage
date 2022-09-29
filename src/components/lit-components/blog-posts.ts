@@ -18,7 +18,7 @@ import { globalStyles } from "./styles";
 import { postCss } from "./styles/post";
 import type { PostModel, PostServerModel } from "@localTypes/post-model";
 import { loadComponent } from "./helpers";
-import { resolveMarkdown } from "./directives/markdown-renderer";
+import { resolveMarkdown } from "lit-markdown";
 
 export const tagName = "blog-posts";
 
@@ -139,7 +139,10 @@ export class BlogPosts extends FirebaseElement {
                 <section class="body-text">
                   <div class="text-container">
                     ${this.isConnected
-                      ? resolveMarkdown(post.body, { removeImages: true })
+                      ? resolveMarkdown(post.body, {
+                          includeImages: false,
+                          loadingHTML: "<loading-icon></loading-icon>",
+                        })
                       : ""}
                   </div>
                   <div class="fade"></div>

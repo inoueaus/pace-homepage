@@ -3,7 +3,7 @@ import { ref as storageRef, uploadBytes } from "firebase/storage";
 import { html, PropertyValueMap } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import GenericPostForm, { Payload } from "./generic-post-form";
-import { resolveMarkdown } from "./directives/markdown-renderer";
+import { resolveMarkdown } from "lit-markdown";
 
 const tagName = "new-post-form";
 
@@ -92,7 +92,9 @@ export class NewPostForm extends GenericPostForm {
           ${this.raw
             ? html`<h3 class="bottom-border">プレビュー</h3>
                 <article id="preview" class="bottom-border">
-                  ${this.isConnected ? resolveMarkdown(this.raw) : this.raw}
+                  ${this.isConnected
+                    ? resolveMarkdown(this.raw, { includeImages: true })
+                    : this.raw}
                 </article>`
             : ""}
         </div>

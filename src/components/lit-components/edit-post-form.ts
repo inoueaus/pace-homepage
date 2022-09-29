@@ -10,7 +10,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import type { BaseModal } from "./base-modal";
-import { resolveMarkdown } from "./directives/markdown-renderer";
+import { resolveMarkdown } from "lit-markdown";
 
 const tagName = "edit-post-form";
 
@@ -201,7 +201,9 @@ export class EditPostForm extends GenericPostForm {
           ${this.raw
             ? html` <h3 class="bottom-border">プレビュー</h3>
                 <article id="preview" class="bottom-border">
-                  ${this.isConnected ? resolveMarkdown(this.raw) : this.raw}
+                  ${this.isConnected
+                    ? resolveMarkdown(this.raw, { includeImages: true })
+                    : this.raw}
                 </article>`
             : ""}
         </div>
