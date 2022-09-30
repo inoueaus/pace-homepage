@@ -1,10 +1,8 @@
 import { html, LitElement } from "lit";
-import { customElement } from "lit/decorators.js";
 import iconStyles from "../styles/icon";
 
 export const tagName = "new-picture-icon";
 
-@customElement(tagName)
 export class NewPictureIcon extends LitElement {
   static styles = [iconStyles];
   render() {

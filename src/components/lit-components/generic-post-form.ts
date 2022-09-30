@@ -10,7 +10,6 @@ import {
   tagName as markdownTextareaTag,
   FirebaseMarkdownTextarea,
 } from "./firebase-markdown-textarea";
-import { MarkdownTextarea } from "./inheritable/markdown-textarea";
 import { markdownStyles } from "./styles/markdown";
 
 export type Payload = {
@@ -77,7 +76,6 @@ class GenericPostForm extends FirebaseElement {
     const textarea = event.currentTarget;
     if (
       !(
-        textarea instanceof MarkdownTextarea ||
         textarea instanceof HTMLTextAreaElement ||
         textarea instanceof FirebaseMarkdownTextarea
       )
