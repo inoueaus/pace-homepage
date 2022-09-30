@@ -64,9 +64,8 @@ export class ImageCard extends LitElement {
     return html` <div class=${this.class}>
       <section class="image-section">
         <img
-          height=${this.getAttribute("height") ?? ""}
-          width=${this.getAttribute("width") ?? ""}
-          alt=${this.getAttribute("alt") ?? ""}
+          height=${this.getAttribute("img-height") ?? ""}
+          width=${this.getAttribute("img-width") ?? ""}
           src=${this.src}
           loading="lazy"
         />
