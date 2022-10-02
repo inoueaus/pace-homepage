@@ -14,7 +14,7 @@
     "emulate": "firebase emulators:start --import=./dump"
   },
   "dependencies": {
-    "astro": "^1.4.1",
+    "astro": "^1.4.2",
     "firebase": "^9.10.0",
     "lit": "^2.3.1",
     "lit-markdown": "^1.1.3",
