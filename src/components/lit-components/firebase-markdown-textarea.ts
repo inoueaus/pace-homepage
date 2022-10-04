@@ -15,29 +15,13 @@ export class FirebaseMarkdownTextarea extends LitMarkdownEditor {
     this.storage = getStorage(app);
   }
 
-  protected handleFileRender: (file: File) => Promise<any> = file => {
+  protected provideFileURL(file: File): Promise<string> {
     const key = `${Date.now()}-${generateRandomText()}-${file.name}`;
     const storageRef = ref(this.storage, `images/${key}`);
-    return uploadBytes(storageRef, file)
-      .then(result => {
-        const { fullPath } = result.metadata;
-        const newImageRef = ref(this.storage, fullPath);
-        return getDownloadURL(newImageRef);
-      })
-      .then(url => {
-        const markdown = `![${file.name}](${url} "${key}")`;
-        const { selectionStart, selectionEnd, value } = this.textarea;
-        const textUntilSelectionStart = value.substring(0, selectionStart);
-        const textAfterSelectionEnd = value.substring(selectionEnd);
-        const newLine = "\n";
-        this.textarea.value =
-          textUntilSelectionStart +
-          newLine +
-          markdown +
-          textAfterSelectionEnd +
-          newLine;
-        this.triggerInputEvent();
-        this.renderToLightDom();
-      });
-  };
+    return uploadBytes(storageRef, file).then(result => {
+      const { fullPath } = result.metadata;
+      const newImageRef = ref(this.storage, fullPath);
+      return getDownloadURL(newImageRef);
+    });
+  }
 }
