@@ -47,8 +47,11 @@ export class SingleBlogPost extends FirebaseElement {
   }
 
   static styles = [
-    globalStyles,
     css`
+      * {
+        box-sizing: border-box;
+      }
+
       :host([hide]) {
         display: none;
       }
@@ -67,7 +70,7 @@ export class SingleBlogPost extends FirebaseElement {
         padding: 1rem;
       }
 
-      .card a {
+      .card #edit {
         color: white;
         background-color: #372c2e;
         border: 1px solid #372c2e;
@@ -80,6 +83,9 @@ export class SingleBlogPost extends FirebaseElement {
         user-select: none;
       }
 
+      a {
+        color: #372c2e;
+      }
       .body {
         display: flex;
         flex-direction: column;
@@ -138,7 +144,7 @@ export class SingleBlogPost extends FirebaseElement {
     return html`
       <article class="card">
         ${this.loading ? html`<loading-icon></loading-icon>` : ""}
-        ${isAuth ? html` <a href=${editUrl.toString()}>編集</a>` : ""}
+        ${isAuth ? html` <a id="edit" href=${editUrl.toString()}>編集</a>` : ""}
         <h3>${this.post?.title ?? ""}</h3>
         <div class="body">
           ${this.post.picture
