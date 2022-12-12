@@ -2949,15 +2949,15 @@ lit-html@^2.0.0, lit-html@^2.2.0, lit-html@^2.5.0:
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
-lit-markdown-editor@^2.0.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/lit-markdown-editor/-/lit-markdown-editor-2.3.0.tgz#e7127475fad2bad828d38d9e82682530e25bdeed"
-  integrity sha512-DvUhtu2YU8lrL8jt+5ojwRseNn5Nyz/JaNJbSGFDLVzBV3wdf1341fmUz5gsXs8E2LhXS++/wl2CyjrVAKFs+A==
+lit-markdown-editor@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/lit-markdown-editor/-/lit-markdown-editor-2.3.1.tgz#75bf84dbcd740ae18c674cf2b16d2afc6251a0e3"
+  integrity sha512-nE0t0mQsK/JvNXbVyGrAH+/mBkkt0uqsqwGhiHoE1/R7b++i6CKbb6tHVktrrFzCWIP64I9E10hiL+HxVqh21A==
   dependencies:
-    lit "^2.4.0"
-    rxjs "^7.5.7"
+    lit "^2.5.0"
+    rxjs "^7.6.0"
 
-lit-markdown@^1.1.3:
+lit-markdown@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/lit-markdown/-/lit-markdown-1.3.0.tgz#caec507b08226627b8be918acf90f6a9fa043774"
   integrity sha512-28LnlwpkUhakQe3y5XYOY/4nC8Bg6krFfdTvJh6H+Qc2CP5OmMxtAZi/xRkPXi0p2umz5DWQkIBTmFYV6/d9lA==
@@ -2966,7 +2966,7 @@ lit-markdown@^1.1.3:
     marked "^4.1.0"
     sanitize-html "^2.7.2"
 
-lit@^2.0.0, lit@^2.3.1, lit@^2.4.0, lit@^2.5.0:
+lit@^2.0.0, lit@^2.3.1, lit@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/lit/-/lit-2.5.0.tgz#3a425d69ff8483effb2026957b86ae45de0bc51a"
   integrity sha512-DtnUP6vR3l4Q8nRPPNBD+UxbAhwJPeky+OVbi3pdgMqm0g57xFSl1Sj64D1rIB+nVNdiVVg8YxB0hqKjvdadZA==
@@ -4257,7 +4257,7 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-rxjs@^7.5.7:
+rxjs@^7.6.0:
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.6.0.tgz#361da5362b6ddaa691a2de0b4f2d32028f1eb5a2"
   integrity sha512-DDa7d8TFNUalGC9VqXvQ1euWNN7sc63TrUCuM9J998+ViviahMIjKSOU7rfcgFOF+FCD71BhDRv4hrFz+ImDLQ==
