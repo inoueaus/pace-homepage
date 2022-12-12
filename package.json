@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "prettier": "prettier --check .",
     "docker": "docker-compose -f docker-compose.dev.yaml up",
-    "emulate": "firebase emulators:start --import=./dump"
+    "emulate": "firebase emulators:start --import=./dump",
+    "deploy": "yarn build && firebase deploy --only hosting"
   },
   "dependencies": {
     "astro": "^1.6.15",
