@@ -2754,10 +2754,10 @@ lit-html@^2.0.0, lit-html@^2.2.0, lit-html@^2.5.0, lit-html@^2.6.0:
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
-lit-markdown-editor@^2.3.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/lit-markdown-editor/-/lit-markdown-editor-2.3.2.tgz#b7e0081d9f0c13c1312623e4909a3fdff3c859ba"
-  integrity sha512-u55oZBKvOZWTtRqmRs1gBWFuYWO8GgFqsY235Iw4dvtGpuIGduK9vDcZVwc1VnUqucZoY4lCG5sh0lMmctDdbA==
+lit-markdown-editor@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/lit-markdown-editor/-/lit-markdown-editor-2.4.0.tgz#d6eb6b3aaf01558221326dd9c52aec1464805eb2"
+  integrity sha512-S3CIbx12CjiDhKNSn/RSuV8F14maAmPFsQRUhqh7Da9Sl17FAuwj9ZM/C8wZuREVGiy4OcBMsBJUvhgQPTkrKA==
   dependencies:
     lit "^2.6.1"
     rxjs "^7.8.0"
