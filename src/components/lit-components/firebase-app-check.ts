@@ -10,6 +10,8 @@ export const tagName = "firebase-app-check";
 export class FirebaseAppCheck extends LitElement {
   connectedCallback() {
     if (!this.isConnected) return;
+    //@ts-ignore
+    self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
     initializeAppCheck(app, {
       provider: new ReCaptchaV3Provider(
         "6LeQYZcgAAAAAIfC-VUXxtTbusQsNpqJuPtS92S9"
